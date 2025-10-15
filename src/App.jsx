@@ -194,6 +194,32 @@ const NavLink = styled.a`
   }
 `;
 
+const MobileNavLinks = styled.div`
+  display: ${props => props.isOpen ? 'flex' : 'none'};
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: ${props => props.theme.background};
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  border-radius: 0 0 12px 12px;
+
+  ${NavLink} {
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid ${props => props.theme.border};
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+`;
+
 const CallToActionButton = styled.a`
   background-color: ${props => props.theme.primary};
   color: ${props => props.theme.background};
@@ -262,6 +288,19 @@ const HamburgerIcon = styled.div`
     background-color: ${props => props.theme.text};
     border-radius: 2px;
     transition: all 0.3s ease;
+    transform-origin: center;
+
+    &:nth-child(1) {
+      transform: ${props => props.isOpen ? 'rotate(45deg) translate(6px, 6px)' : 'rotate(0)'};
+    }
+
+    &:nth-child(2) {
+      opacity: ${props => props.isOpen ? '0' : '1'};
+    }
+
+    &:nth-child(3) {
+      transform: ${props => props.isOpen ? 'rotate(-45deg) translate(6px, -6px)' : 'rotate(0)'};
+    }
   }
 
   &:hover div {
@@ -511,6 +550,8 @@ function App() {
     return savedTheme ? JSON.parse(savedTheme) : false; // Default to light mode
   });
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
@@ -519,6 +560,7 @@ function App() {
 
   const heroRef = useRef(null);
   const servicesRef = useRef(null);
+  const consultingRef = useRef(null);
   const aboutRef = useRef(null);
   const contactRef = useRef(null);
 
@@ -542,6 +584,7 @@ function App() {
           <DesktopNavLinks>
             <NavLink onClick={() => scrollToSection(heroRef)}>Home</NavLink>
             <NavLink onClick={() => scrollToSection(servicesRef)}>Services</NavLink>
+            <NavLink onClick={() => scrollToSection(consultingRef)}>Consulting</NavLink>
             <NavLink onClick={() => scrollToSection(aboutRef)}>About</NavLink>
             <NavLink onClick={() => scrollToSection(contactRef)}>Contact</NavLink>
           </DesktopNavLinks>
@@ -551,12 +594,20 @@ function App() {
               {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </ThemeToggleButton>
             <HeaderCTAButton href="https://calendly.com/peakworkstudios/30min" target="_blank" rel="noopener noreferrer">Book a Call</HeaderCTAButton>
-            <HamburgerIcon>
+            <HamburgerIcon isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               <div />
               <div />
               <div />
             </HamburgerIcon>
           </RightHeaderGroup>
+
+          <MobileNavLinks isOpen={isMobileMenuOpen}>
+            <NavLink onClick={() => { scrollToSection(heroRef); setIsMobileMenuOpen(false); }}>Home</NavLink>
+            <NavLink onClick={() => { scrollToSection(servicesRef); setIsMobileMenuOpen(false); }}>Services</NavLink>
+            <NavLink onClick={() => { scrollToSection(consultingRef); setIsMobileMenuOpen(false); }}>Consulting</NavLink>
+            <NavLink onClick={() => { scrollToSection(aboutRef); setIsMobileMenuOpen(false); }}>About</NavLink>
+            <NavLink onClick={() => { scrollToSection(contactRef); setIsMobileMenuOpen(false); }}>Contact</NavLink>
+          </MobileNavLinks>
         </Header>
 
         <HeroSection id="home" ref={heroRef} minHeight="100vh">
@@ -581,6 +632,33 @@ function App() {
               <h3>Reporting & Analytics</h3>
               <p>Gain deeper insights with AI-powered data analysis and automated reporting, turning data into actionable intelligence.</p>
             </FeatureCard>
+            <FeatureCard>
+              <h3>Consulting & Strategy</h3>
+              <p>Expert guidance on AI implementation, from audit to governance. Build a roadmap for scalable automation success.</p>
+            </FeatureCard>
+          </FeaturesGrid>
+        </Section>
+
+        <Section id="consulting" ref={consultingRef} delay="0.3s">
+          <h2>Consulting & Strategy Services</h2>
+          <p>Our expert consultants provide comprehensive support to ensure your AI initiatives deliver maximum value and long-term success.</p>
+          <FeaturesGrid>
+            <FeatureCard>
+              <h3>AI & Automation Audit</h3>
+              <p>Comprehensive assessment of your current processes, identifying automation opportunities and AI readiness gaps.</p>
+            </FeatureCard>
+            <FeatureCard>
+              <h3>Strategy & Roadmap</h3>
+              <p>Develop a tailored AI strategy aligned with your business goals, including phased implementation roadmaps.</p>
+            </FeatureCard>
+            <FeatureCard>
+              <h3>Implementation Support</h3>
+              <p>Hands-on assistance during deployment, including team training, change management, and technical oversight.</p>
+            </FeatureCard>
+            <FeatureCard>
+              <h3>Governance & Performance</h3>
+              <p>Establish monitoring frameworks, performance metrics, and governance structures for sustainable AI operations.</p>
+            </FeatureCard>
           </FeaturesGrid>
         </Section>
 
@@ -589,7 +667,7 @@ function App() {
           <p>With 20 years in software & cloud, we bring real-world expertise to AI-powered business solutions. At Peak Work Studios, we are dedicated to crafting bespoke AI automation strategies that drive tangible results. Our approach is rooted in understanding your unique challenges and delivering solutions that are not just innovative, but also practical and scalable.</p>
         </Section>
 
-        <Section id="contact" ref={contactRef} delay="0.6s">
+        <Section id="contact" ref={contactRef} delay="0.5s">
           <h2>Ready to Explore Your Automation Opportunities?</h2>
           <p>Let's connect to discuss how custom AI workflows can transform your business operations and accelerate your growth.</p>
           <ContactButtonContainer>
@@ -599,6 +677,7 @@ function App() {
 
         <Footer>
           <span>&copy; 2025 Peak Work Studios | Calgary, Canada</span>
+          <CallToActionButton href="https://calendly.com/peakworkstudios/30min" target="_blank" rel="noopener noreferrer">Book a Strategy Call</CallToActionButton>
           <a href="https://www.linkedin.com/company/peak-work-studios" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </Footer>
       </AppContainer>
