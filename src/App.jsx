@@ -647,6 +647,12 @@ const ContactForm = ({ theme, page, source }) => {
       return;
     }
 
+    const trimmedMessage = formData.message.trim();
+    if (trimmedMessage.length < 10 || trimmedMessage.length > 4000) {
+      setError('Message must be between 10 and 4000 characters.');
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
 
@@ -836,6 +842,7 @@ const ContactForm = ({ theme, page, source }) => {
           required
           rows="5"
           autoComplete="off"
+          maxLength={4000}
           style={{
             width: '100%',
             padding: '14px 16px',
