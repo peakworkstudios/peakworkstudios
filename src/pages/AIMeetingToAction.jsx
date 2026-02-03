@@ -85,7 +85,7 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
 
           {/* Example output */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example output (public-safe)</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example output</h2>
             <div style={{ padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}`, fontFamily: 'monospace', fontSize: 'clamp(13px, 3vw, 15px)', lineHeight: '1.8', color: currentTheme.textSecondary, overflowX: 'auto' }}>
               <div style={{ marginBottom: '25px' }}>
                 <div style={{ color: currentTheme.primary, fontWeight: '600', marginBottom: '10px' }}>DECISIONS</div>

@@ -1117,7 +1117,7 @@ function App() {
               </Section>
 
               <Section id="work" ref={workRef} delay="0.3s">
-                <h2>Public-safe deliverables and templates</h2>
+                <h2>Sample deliverables and templates</h2>
                 <p>Examples of what you receive—no client names, just the approach and structure.</p>
                 <FeaturesGrid>
                   <FeatureCard 

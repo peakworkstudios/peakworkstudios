@@ -78,7 +78,7 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
               <li><strong>KPI Snapshot:</strong> Table with metric name, target, actual, variance, and notes</li>
               <li><strong>Definitions Sheet:</strong> Documents what each KPI means, how it's calculated, and who owns it</li>
               <li><strong>Collection Process:</strong> Simple checklist for gathering data weekly without manual hunting</li>
-              <li><strong>Example Reports:</strong> Pre-filled samples showing proper usage (public-safe data)</li>
+              <li><strong>Example Reports:</strong> Pre-filled samples showing proper usage</li>
             </ul>
           </div>
 

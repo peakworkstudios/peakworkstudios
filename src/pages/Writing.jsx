@@ -96,7 +96,7 @@ const Writing = ({ currentTheme, Section, FeatureCard, CallToActionButton }) => 
               Read the blog
             </CallToActionButton>
             <div style={{ fontSize: '14px', color: currentTheme.textSecondary, fontStyle: 'italic', marginTop: '15px' }}>
-              Public-safe examples only.
+              Examples
             </div>
           </div>
 

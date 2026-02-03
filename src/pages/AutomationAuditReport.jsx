@@ -85,7 +85,7 @@ const AutomationAuditReport = ({ currentTheme, Section, FeatureCard, CallToActio
 
           {/* Example outline */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example outline (public-safe)</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example outline</h2>
             <div style={{ padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}` }}>
               <div style={{ marginBottom: '30px' }}>
                 <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: currentTheme.primary, marginTop: '0', marginBottom: '15px' }}>Current Workflow Map</h3>
