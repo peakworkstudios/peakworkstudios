@@ -602,22 +602,26 @@ const CTAGroup = styled.div`
 `;
 
 // ContactForm Component
-const ContactForm = ({ theme, scrollToSection, contactRef }) => {
+const ContactForm = ({ theme, page, source }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
     message: '',
-    honeypot: '' // spam protection
+    website: '' // honeypot
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const CALENDLY_URL = 'https://calendly.com/peakworkstudios/30min';
-  const FIREBASE_FUNCTION_URL = 'YOUR_FIREBASE_FUNCTION_URL_HERE'; // Replace with your Cloud Function URL
+  const CONTACT_ENDPOINT = 'https://contact-c5cvmgvaja-uc.a.run.app/api/contact';
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleChange = (e) => {
+    if (error) {
+      setError('');
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -628,19 +632,18 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
     e.preventDefault();
     
     // Honeypot check - if filled, it's a bot
-    if (formData.honeypot) {
-      console.log('Bot detected');
+    if (formData.website) {
       return;
     }
 
     // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
-      setError('Please fill in all required fields');
+      setError('Please fill in all required fields.');
       return;
     }
 
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      setError('Please enter a valid email address');
+    if (!EMAIL_REGEX.test(formData.email)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
@@ -649,7 +652,7 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
 
     try {
       // Send to Firebase Cloud Function
-      const response = await fetch(FIREBASE_FUNCTION_URL, {
+      const response = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -659,7 +662,9 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
           email: formData.email,
           company: formData.company,
           message: formData.message,
-          timestamp: new Date().toISOString()
+          source,
+          page,
+          website: formData.website
         })
       });
 
@@ -668,10 +673,10 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
       }
 
       setIsSuccess(true);
-      setFormData({ name: '', email: '', company: '', message: '', honeypot: '' });
+      setFormData({ name: '', email: '', company: '', message: '', website: '' });
     } catch (err) {
       console.error('Error submitting form:', err);
-      setError('Something went wrong. Please try emailing me directly at hello@kunaldeshmukh.com');
+      setError('Something went wrong. Please email hello@kunaldeshmukh.com.');
     } finally {
       setIsSubmitting(false);
     }
@@ -682,7 +687,7 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '50px 30px', backgroundColor: theme.surface, borderRadius: theme.borderRadius, border: `2px solid ${theme.success}`, textAlign: 'center' }}>
         <div style={{ fontSize: '48px', marginBottom: '20px' }}>✓</div>
         <h3 style={{ fontSize: '24px', color: theme.text, marginBottom: '15px', marginTop: '0' }}>Thanks for reaching out!</h3>
-        <p style={{ fontSize: '17px', color: theme.textSecondary, marginBottom: '30px' }}>I'll review your message and get back to you within 24 hours.</p>
+        <p style={{ fontSize: '17px', color: theme.textSecondary, marginBottom: '30px' }}>Thanks — I got your note. I’ll reply within 1–2 business days.</p>
         <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button 
             onClick={() => setIsSuccess(false)}
@@ -730,8 +735,8 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
       {/* Honeypot field - hidden from users */}
       <input 
         type="text" 
-        name="honeypot" 
-        value={formData.honeypot}
+        name="website" 
+        value={formData.website}
         onChange={handleChange}
         style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px' }}
         tabIndex="-1"
@@ -749,6 +754,7 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
           onChange={handleChange}
           placeholder="Your name"
           required
+          autoComplete="name"
           style={{
             width: '100%',
             padding: '14px 16px',
@@ -775,6 +781,8 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
           onChange={handleChange}
           placeholder="your@email.com"
           required
+          autoComplete="email"
+          inputMode="email"
           style={{
             width: '100%',
             padding: '14px 16px',
@@ -800,6 +808,7 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
           value={formData.company}
           onChange={handleChange}
           placeholder="Your company name"
+          autoComplete="organization"
           style={{
             width: '100%',
             padding: '14px 16px',
@@ -826,6 +835,7 @@ const ContactForm = ({ theme, scrollToSection, contactRef }) => {
           placeholder="e.g., 'We spend 10 hours/week manually copying data between systems' or 'Customer follow-ups keep falling through the cracks'"
           required
           rows="5"
+          autoComplete="off"
           style={{
             width: '100%',
             padding: '14px 16px',
@@ -1228,7 +1238,7 @@ function App() {
                     <li style={{ marginBottom: '0' }}>✓ No pressure—if I'm not a fit, I'll say so</li>
                   </ul>
                 </div>
-                <ContactForm theme={currentTheme} scrollToSection={scrollToSection} contactRef={contactRef} />
+                <ContactForm theme={currentTheme} page={location.pathname} source="kunaldeshmukh" />
               </Section>
             </>
           } />
