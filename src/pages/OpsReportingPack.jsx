@@ -16,7 +16,7 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
   return (
     <>
       <Section minHeight="auto" style={{ paddingTop: '120px' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left', padding: '0 20px' }}>
           <div style={{ marginBottom: '30px' }}>
             <button 
               onClick={() => navigate('/')}
@@ -35,45 +35,45 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
             >
               ← Back to home
             </button>
-            <h1 style={{ fontSize: '48px', fontWeight: '700', color: currentTheme.text, marginBottom: '20px', lineHeight: '1.2' }}>
+            <h1 style={{ fontSize: 'clamp(32px, 8vw, 48px)', fontWeight: '700', color: currentTheme.text, marginBottom: '20px', lineHeight: '1.2' }}>
               Ops Reporting Pack
             </h1>
-            <p style={{ fontSize: '22px', color: currentTheme.textSecondary, lineHeight: '1.6', margin: '0' }}>
+            <p style={{ fontSize: 'clamp(18px, 5vw, 22px)', color: currentTheme.textSecondary, lineHeight: '1.6', margin: '0' }}>
               Weekly status + KPI snapshot templates with a simple, reliable collection process.
             </p>
           </div>
 
           {/* What it is */}
           <div style={{ marginBottom: '50px', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>What it is</h2>
-            <p style={{ fontSize: '17px', lineHeight: '1.7', color: currentTheme.textSecondary, margin: '0' }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>What it is</h2>
+            <p style={{ fontSize: 'clamp(16px, 4vw, 17px)', lineHeight: '1.7', color: currentTheme.textSecondary, margin: '0' }}>
               A set of lightweight, proven templates for weekly operational reporting: a status update format for what happened this week, a KPI snapshot showing target vs actual performance, and a definitions sheet that documents what each metric means and how it's calculated. The pack includes a simple collection process so your team can populate reports consistently without hunting for data or reinventing the format each week.
             </p>
           </div>
 
           {/* Who it's for */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginBottom: '25px' }}>Who it's for</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Who it's for</h2>
             <div style={{ display: 'grid', gap: '20px' }}>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Teams with inconsistent reporting formats</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>Every week's update looks different. Your stakeholders never know where to look for key information.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Teams with inconsistent reporting formats</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>Every week's update looks different. Your stakeholders never know where to look for key information.</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Managers who spend too much time compiling reports</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>You manually pull data from 5 different tools, paste it into a doc, format it, and send it out. This takes 2+ hours every week.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Managers who spend too much time compiling reports</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>You manually pull data from 5 different tools, paste it into a doc, format it, and send it out. This takes 2+ hours every week.</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Teams where "we don't know what the numbers mean"</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>Someone leaves or is on vacation, and suddenly no one knows how to calculate the KPIs or what "good" looks like.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Teams where "we don't know what the numbers mean"</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>Someone leaves or is on vacation, and suddenly no one knows how to calculate the KPIs or what "good" looks like.</p>
               </FeatureCard>
             </div>
           </div>
 
           {/* What you receive */}
           <div style={{ marginBottom: '50px', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginTop: '0', marginBottom: '25px' }}>Templates included</h2>
-            <ul style={{ fontSize: '17px', lineHeight: '1.9', color: currentTheme.textSecondary, paddingLeft: '25px', margin: '0' }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginTop: '0', marginBottom: '25px' }}>Templates included</h2>
+            <ul style={{ fontSize: 'clamp(15px, 4vw, 17px)', lineHeight: '1.9', color: currentTheme.textSecondary, paddingLeft: '25px', margin: '0' }}>
               <li><strong>Weekly Status Template:</strong> Consistent format for accomplishments, blockers, next week's focus</li>
               <li><strong>KPI Snapshot:</strong> Table with metric name, target, actual, variance, and notes</li>
               <li><strong>Definitions Sheet:</strong> Documents what each KPI means, how it's calculated, and who owns it</li>
@@ -84,44 +84,44 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
 
           {/* Example KPI snapshot */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginBottom: '25px' }}>Example: KPI Snapshot</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example: KPI Snapshot</h2>
             <div style={{ padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}` }}>
               <div style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', color: currentTheme.primary, marginTop: '0', marginBottom: '10px' }}>Week of Feb 3, 2026</h3>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: currentTheme.primary, marginTop: '0', marginBottom: '10px' }}>Week of Feb 3, 2026</h3>
                 <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '15px' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'clamp(14px, 3vw, 15px)', minWidth: '500px' }}>
                     <thead>
                       <tr style={{ borderBottom: `2px solid ${currentTheme.border}`, backgroundColor: currentTheme.surface }}>
-                        <th style={{ textAlign: 'left', padding: '12px 10px', color: currentTheme.text }}>Metric</th>
-                        <th style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.text }}>Target</th>
-                        <th style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.text }}>Actual</th>
-                        <th style={{ textAlign: 'left', padding: '12px 10px', color: currentTheme.text }}>Notes</th>
+                        <th style={{ textAlign: 'left', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.text, fontWeight: '600' }}>Metric</th>
+                        <th style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.text, fontWeight: '600' }}>Target</th>
+                        <th style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.text, fontWeight: '600' }}>Actual</th>
+                        <th style={{ textAlign: 'left', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.text, fontWeight: '600' }}>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary }}>Tickets closed</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.textSecondary }}>50</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.success, fontWeight: '600' }}>53</td>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary, fontSize: '14px' }}>Above target, sprint went well</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>Tickets closed</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>50</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.success, fontWeight: '600' }}>53</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary, fontSize: 'clamp(12px, 3vw, 14px)' }}>Above target, sprint went well</td>
                       </tr>
                       <tr style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary }}>Avg response time (hrs)</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.textSecondary }}>{'< 4'}</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.warning, fontWeight: '600' }}>6.2</td>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary, fontSize: '14px' }}>Spike on Tuesday, now resolved</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>Avg response time (hrs)</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>{'< 4'}</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.warning, fontWeight: '600' }}>6.2</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary, fontSize: 'clamp(12px, 3vw, 14px)' }}>Spike on Tuesday, now resolved</td>
                       </tr>
                       <tr style={{ borderBottom: `1px solid ${currentTheme.border}` }}>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary }}>Customer satisfaction</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.textSecondary }}>≥ 4.5</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.success, fontWeight: '600' }}>4.7</td>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary, fontSize: '14px' }}>Strong feedback this week</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>Customer satisfaction</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>≥ 4.5</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.success, fontWeight: '600' }}>4.7</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary, fontSize: 'clamp(12px, 3vw, 14px)' }}>Strong feedback this week</td>
                       </tr>
                       <tr>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary }}>Uptime %</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.textSecondary }}>99.5%</td>
-                        <td style={{ textAlign: 'right', padding: '12px 10px', color: currentTheme.error, fontWeight: '600' }}>98.1%</td>
-                        <td style={{ padding: '12px 10px', color: currentTheme.textSecondary, fontSize: '14px' }}>Outage on Wed 2pm (45 min)</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>Uptime %</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary }}>99.5%</td>
+                        <td style={{ textAlign: 'right', padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.error, fontWeight: '600' }}>98.1%</td>
+                        <td style={{ padding: 'clamp(8px, 2vw, 12px)', color: currentTheme.textSecondary, fontSize: 'clamp(12px, 3vw, 14px)' }}>Outage on Wed 2pm (45 min)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -217,8 +217,8 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
 
           {/* CTA Block */}
           <div style={{ padding: '40px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `2px solid ${currentTheme.primary}`, textAlign: 'center' }}>
-            <h2 style={{ fontSize: '32px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Ready for consistent, reliable reporting?</h2>
-            <p style={{ fontSize: '18px', color: currentTheme.textSecondary, marginBottom: '30px' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 7vw, 32px)', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Ready for consistent, reliable reporting?</h2>
+            <p style={{ fontSize: 'clamp(16px, 4vw, 18px)', color: currentTheme.textSecondary, marginBottom: '30px' }}>
               Get a 1-page plan showing how the Ops Reporting Pack fits your team's workflow.
             </p>
             <CallToActionButton onClick={() => navigate('/#contact')}>Get a 1-page automation plan</CallToActionButton>

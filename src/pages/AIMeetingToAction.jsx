@@ -16,7 +16,7 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
   return (
     <>
       <Section minHeight="auto" style={{ paddingTop: '120px' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'left', padding: '0 20px' }}>
           <div style={{ marginBottom: '30px' }}>
             <button 
               onClick={() => navigate('/')}
@@ -35,45 +35,45 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
             >
               ← Back to home
             </button>
-            <h1 style={{ fontSize: '48px', fontWeight: '700', color: currentTheme.text, marginBottom: '20px', lineHeight: '1.2' }}>
+            <h1 style={{ fontSize: 'clamp(32px, 8vw, 48px)', fontWeight: '700', color: currentTheme.text, marginBottom: '20px', lineHeight: '1.2' }}>
               AI Meeting-to-Action System
             </h1>
-            <p style={{ fontSize: '22px', color: currentTheme.textSecondary, lineHeight: '1.6', margin: '0' }}>
+            <p style={{ fontSize: 'clamp(18px, 5vw, 22px)', color: currentTheme.textSecondary, lineHeight: '1.6', margin: '0' }}>
               Turn notes into decisions, action items, owners, and risks—ready for email, Jira, or Confluence.
             </p>
           </div>
 
           {/* What it is */}
           <div style={{ marginBottom: '50px', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>What it is</h2>
-            <p style={{ fontSize: '17px', lineHeight: '1.7', color: currentTheme.textSecondary, margin: '0' }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>What it is</h2>
+            <p style={{ fontSize: 'clamp(16px, 4vw, 17px)', lineHeight: '1.7', color: currentTheme.textSecondary, margin: '0' }}>
               A lightweight AI system that processes meeting notes or transcripts and extracts structured information: decisions made, action items with owners and due dates, identified risks or blockers, and follow-up questions. The output is formatted for immediate use in your project management tool or as a follow-up email—no manual reformatting required. The system is privacy-scoped, meaning no sensitive data is stored or used for training.
             </p>
           </div>
 
           {/* Who it's for */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginBottom: '25px' }}>Who it's for</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Who it's for</h2>
             <div style={{ display: 'grid', gap: '20px' }}>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Teams who lose track of what was decided</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>You have meetings, but action items get lost in notes or never make it to Jira. Everyone has a different version of "what we agreed on."</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Teams who lose track of what was decided</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>You have meetings, but action items get lost in notes or never make it to Jira. Everyone has a different version of "what we agreed on."</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Managers tired of chasing follow-ups</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>You spend 30 minutes after every meeting manually creating tickets or emailing summaries to the team.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Managers tired of chasing follow-ups</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>You spend 30 minutes after every meeting manually creating tickets or emailing summaries to the team.</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>Teams with remote or async work patterns</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>Not everyone attends every meeting. You need clear, structured summaries that anyone can act on without watching a recording.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>Teams with remote or async work patterns</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>Not everyone attends every meeting. You need clear, structured summaries that anyone can act on without watching a recording.</p>
               </FeatureCard>
             </div>
           </div>
 
           {/* What you receive */}
           <div style={{ marginBottom: '50px', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginTop: '0', marginBottom: '25px' }}>What the system outputs</h2>
-            <ul style={{ fontSize: '17px', lineHeight: '1.9', color: currentTheme.textSecondary, paddingLeft: '25px', margin: '0' }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginTop: '0', marginBottom: '25px' }}>What the system outputs</h2>
+            <ul style={{ fontSize: 'clamp(15px, 4vw, 17px)', lineHeight: '1.9', color: currentTheme.textSecondary, paddingLeft: '25px', margin: '0' }}>
               <li><strong>Decisions:</strong> What was decided, with context</li>
               <li><strong>Action items:</strong> What needs to be done, by whom, by when</li>
               <li><strong>Owners:</strong> Clear assignment of responsibility</li>
@@ -85,8 +85,8 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
 
           {/* Example output */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginBottom: '25px' }}>Example output (public-safe)</h2>
-            <div style={{ padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}`, fontFamily: 'monospace', fontSize: '15px', lineHeight: '1.8', color: currentTheme.textSecondary }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>Example output (public-safe)</h2>
+            <div style={{ padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}`, fontFamily: 'monospace', fontSize: 'clamp(13px, 3vw, 15px)', lineHeight: '1.8', color: currentTheme.textSecondary, overflowX: 'auto' }}>
               <div style={{ marginBottom: '25px' }}>
                 <div style={{ color: currentTheme.primary, fontWeight: '600', marginBottom: '10px' }}>DECISIONS</div>
                 <div>• We're moving forward with the phased rollout approach</div>
@@ -98,15 +98,15 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
                 <div style={{ color: currentTheme.primary, fontWeight: '600', marginBottom: '10px' }}>ACTION ITEMS</div>
                 <div style={{ marginBottom: '8px' }}>
                   <div><strong>[Alex]</strong> Set up intake form → CRM sync</div>
-                  <div style={{ paddingLeft: '20px', fontSize: '14px', color: currentTheme.textSecondary }}>Due: Feb 10 | Est: 2 days</div>
+                  <div style={{ paddingLeft: '20px', fontSize: 'clamp(12px, 3vw, 14px)', color: currentTheme.textSecondary }}>Due: Feb 10 | Est: 2 days</div>
                 </div>
                 <div style={{ marginBottom: '8px' }}>
                   <div><strong>[Jordan]</strong> Document current invoice workflow</div>
-                  <div style={{ paddingLeft: '20px', fontSize: '14px', color: currentTheme.textSecondary }}>Due: Feb 8 | Est: 4 hours</div>
+                  <div style={{ paddingLeft: '20px', fontSize: 'clamp(12px, 3vw, 14px)', color: currentTheme.textSecondary }}>Due: Feb 8 | Est: 4 hours</div>
                 </div>
                 <div>
                   <div><strong>[Sam]</strong> Review error handling requirements with team</div>
-                  <div style={{ paddingLeft: '20px', fontSize: '14px', color: currentTheme.textSecondary }}>Due: Feb 12 | Est: 1 hour</div>
+                  <div style={{ paddingLeft: '20px', fontSize: 'clamp(12px, 3vw, 14px)', color: currentTheme.textSecondary }}>Due: Feb 12 | Est: 1 hour</div>
                 </div>
               </div>
 
@@ -122,34 +122,34 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
                 <div>• What happens if intake form schema changes? Need versioning plan?</div>
               </div>
             </div>
-            <div style={{ marginTop: '20px', padding: '20px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius, fontSize: '15px', color: currentTheme.textSecondary, fontStyle: 'italic' }}>
+            <div style={{ marginTop: '20px', padding: '20px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius, fontSize: 'clamp(14px, 3vw, 15px)', color: currentTheme.textSecondary, fontStyle: 'italic' }}>
               <strong>Privacy note:</strong> We keep prompts and outputs scoped to your workspace. No sensitive data is required for the sample system, and you control what gets processed.
             </div>
           </div>
 
           {/* How it works */}
           <div style={{ marginBottom: '50px' }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginBottom: '25px' }}>How it works</h2>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginBottom: '25px' }}>How it works</h2>
             <div style={{ display: 'grid', gap: '20px' }}>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>1. Input your meeting notes</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>Paste notes, upload a transcript, or integrate with your meeting tool (Zoom, Teams, etc.). The system handles messy, unstructured input.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>1. Input your meeting notes</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>Paste notes, upload a transcript, or integrate with your meeting tool (Zoom, Teams, etc.). The system handles messy, unstructured input.</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>2. AI extracts structured data</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>The system identifies decisions, action items, owners, dates, and risks using context-aware processing. No manual tagging required.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>2. AI extracts structured data</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>The system identifies decisions, action items, owners, dates, and risks using context-aware processing. No manual tagging required.</p>
               </FeatureCard>
               <FeatureCard>
-                <h3 style={{ fontSize: '20px', marginTop: '0' }}>3. Export or sync to your tools</h3>
-                <p style={{ margin: '0', fontSize: '16px' }}>Copy formatted output for email, create Jira tickets automatically, or push to Confluence as a page. Choose your workflow.</p>
+                <h3 style={{ fontSize: 'clamp(18px, 4vw, 20px)', marginTop: '0' }}>3. Export or sync to your tools</h3>
+                <p style={{ margin: '0', fontSize: 'clamp(15px, 4vw, 16px)' }}>Copy formatted output for email, create Jira tickets automatically, or push to Confluence as a page. Choose your workflow.</p>
               </FeatureCard>
             </div>
           </div>
 
           {/* Timeline */}
           <div style={{ marginBottom: '50px', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius }}>
-            <h2 style={{ fontSize: '28px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Timeline</h2>
-            <div style={{ fontSize: '17px', lineHeight: '1.9', color: currentTheme.textSecondary }}>
+            <h2 style={{ fontSize: 'clamp(24px, 6vw, 28px)', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Timeline</h2>
+            <div style={{ fontSize: 'clamp(15px, 4vw, 17px)', lineHeight: '1.9', color: currentTheme.textSecondary }}>
               <p style={{ margin: '0 0 15px 0' }}><strong>Discovery:</strong> 15-minute call to understand your meeting cadence and tool stack</p>
               <p style={{ margin: '0 0 15px 0' }}><strong>MVP build:</strong> 5–7 days to implement core extraction + formatting</p>
               <p style={{ margin: '0 0 15px 0' }}><strong>Testing:</strong> 3–5 meetings to refine prompts and output format</p>
@@ -159,8 +159,8 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
 
           {/* CTA Block */}
           <div style={{ padding: '40px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `2px solid ${currentTheme.primary}`, textAlign: 'center' }}>
-            <h2 style={{ fontSize: '32px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Stop losing decisions and action items</h2>
-            <p style={{ fontSize: '18px', color: currentTheme.textSecondary, marginBottom: '30px' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 7vw, 32px)', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>Stop losing decisions and action items</h2>
+            <p style={{ fontSize: 'clamp(16px, 4vw, 18px)', color: currentTheme.textSecondary, marginBottom: '30px' }}>
               Get a 1-page plan showing how this system fits your workflow.
             </p>
             <CallToActionButton onClick={() => navigate('/#contact')}>Get a 1-page automation plan</CallToActionButton>
