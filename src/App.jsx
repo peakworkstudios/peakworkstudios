@@ -1048,7 +1048,7 @@ function App() {
               <path d="M16 4L28 16H4L16 4Z" fill="currentColor"/>
               <path d="M16 12L24 20H8L16 12Z" fill="currentColor" opacity="0.6"/>
             </LogoSVG>
-            <span>Kunal Deshmukh</span>
+            <span>PeakWork Studios</span>
           </Logo>
 
           <DesktopNavLinks>
