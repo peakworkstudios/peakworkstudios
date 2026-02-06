@@ -5,7 +5,7 @@ const AutomationAuditReport = ({ currentTheme, Section, FeatureCard, CallToActio
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Automation Audit Report | Kunal Deshmukh';
+    document.title = 'Automation Audit Report | Peak Work Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'A one-page diagnostic showing your top automation opportunities, impact estimates, and phased rollout plan for workflow automation.');

@@ -1227,9 +1227,9 @@ function App() {
                       </svg>
                     </div>
                     <div style={{ flex: 1, minWidth: '250px' }}>
-                      <h3 style={{ fontSize: '24px', color: currentTheme.primary, marginBottom: '15px', marginTop: '0' }}>About Kunal</h3>
+                      <h3 style={{ fontSize: '24px', color: currentTheme.primary, marginBottom: '15px', marginTop: '0' }}>About Peak Work Studios</h3>
                       <p style={{ fontSize: '17px', lineHeight: '1.7', color: currentTheme.textSecondary, marginBottom: '0' }}>
-                        I'm Kunal Deshmukh, based in Calgary. I build practical automation systems for small and mid-sized teams—focused on reliability, clear ownership, and workflows your team can actually maintain.
+                        Peak Work Studios helps SMEs build maintainable, secure automation systems that free teams from busywork and keep operations running smoothly. Based in Calgary, our team brings expertise across process engineering, AI development, and operations.
                       </p>
                     </div>
                   </div>
@@ -1262,7 +1262,7 @@ function App() {
         </Routes>
 
         <Footer>
-          <span>&copy; {new Date().getFullYear()} Kunal Deshmukh | Calgary, Canada</span>
+          <span>&copy; {new Date().getFullYear()} Peak Work Studios | Calgary, Canada</span>
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <CallToActionButton onClick={() => { navigate('/'); setTimeout(() => scrollToSection(contactRef), 100); }}>Get your automation plan</CallToActionButton>
             <a href="https://www.linkedin.com/in/kunaldeshmukh" target="_blank" rel="noopener noreferrer">LinkedIn</a>

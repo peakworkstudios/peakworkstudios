@@ -5,7 +5,7 @@ const AIMeetingToAction = ({ currentTheme, Section, FeatureCard, CallToActionBut
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'AI Meeting-to-Action System | Kunal Deshmukh';
+    document.title = 'AI Meeting-to-Action System | Peak Work Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Turn meeting notes into structured decisions, action items, owners, and risks—ready for Jira, Confluence, or email.');

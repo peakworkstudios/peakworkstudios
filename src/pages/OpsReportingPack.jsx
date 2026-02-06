@@ -5,7 +5,7 @@ const OpsReportingPack = ({ currentTheme, Section, FeatureCard, CallToActionButt
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Ops Reporting Pack | Kunal Deshmukh';
+    document.title = 'Ops Reporting Pack | Peak Work Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Weekly status and KPI snapshot templates with simple, reliable collection process for operations reporting.');
