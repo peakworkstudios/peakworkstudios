@@ -4,40 +4,43 @@ import styled, { createGlobalStyle, keyframes, ThemeProvider } from 'styled-comp
 import AutomationAuditReport from './pages/AutomationAuditReport';
 import AIMeetingToAction from './pages/AIMeetingToAction';
 import OpsReportingPack from './pages/OpsReportingPack';
-import Writing from './pages/Writing';
 
-// Define your light theme
+// Define your light theme - aligned with kunaldeshmukh styling guide
 const lightTheme = {
-  primary: '#38bdf8', // Blue/Teal accent
+  primary: 'rgb(249, 115, 22)', // Accent color (Orange)
   secondary: '#9E7FFF', // Secondary accent
   accent: '#f472b6', // Tertiary accent
-  background: '#FFFFFF', // White background
-  surface: '#F8F8F8', // Light grey for cards/sections
-  text: '#1A1A1A', // Dark grey/black for main text
-  textSecondary: '#6B7280', // Medium grey for secondary text
-  border: '#E5E7EB', // Light grey for borders
+  background: '#fcfcfc', // Light background matching design tokens
+  surface: '#ffffff', // White surface for cards
+  text: '#0a0a0a', // Dark text
+  textSecondary: '#6b7280', // Muted text
+  border: '#e5e7eb', // Light border
   success: '#10b981',
   warning: '#f59e0b',
   error: '#ef4444',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", system-ui, sans-serif',
   borderRadius: '12px',
+  cardShadow: '0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06)',
+  cardShadowHover: '0 4px 12px rgba(249, 115, 22, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08)',
 };
 
-// Define your dark theme based on the provided palette
+// Define your dark theme - aligned with kunaldeshmukh styling guide
 const darkTheme = {
-  primary: '#38bdf8', // Keeping primary consistent for accent
-  secondary: '#9E7FFF', // Keeping secondary consistent
-  accent: '#f472b6', // Keeping accent consistent
-  background: '#171717',
-  surface: '#262626',
-  text: '#FFFFFF',
-  textSecondary: '#A3A3A3',
-  border: '#2F2F2F',
-  success: '#10b981',
-  warning: '#f59e0b',
+  primary: 'rgb(249, 115, 22)', // Accent color (Orange)
+  secondary: '#9E7FFF', // Secondary accent consistent
+  accent: '#f472b6', // Tertiary accent consistent
+  background: '#0b0b0f', // Dark background
+  surface: '#111216', // Dark surface for cards
+  text: '#f5f5f7', // Light text
+  textSecondary: '#9ca3af', // Muted text for dark mode
+  border: '#1f2937', // Dark border
+  success: '#34d399',
+  warning: '#fbbf24',
   error: '#ef4444',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", system-ui, sans-serif',
   borderRadius: '12px',
+  cardShadow: '0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3)',
+  cardShadowHover: '0 6px 16px rgba(8, 8, 14, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4)',
 };
 
 // Global Styles for smooth scrolling and base typography
@@ -91,7 +94,7 @@ const Header = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: ${props => props.theme.background === '#FFFFFF' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(23, 23, 23, 0.9)'}; /* Dynamic transparency */
+  background-color: ${props => props.theme.background === '#fcfcfc' ? 'rgba(252, 252, 252, 0.9)' : 'rgba(11, 11, 15, 0.9)'}; /* Dynamic transparency */
   backdrop-filter: blur(10px);
   padding: 15px 40px;
   display: flex;
@@ -235,16 +238,16 @@ const CallToActionButton = styled.a`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    background-color: #2fa8e0;
+    background-color: #ea5808;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
   }
 
   @media (max-width: 768px) {
@@ -887,7 +890,7 @@ const ContactForm = ({ theme, page, source }) => {
           borderRadius: theme.borderRadius,
           cursor: isSubmitting ? 'not-allowed' : 'pointer',
           transition: 'all 0.3s ease',
-          boxShadow: isSubmitting ? 'none' : '0 6px 15px rgba(56, 189, 248, 0.3)'
+          boxShadow: isSubmitting ? 'none' : '0 6px 15px rgba(249, 115, 22, 0.3)'
         }}
       >
         {isSubmitting ? 'Submitting...' : 'Send my inquiry'}
@@ -965,7 +968,7 @@ const CookieNotice = styled.div`
     flex-shrink: 0;
 
     &:hover {
-      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
     }
   }
 
@@ -1045,13 +1048,12 @@ function App() {
               <path d="M16 4L28 16H4L16 4Z" fill="currentColor"/>
               <path d="M16 12L24 20H8L16 12Z" fill="currentColor" opacity="0.6"/>
             </LogoSVG>
-            <span>Kunal Deshmukh</span>
+            <span>PeakWork Studios</span>
           </Logo>
 
           <DesktopNavLinks>
             <NavLink onClick={() => navigate('/')}>Home</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(workRef), 100); }}>Work</NavLink>
-            <NavLink onClick={() => navigate('/writing')}>Writing</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(aboutRef), 100); }}>About</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(contactRef), 100); }}>Contact</NavLink>
           </DesktopNavLinks>
@@ -1071,7 +1073,6 @@ function App() {
           <MobileNavLinks isOpen={isMobileMenuOpen}>
             <NavLink onClick={() => { navigate('/'); setIsMobileMenuOpen(false); }}>Home</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(workRef), 100); setIsMobileMenuOpen(false); }}>Work</NavLink>
-            <NavLink onClick={() => { navigate('/writing'); setIsMobileMenuOpen(false); }}>Writing</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(aboutRef), 100); setIsMobileMenuOpen(false); }}>About</NavLink>
             <NavLink onClick={() => { navigate('/'); setTimeout(() => scrollToSection(contactRef), 100); setIsMobileMenuOpen(false); }}>Contact</NavLink>
           </MobileNavLinks>
@@ -1257,9 +1258,6 @@ function App() {
           } />
           <Route path="/work/ops-reporting-pack" element={
             <OpsReportingPack currentTheme={currentTheme} Section={Section} FeatureCard={FeatureCard} CallToActionButton={CallToActionButton} />
-          } />
-          <Route path="/writing" element={
-            <Writing currentTheme={currentTheme} Section={Section} FeatureCard={FeatureCard} CallToActionButton={CallToActionButton} />
           } />
         </Routes>
 

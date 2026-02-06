@@ -19,53 +19,53 @@ const HomePage = ({ currentTheme, CallToActionButton, Section, HeroSection, Feat
         <BuilderBadge>
           <BuilderAvatar>
             <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="30" cy="20" r="10" fill={currentTheme.textSecondary} opacity="0.4"/>
-              <path d="M12 48c0-10 8-18 18-18s18 8 18 18" stroke={currentTheme.textSecondary} strokeWidth="2.5" opacity="0.4" fill="none"/>
+              <circle cx="30" cy="30" r="25" fill="none" stroke={currentTheme.primary} strokeWidth="2" opacity="0.6"/>
+              <path d="M20 30 L28 38 L42 22" stroke={currentTheme.primary} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </BuilderAvatar>
           <BuilderInfo>
-            <BuilderName>Kunal Deshmukh — Calgary, Canada</BuilderName>
-            <div>Practical automation systems for SMEs</div>
+            <BuilderName>Peak Work Studios — Calgary, Canada</BuilderName>
+            <div>Reliable automation services for SMEs</div>
           </BuilderInfo>
         </BuilderBadge>
-        <h2>Stop losing work to manual processes and dropped handoffs.</h2>
-        <p>Get reliable automation that reduces busywork, catches follow-ups, and gives you accurate reporting—without the complexity.</p>
+        <h2>Reliable automation for SMEs—reduce manual processes and dropped handoffs.</h2>
+        <p>Peak Work Studios designs AI-assisted workflows that minimize busywork, ensure follow-through, and keep systems stable after launch.</p>
         <CTAGroup>
-          <CallToActionButton onClick={() => scrollToSection(contactRef)}>Get a 1-page automation plan</CallToActionButton>
-          <CallToActionButton style={{ backgroundColor: 'transparent', color: currentTheme.primary, border: `2px solid ${currentTheme.primary}`, boxShadow: 'none' }} onClick={() => scrollToSection(servicesRef)}>See sample deliverables</CallToActionButton>
+          <CallToActionButton onClick={() => scrollToSection(contactRef)}>Schedule an Automation Consultation</CallToActionButton>
+          <CallToActionButton style={{ backgroundColor: 'transparent', color: currentTheme.primary, border: `2px solid ${currentTheme.primary}`, boxShadow: 'none' }} onClick={() => scrollToSection(servicesRef)}>View our capabilities</CallToActionButton>
         </CTAGroup>
       </HeroSection>
 
       <Section id="services" ref={servicesRef} bgColor={currentTheme.surface} delay="0.2s">
-        <h2>How this works</h2>
+        <h2>Our Approach</h2>
         <div style={{ maxWidth: '700px', margin: '0 auto 50px', padding: '30px', backgroundColor: currentTheme.background, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}`, textAlign: 'left' }}>
-          <h3 style={{ fontSize: '22px', color: currentTheme.primary, marginTop: '0', marginBottom: '20px' }}>Proof of approach</h3>
+          <h3 style={{ fontSize: '22px', color: currentTheme.primary, marginTop: '0', marginBottom: '20px' }}>What sets us apart</h3>
           <ul style={{ fontSize: '17px', lineHeight: '1.8', color: currentTheme.textSecondary, paddingLeft: '20px', margin: '0' }}>
-            <li>Maintainable — Your team can understand and modify it</li>
-            <li>Secure — Basic auth, input validation, and audit trails from day one</li>
-            <li>Cost-aware — No hidden scaling costs or vendor lock-in surprises</li>
-            <li>1-page plan before build — Know what you're getting before we start</li>
+            <li>Team of experienced automation engineers</li>
+            <li>Secure, maintainable implementations</li>
+            <li>Cost-aware solutions with no vendor lock-in</li>
+            <li>1-page plan before we build—clarity from day one</li>
           </ul>
         </div>
         <FeaturesGrid>
           <FeatureCard>
             <h3>Manual work reduction</h3>
-            <p>Eliminate repetitive data entry, copy-paste workflows, and status update busywork. Free up 5-15 hours per week per person.</p>
+            <p>We eliminate repetitive data entry, copy-paste workflows, and status update busywork. Our clients typically free up 5-15 hours per week per person.</p>
           </FeatureCard>
           <FeatureCard>
             <h3>Handoff automation</h3>
-            <p>Stop losing work between tools, teams, or departments. Automatic routing, notifications, and status tracking.</p>
+            <p>Our systems prevent work from getting lost between tools, teams, or departments with automatic routing, notifications, and status tracking.</p>
           </FeatureCard>
           <FeatureCard>
             <h3>Reliable reporting</h3>
-            <p>Get accurate, on-demand reports without spreadsheet gymnastics. Real-time dashboards that actually match your data.</p>
+            <p>We build accurate, on-demand reporting systems without spreadsheet complexity. Real-time dashboards that your team can trust.</p>
           </FeatureCard>
         </FeaturesGrid>
       </Section>
 
       <Section id="work" ref={workRef} delay="0.3s">
-        <h2>Public-safe deliverables and templates</h2>
-        <p>Examples of what you receive—no client names, just the approach and structure.</p>
+        <h2>Sample Deliverables</h2>
+        <p>Examples of what our team delivers—structured solutions you can implement immediately.</p>
         <FeaturesGrid>
           <FeatureCard 
             onClick={() => navigate('/work/automation-audit-report')}
@@ -125,42 +125,42 @@ const HomePage = ({ currentTheme, CallToActionButton, Section, HeroSection, Feat
       </Section>
 
       <Section id="about" ref={aboutRef} bgColor={currentTheme.surface} delay="0.4s">
-        <h2>About</h2>
-        <p>Building automation that reduces manual work, prevents dropped handoffs, and creates systems your team can maintain.</p>
+        <h2>About Peak Work Studios</h2>
+        <p>We build automation systems that reduce manual work, prevent dropped handoffs, and create reliable workflows your team can maintain.</p>
         
-        <h3 style={{ fontSize: '28px', fontWeight: '700', color: currentTheme.text, marginTop: '60px', marginBottom: '30px' }}>What I Help With</h3>
+        <h3 style={{ fontSize: '28px', fontWeight: '700', color: currentTheme.text, marginTop: '60px', marginBottom: '30px' }}>How We Help SMEs</h3>
         <FeaturesGrid>
           <FeatureCard>
-            <h3>You're drowning in manual processes</h3>
-            <p>Your team spends hours on repetitive tasks that should be automated. I help identify and eliminate these bottlenecks with practical automation.</p>
+            <h3>Drowning in manual processes</h3>
+            <p>When your team spends hours on repetitive tasks, we identify and eliminate bottlenecks with practical automation solutions.</p>
           </FeatureCard>
           <FeatureCard>
-            <h3>Handoffs keep falling through the cracks</h3>
-            <p>Work gets lost between tools and teams. I design workflows that automatically route and track work through completion.</p>
+            <h3>Handoffs falling through cracks</h3>
+            <p>Work getting lost between tools and teams? We design workflows that automatically route and track work through completion.</p>
           </FeatureCard>
           <FeatureCard>
-            <h3>Nobody knows how it works anymore</h3>
-            <p>Your systems have become black boxes. I build maintainable solutions with clear documentation and ownership.</p>
+            <h3>Systems becoming black boxes</h3>
+            <p>We build maintainable solutions with clear documentation and ownership so your team stays in control.</p>
           </FeatureCard>
           <FeatureCard>
-            <h3>You need reliability, not just features</h3>
-            <p>Systems that break at 2am aren't helpful. I focus on stability, error handling, and basic observability from day one.</p>
+            <h3>Need reliability, not complexity</h3>
+            <p>Our focus is on stability, error handling, and observability from day one—systems that hold up under pressure.</p>
           </FeatureCard>
         </FeaturesGrid>
 
-        <h3 style={{ fontSize: '28px', fontWeight: '700', color: currentTheme.text, marginTop: '60px', marginBottom: '30px' }}>How I Work</h3>
+        <h3 style={{ fontSize: '28px', fontWeight: '700', color: currentTheme.text, marginTop: '60px', marginBottom: '30px' }}>Our Process</h3>
         <FeaturesGrid>
           <FeatureCard>
-            <h3>Plan</h3>
-            <p>We start by mapping your current workflow and identifying specific pain points. No generic solutions—just targeted fixes that address your team's real needs.</p>
+            <h3>Assess</h3>
+            <p>We start by mapping your current workflow and identifying specific pain points. No generic solutions—targeted fixes that address your team's real needs.</p>
           </FeatureCard>
           <FeatureCard>
             <h3>Build</h3>
-            <p>I build practical automation using proven tools and clear patterns. Everything is documented as we go, with attention to security, error handling, and edge cases.</p>
+            <p>Our team builds practical automation using proven tools and clear patterns. Everything is documented with attention to security, error handling, and edge cases.</p>
           </FeatureCard>
           <FeatureCard>
-            <h3>Observe</h3>
-            <p>After launch, I set up basic monitoring and logging so you can see what's working and catch issues early. Your team stays in control.</p>
+            <h3>Launch & Support</h3>
+            <p>After launch, we set up monitoring and logging so you can see what's working. Your team stays in control with full visibility and documentation.</p>
           </FeatureCard>
         </FeaturesGrid>
 
@@ -168,14 +168,14 @@ const HomePage = ({ currentTheme, CallToActionButton, Section, HeroSection, Feat
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '30px', flexWrap: 'wrap' }}>
             <div style={{ width: '120px', height: '120px', borderRadius: '12px', backgroundColor: currentTheme.surface, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `2px solid ${currentTheme.border}` }}>
               <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="30" cy="20" r="12" fill={currentTheme.textSecondary} opacity="0.3"/>
-                <path d="M10 50c0-11 9-20 20-20s20 9 20 20" stroke={currentTheme.textSecondary} strokeWidth="3" opacity="0.3" fill="none"/>
+                <circle cx="30" cy="30" r="25" fill="none" stroke={currentTheme.primary} strokeWidth="2" opacity="0.5"/>
+                <path d="M20 30 L28 38 L42 22" stroke={currentTheme.primary} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <div style={{ flex: 1, minWidth: '250px' }}>
-              <h3 style={{ fontSize: '24px', color: currentTheme.primary, marginBottom: '15px', marginTop: '0' }}>About Kunal</h3>
+              <h3 style={{ fontSize: '24px', color: currentTheme.primary, marginBottom: '15px', marginTop: '0' }}>Our Mission</h3>
               <p style={{ fontSize: '17px', lineHeight: '1.7', color: currentTheme.textSecondary, marginBottom: '0' }}>
-                I'm Kunal Deshmukh, based in Calgary. I build practical automation systems for small and mid-sized teams—focused on reliability, clear ownership, and workflows your team can actually maintain.
+                Peak Work Studios helps SMEs build maintainable, secure automation systems that free teams from busywork and keep operations running smoothly. Based in Calgary, our team brings expertise across process engineering, AI development, and operations.
               </p>
             </div>
           </div>
@@ -183,13 +183,13 @@ const HomePage = ({ currentTheme, CallToActionButton, Section, HeroSection, Feat
       </Section>
 
       <Section id="contact" ref={contactRef} delay="0.5s">
-        <h2>Get a Workflow Automation Audit</h2>
+        <h2>Schedule an Automation Consultation</h2>
         <div style={{ maxWidth: '650px', margin: '0 auto 40px', textAlign: 'left', padding: '30px', backgroundColor: currentTheme.surface, borderRadius: currentTheme.borderRadius, border: `1px solid ${currentTheme.border}` }}>
           <h3 style={{ fontSize: '20px', color: currentTheme.text, marginTop: '0', marginBottom: '20px' }}>What to expect:</h3>
           <ul style={{ fontSize: '17px', lineHeight: '1.8', color: currentTheme.textSecondary, paddingLeft: '20px', margin: '0', listStyle: 'none' }}>
-            <li style={{ marginBottom: '12px' }}>✓ 15-minute intake call</li>
-            <li style={{ marginBottom: '12px' }}>✓ You get a 1-page action plan (quick wins + phased rollout)</li>
-            <li style={{ marginBottom: '0' }}>✓ No pressure—if I'm not a fit, I'll say so</li>
+            <li style={{ marginBottom: '12px' }}>✓ Discovery call with our team</li>
+            <li style={{ marginBottom: '12px' }}>✓ Receive a 1-page action plan (quick wins + phased rollout)</li>
+            <li style={{ marginBottom: '0' }}>✓ No obligations—we'll advise honestly on fit and approach</li>
           </ul>
         </div>
         {/* ContactForm component will be passed here */}
