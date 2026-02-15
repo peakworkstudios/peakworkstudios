@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: 'Peak Work Studios <onboarding@resend.dev>',
+      from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: email,
       subject: 'Your Delivery Cost Results',
       html: `
