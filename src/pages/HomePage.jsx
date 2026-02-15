@@ -160,6 +160,7 @@ const PrimaryButton = styled(Link)`
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   animation: ${subtleGlow} 3s ease-in-out infinite;
 
@@ -167,6 +168,23 @@ const PrimaryButton = styled(Link)`
     background: ${p => p.theme.primaryHover};
     transform: translateY(-2px) scale(1.03);
     box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px 20px;
+    font-size: 15px;
+    gap: 6px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 11px 16px;
+    font-size: 14px;
+    gap: 4px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 `;
 

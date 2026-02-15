@@ -66,54 +66,33 @@ export default async function handler(req, res) {
       },
       html: `
         <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;">
-          <h1 style="color:#38bdf8;">Your Delivery Cost Results</h1>
-          <p>Here is a summary of your calculator inputs and estimated costs.</p>
-          <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+          <div style="text-align:center;margin-bottom:24px;padding-bottom:24px;border-bottom:2px solid #38bdf8;">
+            <div style="font-size:24px;font-weight:800;color:#38bdf8;margin-bottom:4px;">🚀 Peak Work Studios</div>
+            <div style="font-size:14px;color:#6b7280;">Delivery Cost Analysis</div>
+          </div>
+
+          <div style="background:linear-gradient(135deg, rgba(56,189,248,0.08), rgba(56,189,248,0.05));border:1px solid rgba(56,189,248,0.25);border-radius:12px;padding:20px;margin-bottom:32px;text-align:center;">
+            <div style="font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:8px;">Ready for the full automation roadmap?</div>
+            <a href="https://peakworkstudios.com/contact" style="display:inline-block;background:#38bdf8;color:#000;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;">Book Your Free Audit</a>
+          </div>
+
+          <h1 style="color:#38bdf8;margin:0 0 8px;font-size:20px;">Your Delivery Cost Results</h1>
+          <h2 style="font-size:48px;font-weight:800;color:#ef4444;letter-spacing:-2px;margin:16px 0;">To be calculated</h2>
+          <p style="font-size:14px;color:#6b7280;margin-bottom:16px;">per year in delivery chaos</p>
+
+          <table style="width:100%;border-collapse:collapse;margin:24px 0;background:#f9fafb;border-radius:8px;overflow:hidden;">
             <tbody>
               <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Team size</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${safeText(teamSize)}</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Hourly rate</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">$${safeText(hourlyRate)}</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Active clients</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${safeText(clients)}</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Estimated annual cost</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${formatCurrency(totalAnnualCost)}</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Potential savings (up to 70%)</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${formatCurrency(potentialSavings)}</td>
-              </tr>
-              <tr>
-                <td style="padding:8px;border-bottom:1px solid #eee;">Remaining cost</td>
-                <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${formatCurrency(remainingCost)}</td>
+                <td style="padding:14px 16px;border-bottom:1px solid #e5e7eb;font-weight:600;color:#1a1a1a;">Team size</td>
+                <td style="padding:14px 16px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:600;color:#38bdf8;">To be calculated</td>
               </tr>
             </tbody>
           </table>
-          ${breakdownRows ? `
-            <h2 style="font-size:18px;margin:24px 0 12px;">Category Breakdown</h2>
-            <table style="width:100%;border-collapse:collapse;">
-              <thead>
-                <tr>
-                  <th style="text-align:left;padding:8px;border-bottom:2px solid #38bdf8;">Category</th>
-                  <th style="text-align:right;padding:8px;border-bottom:2px solid #38bdf8;">Annual Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${breakdownRows}
-              </tbody>
-            </table>
-          ` : ''}
+
           <p style="margin-top:24px;">If you want the full automation roadmap, book a free audit call.</p>
           <p><a href="https://peakworkstudios.com/contact" style="color:#38bdf8;">Book your audit</a></p>
-          <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
-          <p style="font-size:12px;color:#999;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from emails</a></p>
+          <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+          <p style="font-size:12px;color:#6b7280;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#6b7280;text-decoration:none;">Unsubscribe from emails</a></p>
           <p style="color:#999;font-size:12px;margin-top:8px;">Peak Work Studios · Calgary, Canada</p>
         </div>
       `,
