@@ -1,245 +1,88 @@
-# Peak Work Studios Website
+# Peak Work Studios
 
-A modern, SME-focused automation consulting website built with React, Vite, and Firebase.
-
-## Features
-
-- ✅ **SME-First Messaging** - Focus on practical pain points and outcomes
-- ✅ **Contact Form** - Firebase Cloud Function backend with email delivery
-- ✅ **Spam Protection** - Honeypot field + rate limiting
-- ✅ **Dark/Light Theme** - Persistent theme toggle
-- ✅ **Mobile-Friendly** - Responsive design optimized for all devices
-- ✅ **Success State** - Clear feedback after form submission
-
-## Tech Stack
-
-- **Frontend**: React 18, Styled Components
-- **Build Tool**: Vite
-- **Backend**: Firebase Cloud Functions
-- **Hosting**: Firebase Hosting (or any static host)
-- **Email**: Nodemailer with Gmail/SMTP
+Automation consultancy website for agencies with 10-50 employees. Built with React + Vite + styled-components, deployed on Vercel.
 
 ## Local Development
 
-### Prerequisites
-
-- Node.js 18+ installed
-- npm or yarn
-
-### Setup
-
-1. **Clone and install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Run development server:**
-   ```bash
-   npm run dev
-   ```
-
-3. **Open in browser:**
-   ```
-   http://localhost:5173
-   ```
-
-## Firebase Setup (Contact Form)
-
-The contact form uses Firebase Cloud Functions to send emails. Follow these steps:
-
-### 1. Install Firebase CLI
-
 ```bash
-npm install -g firebase-tools
-```
-
-### 2. Login and Initialize
-
-```bash
-firebase login
-firebase init
-```
-
-Select:
-- ✓ Functions
-- ✓ Hosting
-
-### 3. Configure Email
-
-Edit `functions/index.js` and add your email credentials:
-
-```javascript
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'your-email@gmail.com',
-    pass: 'your-app-password'  // Generate from Google Account settings
-  }
-});
-```
-
-**For Gmail:**
-1. Enable 2-Factor Authentication
-2. Go to Security > App Passwords
-3. Generate new app password for "Mail"
-4. Use that password in the config
-
-### 4. Install Function Dependencies
-
-```bash
-cd functions
 npm install
-cd ..
+npm run dev
 ```
 
-### 5. Deploy Cloud Function
+Opens at `http://localhost:5173`.
 
-```bash
-firebase deploy --only functions
-```
-
-Copy the function URL from the output.
-
-### 6. Update React App
-
-Edit `src/App.jsx` and replace the placeholder URL:
-
-```javascript
-const FIREBASE_FUNCTION_URL = 'https://us-central1-YOUR-PROJECT.cloudfunctions.net/submitContactForm';
-```
-
-### 7. Deploy Website
+## Build & Preview
 
 ```bash
 npm run build
-firebase deploy --only hosting
+npm run preview
 ```
 
-See [SETUP_FIREBASE.md](./SETUP_FIREBASE.md) for detailed instructions.
+## Deploy to Vercel
 
-## Deployment Without Firebase
+1. Push this repo to GitHub
+2. Import the repo in [vercel.com](https://vercel.com)
+3. Vercel auto-detects Vite — no config changes needed
+4. The `vercel.json` handles SPA rewrites and asset caching
+5. The `api/` directory deploys as serverless functions automatically
 
-If you prefer not to use Firebase, you can:
+### Environment Variables (Vercel Dashboard)
 
-1. **Deploy frontend** to Vercel, Netlify, or any static host:
-   ```bash
-   npm run build
-   # Upload the dist/ folder
-   ```
-
-2. **Update form backend:**
-   - Option A: Use Formspree, Getform, or similar service
-   - Option B: Point to your own API endpoint
-   - Option C: Use mailto link as fallback
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Email delivery for contact form and audit results |
 
 ## Project Structure
 
 ```
-peak_work_studios/
-├── src/
-│   ├── App.jsx           # Main app component
-│   ├── main.jsx          # Entry point
-│   └── index.css         # Minimal global styles
-├── functions/
-│   ├── index.js          # Cloud Function for contact form
-│   └── package.json      # Function dependencies
-├── public/               # Static assets
-├── firebase.json         # Firebase config
-├── vite.config.js        # Vite config
-└── SETUP_FIREBASE.md     # Detailed Firebase setup
+src/
+  App.jsx              # Layout, routing, themes, header/footer
+  pages/
+    HomePage.jsx       # Landing page with 10 sections
+    CalculatorPage.jsx # Interactive ROI calculator
+    AuditPage.jsx      # 10-question Client Chaos Audit quiz
+    AboutPage.jsx      # About Kunal / Peak Work Studios
+    ContactPage.jsx    # Contact form + booking CTA
+api/
+  contact.js           # Serverless: contact form handler
+  audit-submit.js      # Serverless: audit results handler
+public/
+  favicon.svg          # Mountain logo icon
+  robots.txt
+  sitemap.xml
 ```
 
-## Configuration
+## Customizing Content
+
+All page content is inline in each page component under `src/pages/`. Edit the JSX directly — there is no CMS.
 
 ### Theme Colors
 
-Edit theme colors in `src/App.jsx`:
+Edit theme objects in `src/App.jsx`:
 
 ```javascript
-const lightTheme = {
-  primary: '#38bdf8',
-  secondary: '#9E7FFF',
-  // ...
-};
-
-const darkTheme = {
-  primary: '#38bdf8',
-  secondary: '#9E7FFF',
-  // ...
-};
+const lightTheme = { primary: '#38bdf8', ... };
+const darkTheme  = { primary: '#38bdf8', ... };
 ```
 
-### Contact Links
+## Placeholders to Replace
 
-Update these constants in the ContactForm component:
+Before going live, update these:
 
-```javascript
-const CALENDLY_URL = 'https://calendly.com/your-handle';
-const FIREBASE_FUNCTION_URL = 'your-cloud-function-url';
-```
+- **`api/contact.js`** and **`api/audit-submit.js`**: Uncomment and configure the Resend email integration (lines are commented with `TODO`)
+- **`src/pages/ContactPage.jsx`**: Update the Calendly booking link (`https://calendly.com/peakworkstudios/30min`)
+- **`src/pages/AboutPage.jsx`**: Replace the avatar placeholder icon with a real headshot image
+- **`src/App.jsx` footer**: Verify LinkedIn and GitHub URLs
+- **`public/sitemap.xml`**: Confirm the domain is `peakworkstudios.com`
 
-### Page Sections
+## Tech Stack
 
-The site has these main sections (all in `App.jsx`):
-- **Hero** - Main headline with builder badge
-- **Services** - Proof of approach + value cards
-- **Consulting** - Consulting offerings
-- **About** - SME pain points + how you work
-- **Contact** - Audit form with expectations
-
-## Security Features
-
-✅ **Honeypot field** - Catches simple bots  
-✅ **Rate limiting** - 3 submissions/hour per IP  
-✅ **Email validation** - Client & server side  
-✅ **CORS protection** - Restricts origins  
-✅ **Input sanitization** - Prevents XSS
-
-## Performance
-
-- Lighthouse Score: 95+
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 3s
-- Bundle size: < 200KB (gzipped)
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
-## Troubleshooting
-
-### Form not submitting
-
-1. Check browser console for errors
-2. Verify Firebase Function URL is correct
-3. Check Firebase Functions logs: `firebase functions:log`
-4. Ensure CORS is configured correctly
-
-### Theme not persisting
-
-- Check localStorage is enabled in browser
-- Clear browser cache
-
-### Mobile menu not working
-
-- Verify JavaScript is enabled
-- Check for console errors
-- Test on actual device (not just browser resize)
-
-## Contributing
-
-This is a personal portfolio site. If you find bugs or have suggestions, please open an issue.
+- **React 18** with React Router DOM 7
+- **Vite 5** for build tooling
+- **styled-components 6** for CSS-in-JS theming (light/dark mode)
+- **lucide-react** for icons
+- **Vercel** for hosting + serverless functions
 
 ## License
 
-© 2025 Kunal Deshmukh. All rights reserved.
-
-## Support
-
-For questions or issues:
-- Email: hello@kunaldeshmukh.com
-- LinkedIn: [linkedin.com/in/kunaldeshmukh](https://www.linkedin.com/in/kunaldeshmukh)
+All rights reserved.

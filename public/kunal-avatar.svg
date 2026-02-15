@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="100" fill="#E8ECEF"/>
+
+  <!-- Neck -->
+  <rect x="82" y="128" width="36" height="20" rx="4" fill="#C4956A"/>
+
+  <!-- Shirt / Zip-up jacket -->
+  <path d="M52 200 C52 162 72 148 100 148 C128 148 148 162 148 200" fill="#2D3748"/>
+  <!-- Jacket collar -->
+  <path d="M85 148 L95 168 L100 148" fill="#1A202C" opacity="0.6"/>
+  <path d="M115 148 L105 168 L100 148" fill="#1A202C" opacity="0.6"/>
+  <!-- Zip line -->
+  <line x1="100" y1="148" x2="100" y2="200" stroke="#4A5568" stroke-width="1.5"/>
+  <!-- Zip pull -->
+  <rect x="97" y="155" width="6" height="4" rx="1" fill="#A0AEC0"/>
+
+  <!-- Head shape -->
+  <ellipse cx="100" cy="95" rx="42" ry="48" fill="#D4A574"/>
+
+  <!-- Hair -->
+  <path d="M58 85 C58 58 76 42 100 42 C124 42 142 58 142 85 C142 72 130 55 100 55 C70 55 58 72 58 85Z" fill="#1A1A2E"/>
+  <!-- Hair sides -->
+  <path d="M58 85 C56 78 58 68 62 60 C60 72 59 80 60 90Z" fill="#1A1A2E"/>
+  <path d="M142 85 C144 78 142 68 138 60 C140 72 141 80 140 90Z" fill="#1A1A2E"/>
+
+  <!-- Ears -->
+  <ellipse cx="58" cy="95" rx="7" ry="10" fill="#C4956A"/>
+  <ellipse cx="58" cy="95" rx="4" ry="6" fill="#B8845E" opacity="0.5"/>
+  <ellipse cx="142" cy="95" rx="7" ry="10" fill="#C4956A"/>
+  <ellipse cx="142" cy="95" rx="4" ry="6" fill="#B8845E" opacity="0.5"/>
+
+  <!-- Eyebrows -->
+  <path d="M78 82 C82 79 90 79 94 81" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M106 81 C110 79 118 79 122 82" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Eyes -->
+  <ellipse cx="86" cy="90" rx="7" ry="6" fill="white"/>
+  <ellipse cx="114" cy="90" rx="7" ry="6" fill="white"/>
+  <circle cx="87" cy="90" r="3.5" fill="#2D1B0E"/>
+  <circle cx="115" cy="90" r="3.5" fill="#2D1B0E"/>
+  <!-- Eye highlights -->
+  <circle cx="88.5" cy="88.5" r="1.2" fill="white"/>
+  <circle cx="116.5" cy="88.5" r="1.2" fill="white"/>
+
+  <!-- Nose -->
+  <path d="M97 94 C96 100 94 105 96 107 C98 109 102 109 104 107 C106 105 104 100 103 94" stroke="#B8845E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- Smile -->
+  <path d="M85 112 C90 120 110 120 115 112" stroke="#8B6548" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Smile dimples -->
+  <path d="M83 111 C84 113 84 114 83 115" stroke="#B8845E" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>
+  <path d="M117 111 C116 113 116 114 117 115" stroke="#B8845E" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Subtle stubble/shadow -->
+  <path d="M75 108 C80 125 90 132 100 133 C110 132 120 125 125 108" stroke="#B8845E" stroke-width="0.5" fill="none" opacity="0.3"/>
+</svg>
