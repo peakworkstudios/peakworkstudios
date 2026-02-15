@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import html2pdf from 'html2pdf.js';
+import { jsPDF } from 'jspdf';
 import {
   Calculator,
   CheckCircle,
@@ -40,138 +40,148 @@ const generateResultsPDF = ({
   remainingCost,
   categoryBreakdown,
 }) => {
-  const breakdownRows = categoryBreakdown
-    .map(
-      (cat) => `
-        <tr>
-          <td style="padding:12px;border-bottom:1px solid #e5e7eb;">${cat.label}</td>
-          <td style="padding:12px;border-bottom:1px solid #e5e7eb;text-align:right;font-weight:600;">${formatCurrency(cat.annualCost)}/yr</td>
-        </tr>
-      `
-    )
-    .join('');
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4',
+  });
 
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8">
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #1a1a1a; }
-          .container { max-width: 680px; margin: 0 auto; padding: 40px; background: #ffffff; }
-          .header { text-align: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid #38bdf8; }
-          .logo { font-size: 24px; font-weight: 800; color: #38bdf8; margin-bottom: 8px; }
-          .header-sub { font-size: 14px; color: #6b7280; }
-          .cta-box { background: linear-gradient(135deg, #38bdf815, #38bdf808); border: 1px solid #38bdf840; border-radius: 12px; padding: 20px; margin-bottom: 32px; text-align: center; }
-          .cta-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
-          .cta-link { display: inline-block; background: #38bdf8; color: #000; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
-          .section-title { font-size: 20px; font-weight: 700; color: #1a1a1a; margin: 24px 0 12px; }
-          .big-number { font-size: 48px; font-weight: 800; color: #ef4444; letter-spacing: -2px; margin: 16px 0; }
-          .summary-table { width: 100%; border-collapse: collapse; margin: 16px 0; background: #f9fafb; border-radius: 8px; overflow: hidden; }
-          .summary-table td { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; }
-          .summary-table td:first-child { font-weight: 600; color: #1a1a1a; }
-          .summary-table td:last-child { text-align: right; font-weight: 600; color: #38bdf8; }
-          .summary-table tr:last-child td { border-bottom: none; }
-          .breakdown-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-          .breakdown-table th { text-align: left; padding: 12px 16px; border-bottom: 2px solid #38bdf8; font-weight: 700; color: #1a1a1a; font-size: 14px; }
-          .breakdown-table td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; }
-          .breakdown-table tr:last-child td { border-bottom: none; }
-          .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; text-align: center; }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <div class="logo">🚀 Peak Work Studios</div>
-            <div class="header-sub">Delivery Cost Analysis</div>
-          </div>
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let y = 20;
 
-          <div class="cta-box">
-            <div class="cta-title">Ready for the full automation roadmap?</div>
-            <a href="https://peakworkstudios.com/contact" class="cta-link">Book Your Free Audit</a>
-          </div>
+  // Header
+  doc.setFontSize(24);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(56, 189, 248);
+  doc.text('Peak Work Studios', pageWidth / 2, y, { align: 'center' });
+  y += 10;
 
-          <div class="section-title">Your Agency Is Losing:</div>
-          <div class="big-number">${formatCurrency(totalAnnualCost)}</div>
-          <div style="font-size: 14px; color: #6b7280; margin-bottom: 16px;">per year in delivery chaos</div>
+  doc.setFontSize(12);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(107, 114, 128);
+  doc.text('Delivery Cost Analysis', pageWidth / 2, y, { align: 'center' });
+  y += 12;
 
-          <table class="summary-table">
-            <tbody>
-              <tr>
-                <td>Team size</td>
-                <td>${teamSize} people</td>
-              </tr>
-              <tr>
-                <td>Hourly rate</td>
-                <td>$${hourlyRate}/hr</td>
-              </tr>
-              <tr>
-                <td>Active clients</td>
-                <td>${clients}</td>
-              </tr>
-              <tr>
-                <td>Monthly cost</td>
-                <td>${formatCurrency(totalAnnualCost / 12)}</td>
-              </tr>
-              <tr>
-                <td>Weekly cost</td>
-                <td>${formatCurrency(totalAnnualCost / 52)}</td>
-              </tr>
-              <tr>
-                <td>Daily cost</td>
-                <td>${formatCurrency(totalAnnualCost / 260)}</td>
-              </tr>
-              <tr>
-                <td>Potential savings (up to 70%)</td>
-                <td>${formatCurrency(potentialSavings)}/year</td>
-              </tr>
-              <tr>
-                <td>Remaining cost</td>
-                <td>${formatCurrency(remainingCost)}/year</td>
-              </tr>
-            </tbody>
-          </table>
+  // Horizontal line under header
+  doc.setDrawColor(56, 189, 248);
+  doc.setLineWidth(0.5);
+  doc.line(15, y, pageWidth - 15, y);
+  y += 10;
 
-          ${breakdownRows ? `
-            <div class="section-title">Cost Breakdown by Category</div>
-            <table class="breakdown-table">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th style="text-align: right;">Annual Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${breakdownRows}
-              </tbody>
-            </table>
-          ` : ''}
+  // CTA Box
+  doc.setDrawColor(56, 189, 248);
+  doc.setFillColor(240, 249, 255);
+  doc.rect(15, y, pageWidth - 30, 18, 'FD');
+  
+  // Center "Ready for full automation?" text manually
+  doc.setFontSize(11);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(26, 26, 26);
+  const ctaText = 'Ready for full automation?';
+  const ctaTextWidth = doc.getTextWidth(ctaText);
+  const ctaX = pageWidth / 2 - ctaTextWidth / 2;
+  doc.text(ctaText, ctaX, y + 5);
+  
+  // Center "Book Your Free Audit" link text manually
+  doc.setTextColor(56, 189, 248);
+  doc.setFont(undefined, 'bold');
+  const linkText = 'Book Your Free Audit';
+  const linkTextWidth = doc.getTextWidth(linkText);
+  const linkX = pageWidth / 2 - linkTextWidth / 2;
+  doc.textWithLink(linkText, linkX, y + 12, { pageNumber: 1 }, 'https://peakworkstudios.com/contact');
+  
+  y += 26;
 
-          <div class="footer">
-            <p>Peak Work Studios · Calgary, Canada</p>
-            <p>Generated on ${new Date().toLocaleDateString()}</p>
-          </div>
-        </div>
-      </body>
-    </html>
-  `;
+  // Main Cost
+  doc.setFontSize(14);
+  doc.setFont(undefined, 'bold');
+  doc.setTextColor(26, 26, 26);
+  doc.text('Your Agency Is Losing:', 15, y);
+  y += 9;
 
-  const element = document.createElement('div');
-  element.innerHTML = htmlContent;
-  element.style.display = 'none';
-  document.body.appendChild(element);
+  doc.setFontSize(36);
+  doc.setTextColor(239, 68, 68);
+  doc.setFont(undefined, 'bold');
+  doc.text(formatCurrency(totalAnnualCost), 15, y);
+  y += 14;
 
-  const options = {
-    margin: 0,
-    filename: `delivery-cost-results-${new Date().toISOString().slice(0, 10)}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  };
+  doc.setFontSize(11);
+  doc.setTextColor(107, 114, 128);
+  doc.setFont(undefined, 'normal');
+  doc.text('per year in delivery chaos', 15, y);
+  y += 16;
 
-  html2pdf().set(options).from(element).save();
-  document.body.removeChild(element);
+  // Summary Table
+  doc.setFontSize(10);
+  
+  const tableRows = [
+    ['Team size', `${teamSize} people`],
+    ['Hourly rate', `$${hourlyRate}/hr`],
+    ['Active clients', `${clients}`],
+    ['Monthly cost', formatCurrency(totalAnnualCost / 12)],
+    ['Weekly cost', formatCurrency(totalAnnualCost / 52)],
+    ['Daily cost', formatCurrency(totalAnnualCost / 260)],
+    ['Potential savings (70%)', `${formatCurrency(potentialSavings)}/year`],
+    ['Remaining cost', `${formatCurrency(remainingCost)}/year`],
+  ];
+
+  tableRows.forEach((row, idx) => {
+    // Alternating row background
+    if (idx % 2 === 0) {
+      doc.setFillColor(249, 250, 251);
+      doc.rect(15, y - 4, pageWidth - 30, 6.5, 'F');
+    }
+    
+    doc.setTextColor(26, 26, 26);
+    doc.setFont(undefined, 'bold');
+    doc.text(row[0], 18, y);
+    
+    doc.setFont(undefined, 'normal');
+    doc.setTextColor(56, 189, 248);
+    doc.text(row[1], pageWidth - 18, y, { align: 'right' });
+    
+    y += 7;
+  });
+
+  y += 10;
+
+  // Breakdown table if exists
+  if (categoryBreakdown && categoryBreakdown.length > 0) {
+    doc.setFontSize(12);
+    doc.setTextColor(26, 26, 26);
+    doc.setFont(undefined, 'bold');
+    doc.text('Cost Breakdown by Category', 15, y);
+    y += 10;
+
+    doc.setFontSize(9);
+    categoryBreakdown.forEach((cat) => {
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(26, 26, 26);
+      doc.text(cat.label, 15, y);
+      
+      doc.setTextColor(56, 189, 248);
+      doc.setFont(undefined, 'bold');
+      doc.text(`${formatCurrency(cat.annualCost)}/yr`, pageWidth - 15, y, { align: 'right' });
+      
+      y += 6;
+      
+      if (y > pageHeight - 20) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+  }
+
+  // Footer
+  y = pageHeight - 15;
+  doc.setFontSize(9);
+  doc.setTextColor(153, 153, 153);
+  doc.text('Peak Work Studios · Calgary, Canada', 15, y);
+  doc.text(`Generated on ${new Date().toLocaleDateString()}`, pageWidth - 15, y, { align: 'right' });
+
+  // Save
+  doc.save(`delivery-cost-results-${new Date().toISOString().slice(0, 10)}.pdf`);
 };
 
 // ─── Animations ───
@@ -1211,31 +1221,37 @@ const CalculatorPage = () => {
     setSendStatus(null);
 
     try {
-      const response = await fetch('/api/calculator-results', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          teamSize,
-          hourlyRate,
-          clients,
-          totalAnnualCost,
-          potentialSavings,
-          remainingCost,
-          categoryBreakdown: categoryBreakdown.map(cat => ({
-            label: cat.label,
-            weeklyHours: cat.weeklyHours,
-            annualCost: cat.annualCost,
-          })),
-        }),
-      });
+      // Test mode: skip API call when running locally
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocalhost) {
+        setSendStatus({ type: 'success', message: 'Email sent! Generating PDF...' });
+      } else {
+        const response = await fetch('/api/calculator-results', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            teamSize,
+            hourlyRate,
+            clients,
+            totalAnnualCost,
+            potentialSavings,
+            remainingCost,
+            categoryBreakdown: categoryBreakdown.map(cat => ({
+              label: cat.label,
+              weeklyHours: cat.weeklyHours,
+              annualCost: cat.annualCost,
+            })),
+          }),
+        });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        throw new Error(data?.error || 'Unable to send results. Please try again.');
+        if (!response.ok) {
+          const data = await response.json().catch(() => null);
+          throw new Error(data?.error || 'Unable to send results. Please try again.');
+        }
+
+        setSendStatus({ type: 'success', message: 'Email sent! Generating PDF...' });
       }
-
-      setSendStatus({ type: 'success', message: 'Email sent! Generating PDF...' });
 
       // Generate PDF after successful email send
       setTimeout(() => {
