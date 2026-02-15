@@ -262,6 +262,28 @@ const HeroSub = styled.p`
   margin: 0 auto 40px;
 `;
 
+const HeroFitGroup = styled.div`
+  display: grid;
+  gap: 10px;
+  max-width: 680px;
+  margin: 0 auto 32px;
+`;
+
+const HeroFitNote = styled.div`
+  background: ${p => p.theme.surface};
+  border: 1px solid ${p => p.theme.border};
+  border-radius: ${p => p.theme.borderRadiusSm};
+  padding: 10px 14px;
+  font-size: 14px;
+  color: ${p => p.theme.textSecondary};
+  line-height: 1.6;
+
+  strong {
+    color: ${p => p.theme.text};
+    font-weight: 700;
+  }
+`;
+
 const HeroCTAGroup = styled.div`
   display: flex;
   gap: 16px;
@@ -361,10 +383,21 @@ function HeroSection() {
       <HeroContent>
         <HeroH1>Turn Agency Chaos Into Predictable Profit 🚀</HeroH1>
         <HeroSub>
-          Stop losing 15+ hours per week to broken client handoffs, manual
-          status updates, and reporting hell. Get reliable AI-assisted
-          automation that scales with you.
+          Built for agencies and service businesses with 10-50 people or 10-50 active
+          clients. If you're a founder, ops lead, delivery/project lead, or client
+          success lead, we replace handoff chaos and reporting churn with systems
+          your team controls.
         </HeroSub>
+        <HeroFitGroup>
+          <HeroFitNote>
+            <strong>Best fit:</strong> Agencies and service businesses with lots of handoffs,
+            reporting churn, and scope creep.
+          </HeroFitNote>
+          <HeroFitNote>
+            <strong>Not a fit:</strong> "AI magic" seekers, one-off cheap zaps, or teams
+            unwilling to change how work flows.
+          </HeroFitNote>
+        </HeroFitGroup>
         <HeroCTAGroup>
           <PrimaryButton to="/calculator">
             <Calculator size={18} />
@@ -376,7 +409,7 @@ function HeroSection() {
         </HeroCTAGroup>
         <TrustBadge>
           <ShieldCheck size={16} />
-          Trusted by agencies managing 50+ clients simultaneously
+          Built for agencies and service businesses with 10-50 people or 10-50 active clients
         </TrustBadge>
       </HeroContent>
     </HeroOuter>
@@ -424,6 +457,18 @@ const StatLabel = styled.div`
   line-height: 1.5;
 `;
 
+const OutcomesCard = styled(Card)`
+  margin-top: 28px;
+  text-align: left;
+`;
+
+const OutcomesTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 700;
+  color: ${p => p.theme.text};
+  margin: 0 0 12px;
+`;
+
 const STATS = [
   { value: '67', prefix: '$', suffix: 'K', label: '💰 Saved per year in PM labor costs' },
   { value: '18', prefix: '', suffix: 'hrs', label: '⏱️ Recovered per week per account manager' },
@@ -463,6 +508,16 @@ function SocialProofSection() {
               <MemoStatItem key={i} stat={s} isActive={inView} />
             ))}
           </StatsGrid>
+        </FadeIn>
+        <FadeIn $visible={inView} $delay="0.3s">
+          <OutcomesCard>
+            <OutcomesTitle>Typical outcomes (often see)</OutcomesTitle>
+            <BulletList>
+              <li>Reporting time goes from days to under 60 minutes per week.</li>
+              <li>20-40% fewer revision loops from clearer handoffs and QA.</li>
+              <li>15-30% improvement in on-time delivery after launch.</li>
+            </BulletList>
+          </OutcomesCard>
         </FadeIn>
       </Container>
     </SectionWrapper>
@@ -651,23 +706,23 @@ const HoverHint = styled.span`
 const PAINS = [
   {
     title: '🔥 Onboarding Hell',
-    pain: 'Every new client takes 2 weeks of back-and-forth emails, missing assets, forgotten logins, and repeated questions. Your team dreads the first 30 days.',
-    solution: 'With automation: 3 hours, start to finish. Contracts, payments, folders, access, welcome emails, and kickoff briefs -- all triggered automatically.',
+    pain: 'New clients stall in asset chasing, access requests, and kickoff prep. The first month burns delivery time.',
+    solution: 'Automated intake gathers assets, access, and payments, then produces a kickoff brief so delivery starts fast.',
   },
   {
     title: 'Status Update Treadmill',
-    pain: 'Account managers spend 6+ hours per week copy-pasting updates between Slack, email, and project tools. Clients still ask "where are we?" every Monday.',
-    solution: 'AI-powered status hub answers 85% of client questions instantly. Your team focuses on strategy, not Slack pings.',
+    pain: 'Status lives in Slack, email, and PM tools, so client questions keep piling up anyway.',
+    solution: 'A client status hub pulls live progress, sends scheduled updates, and escalates exceptions to humans.',
   },
   {
     title: 'Reporting Nightmare',
-    pain: 'End of month means 3 days of pulling data from 6 tools, formatting spreadsheets, and praying the numbers match. Reports go out late. Every. Single. Month.',
-    solution: 'Reports auto-generate from live data. Formatted, branded, and delivered on schedule. Your team reviews -- not builds.',
+    pain: 'Reporting means days of copy-paste across tools, then late or inconsistent client reports.',
+    solution: 'Reports compile from source data, auto-format, and queue for a quick human review before sending.',
   },
   {
     title: '💸 Scope Creep & Surprises',
-    pain: 'Projects go 20% over budget before anyone notices. Deliverables slip without warning. The first person to find out is usually the client.',
-    solution: 'Automated budget monitoring, milestone tracking, and proactive alerts. You see problems before they become client conversations.',
+    pain: 'Scope and budget drift until the client points it out, usually after the deadline slips.',
+    solution: 'Budget and milestone tracking flag risks early and trigger change-order prompts before delivery slips.',
   },
 ];
 
@@ -825,25 +880,25 @@ const STEPS = [
     num: 1,
     title: 'Audit',
     duration: '1 Week',
-    items: ['Intake call & discovery', 'Process mapping', 'Bottleneck identification', 'Deliverable: 1-page roadmap'],
+    items: ['Stakeholder intake + data access', 'Process map with bottleneck scoring', '1-page roadmap with priorities + quick wins', 'Scope, success metrics, and next actions'],
   },
   {
     num: 2,
     title: 'Build',
     duration: '3-6 Weeks',
-    items: ['Custom automation build', 'Maintainable & secure', 'AI assistant training', 'Weekly check-in calls'],
+    items: ['Automations with approvals + fallbacks', 'Documentation and runbooks', 'Security, QA, and staged testing', 'Weekly reviews for sign-off'],
   },
   {
     num: 3,
     title: 'Launch',
     duration: '1 Week',
-    items: ['Team training sessions', 'Docs & runbooks', 'Monitoring setup', 'Pilot with select clients'],
+    items: ['Team training + enablement', 'Monitoring dashboards live', 'Pilot with select clients', 'Adjustments from real feedback'],
   },
   {
     num: 4,
     title: 'Support',
     duration: 'Ongoing',
-    items: ['Monthly check-ins', 'Troubleshooting & fixes', 'Scaling guidance', 'New automations as needed'],
+    items: ['Fixes, tuning, and improvements', 'New automations on request', 'Quarterly system reviews', 'Ongoing performance monitoring'],
   },
 ];
 
@@ -952,37 +1007,37 @@ const AI_BOXES = [
     icon: Bot,
     title: '24/7 Client Communication Hub',
     bullets: [
-      'Answers common client questions instantly',
-      'Routes complex queries to the right team member',
-      'Maintains context across email, Slack, and chat',
-      'Provides project status without human lookup',
-      'Learns your agency\'s tone and terminology',
+      'Answers FAQs from an approved knowledge base',
+      'Pulls live status from your PM tool',
+      'Routes exceptions to the right human with context',
+      'Client-facing replies require approval gates',
+      'Audit trail for every response',
     ],
-    result: '85% of client questions handled instantly. Your team only touches the 15% that actually need them.',
+    result: 'Often cuts status pings by 60-80% with human approval on client-facing replies.',
   },
   {
     icon: Zap,
     title: 'AI Meeting Assistant',
     bullets: [
       'Captures decisions, action items, and owners',
-      'Creates structured notes in your PM tool',
+      'Creates structured notes inside your PM tool',
+      'Drafts follow-ups for human review',
       'Flags risks and unresolved questions',
-      'Generates follow-up emails automatically',
-      'Tracks commitments across meetings',
+      'Tracks commitments across teams',
     ],
-    result: 'No more "what did we decide?" confusion. Every meeting produces clear next steps, automatically.',
+    result: 'Cleaner handoffs and fewer missed action items after every client call.',
   },
   {
     icon: ShieldCheck,
     title: 'Quality Control Agent',
     bullets: [
-      'Reviews deliverables against project briefs',
-      'Checks for brand guideline compliance',
-      'Flags inconsistencies before client review',
+      'Checks deliverables against briefs and brand rules',
+      'Runs pre-flight checklists at each stage',
+      'Flags inconsistencies for human review',
       'Validates data accuracy in reports',
-      'Runs checklists automatically at each stage',
+      'Approval required before client delivery',
     ],
-    result: 'Catch errors before clients do. Reduce revision rounds by 40% or more.',
+    result: 'Often reduces revision loops by 20-40% with QA gates in place.',
   },
 ];
 
@@ -1095,7 +1150,7 @@ function LeadMagnetsSection() {
         <FadeIn $visible={inView}>
           <SectionHeading>Start Free. See The Numbers First. 🎯</SectionHeading>
           <SectionSub>
-            No commitment. No sales call. Just data.
+            Two ways to start: a 2-minute estimate or a diagnostic audit.
           </SectionSub>
         </FadeIn>
         <FadeIn $visible={inView} $delay="0.15s">
@@ -1106,11 +1161,11 @@ function LeadMagnetsSection() {
               </LeadIconWrap>
               <LeadTitle>Agency Delivery Cost Calculator</LeadTitle>
               <LeadDesc>
-                Find out exactly how much manual processes are costing your
-                agency in time, money, and missed growth. Get a personalized
-                breakdown in under two minutes.
+                Calculator: a 2-minute estimate of time and money leakage from
+                handoffs, reporting, and scope churn. Get a personalized breakdown
+                fast.
               </LeadDesc>
-              <LeadTime>Takes 90 seconds</LeadTime>
+              <LeadTime>Takes about 2 minutes</LeadTime>
               <PrimaryButton to="/calculator">
                 Calculate Your Costs
               </PrimaryButton>
@@ -1121,11 +1176,10 @@ function LeadMagnetsSection() {
               </LeadIconWrap>
               <LeadTitle>Client Chaos Audit</LeadTitle>
               <LeadDesc>
-                Score your agency across onboarding, delivery, reporting, and
-                communication. See exactly where the bottlenecks are and what
-                to fix first.
+                Audit: a short diagnostic that identifies bottlenecks and next
+                actions across onboarding, delivery, reporting, and communication.
               </LeadDesc>
-              <LeadTime>Takes 3 minutes</LeadTime>
+              <LeadTime>Takes about 3 minutes</LeadTime>
               <PrimaryButton to="/audit">
                 Take The Audit
               </PrimaryButton>
@@ -1237,10 +1291,10 @@ function AboutSection() {
               <p>
                 15+ years building systems that keep teams sane. I have worked
                 inside agencies, consulted for agencies, and built the internal
-                tools agencies wished they had. Now I help growing agencies
-                (10-50 people) replace their duct-tape processes with
-                automation that actually sticks -- maintainable, secure, and
-                designed so your team stays in control.
+                tools agencies wished they had. Today I help founders, ops, delivery,
+                and client success leads at 10-50 person teams (or 10-50 active
+                clients) replace duct-tape processes with automation that sticks
+                -- maintainable, secure, and designed so your team stays in control.
               </p>
               <SecondaryLink to="/about">
                 Learn More About My Approach
@@ -1318,27 +1372,27 @@ const FAQAnswerInner = styled.div`
 const FAQS = [
   {
     q: "We've tried automation before. It broke after two months.",
-    a: "Most automation fails because it's built without error handling, monitoring, or documentation. I build systems with proper retry logic, failure alerts, and clear runbooks so your team knows exactly what to do when (not if) something needs attention. Plus, I stick around for ongoing support.",
+    a: 'Most automation fails without error handling, monitoring, and documentation. I build systems with retries, alerts, and clear runbooks so your team knows what to do when something needs attention. Ongoing support keeps it stable.',
   },
   {
     q: 'Our process is too custom for automation.',
-    a: "In my experience, 70-80% of agency delivery processes follow the same patterns: onboarding, status tracking, reporting, invoicing. The remaining 20-30% is where your competitive advantage lives -- and that's the part your team should focus on, not the repetitive stuff.",
+    a: 'We map your workflow end-to-end, then automate the repeatable 70-80% with modular components. The custom 20-30% stays flexible where it matters most.',
   },
   {
     q: 'What if our tools change?',
-    a: "I build tool-agnostic automation layers. The core logic sits between your tools, not inside them. So when you swap your PM tool or add a new CRM, we update the connections -- not rebuild from scratch. Modular design is a core principle.",
+    a: 'The logic is decoupled from your tools. When you change PM, CRM, or BI tools, we update the connectors instead of rebuilding the workflows.',
   },
   {
     q: 'How long until we see ROI?',
-    a: "Most agencies see measurable time savings within the first month after launch. Full ROI -- where the system has paid for itself in recovered hours and prevented errors -- typically happens within 3-6 months depending on scope.",
+    a: 'Quick wins often show up 2-4 weeks after the audit. Deeper systems typically land in the 6-12 week window, depending on scope and data access.',
   },
   {
     q: 'Do we need technical people on staff?',
-    a: "Nope. Everything I build is designed for non-technical teams. Your account managers and ops leads will use dashboards, buttons, and simple interfaces -- not code. I also provide training and documentation so your team feels confident from day one.",
+    a: 'No. You get documentation, runbooks, and training so non-technical teams can run it. Optional support covers maintenance and improvements.',
   },
   {
     q: 'What if AI makes mistakes with clients?',
-    a: "Every AI system I build includes human approval workflows. Client-facing communications are drafted by AI and reviewed by your team before sending. You set the confidence thresholds -- AI handles the easy stuff automatically, and flags anything uncertain for human review.",
+    a: 'AI outputs pass through approval gates. Client-facing messages are reviewed by your team, with confidence thresholds and audit trails on every step.',
   },
 ];
 
@@ -1425,7 +1479,7 @@ function FinalCTASection() {
         <FadeIn $visible={inView}>
           <SectionHeading>⚡ Ready to Stop Wasting 15+ Hours Per Week?</SectionHeading>
           <SectionSub>
-            Start with data. See what chaos is costing you.
+            Start with a quick estimate or a diagnostic audit. Both are free.
           </SectionSub>
           <FinalCTAGroup>
             <PrimaryButton to="/calculator">
@@ -1436,7 +1490,7 @@ function FinalCTASection() {
             </SecondaryLink>
           </FinalCTAGroup>
           <FinePrint>
-            No commitment. No sales call. Just numbers.
+            Calculator = 2-minute estimate of time/money leakage. Audit = diagnostic with bottlenecks + next actions.
           </FinePrint>
           <FinePrint style={{ marginTop: 8 }}>
             Peak Work Studios &middot; Calgary, Canada &middot; Kunal Deshmukh, 15+ years in automation &amp; ops
