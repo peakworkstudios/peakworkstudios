@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     // Notify yourself
     await resend.emails.send({
       from: 'Peak Work Studios <onboarding@resend.dev>',
-      to: 'audit@peakworkstudios.com',
+      to: 'kunal.deshmukh@hotmail.com',
       subject: `New Audit Submission: ${name} (${totalScore}/100)`,
       html: `
         <h2>New Audit Submission</h2>

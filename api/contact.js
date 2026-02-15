@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 
     await resend.emails.send({
       from: 'Peak Work Studios <onboarding@resend.dev>',
-      to: 'audit@peakworkstudios.com',
+      to: 'kunal.deshmukh@hotmail.com',
       subject: `New Contact: ${name} from ${agencyName || 'Unknown Agency'}`,
       html: `
         <h2>New Contact Form Submission</h2>
