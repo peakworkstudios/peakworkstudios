@@ -39,18 +39,18 @@ export default async function handler(req, res) {
     await resend.emails.send({
       from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: email,
-      subject: `Your Client Chaos Audit Results: ${totalScore}/100`,
+      subject: `Your Operations Audit Results: ${totalScore}/100 — Peak Work Studios`,
       headers: {
         'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
       },
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
-          <h1 style="color:#38bdf8;">Your Client Chaos Audit Results</h1>
+          <h1 style="color:#38bdf8;">Your Operations Audit Results</h1>
           <p>Hi ${name},</p>
-          <p>Thanks for completing the Client Chaos Audit. Here's your breakdown:</p>
+          <p>Thanks for completing the Operations Audit. Here's your breakdown:</p>
           <h2 style="text-align:center;font-size:48px;color:#38bdf8;margin:24px 0;">${totalScore}/100</h2>
           ${scoreRows ? `<table style="width:100%;border-collapse:collapse;margin:24px 0;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid #38bdf8;">Category</th><th style="text-align:center;padding:8px;border-bottom:2px solid #38bdf8;">Score</th></tr></thead><tbody>${scoreRows}</tbody></table>` : ''}
-          <p>Want to talk through your results? <a href="https://calendly.com/peakworkstudios/30min" style="color:#38bdf8;">Book a free 30-minute audit call</a>.</p>
+          <p>Want to talk through your results? <a href="https://calendly.com/peakworkstudios/30min" style="color:#38bdf8;">Book a free 30-minute call</a>.</p>
           <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
           <p style="color:#999;font-size:12px;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from emails</a></p>
           <p style="color:#999;font-size:12px;margin-top:8px;">Peak Work Studios &middot; Calgary, Canada</p>

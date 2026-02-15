@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import {
-  Rocket,
   Workflow,
   BarChart3,
   Calculator,
@@ -310,6 +309,14 @@ const HeroCTAGroup = styled.div`
   margin-bottom: 40px;
 `;
 
+const HeroEyebrow = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${p => p.theme.textSecondary};
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+`;
+
 const TrustBadge = styled.div`
   display: inline-flex;
   align-items: center;
@@ -320,6 +327,13 @@ const TrustBadge = styled.div`
   border: 1px solid ${p => p.theme.border};
   padding: 10px 20px;
   border-radius: 100px;
+`;
+
+const TrustIndicators = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 `;
 
 /* Decorative CSS-only illustration */
@@ -399,36 +413,41 @@ function HeroSection() {
       <HeroVisualLeft />
       <HeroVisual />
       <HeroContent>
-        <HeroH1>Turn Agency Chaos Into Predictable Profit 🚀</HeroH1>
+        <HeroEyebrow>Peak Work Studios &middot; AI &amp; Automation Consulting</HeroEyebrow>
+        <HeroH1>Stop Drowning in Manual Work</HeroH1>
         <HeroSub>
-          Built for agencies and service businesses with 10-50 people or 10-50 active
-          clients. If you're a founder, ops lead, delivery/project lead, or client
-          success lead, we replace handoff chaos and reporting churn with systems
-          your team controls.
+          We find repetitive, error-prone processes and fix them with workflow
+          automation or custom AI assistants—so routine work runs reliably and
+          your team gets hours back every week.
         </HeroSub>
         <HeroFitGroup>
           <HeroFitNote>
-            <strong>Best fit:</strong> Agencies and service businesses with lots of handoffs,
-            reporting churn, and scope creep.
-          </HeroFitNote>
-          <HeroFitNote>
-            <strong>Not a fit:</strong> "AI magic" seekers, one-off cheap zaps, or teams
-            unwilling to change how work flows.
+            Built for agencies, consultancies, and professional service teams (10–50 people).
           </HeroFitNote>
         </HeroFitGroup>
         <HeroCTAGroup>
           <PrimaryButton to="/calculator">
             <Calculator size={18} />
-            Calculate What Chaos Costs You 💰
+            Calculate Your Hidden Costs
           </PrimaryButton>
           <SecondaryButton onClick={handleScrollToHow}>
             See How It Works
           </SecondaryButton>
         </HeroCTAGroup>
-        <TrustBadge>
-          <ShieldCheck size={16} />
-          Built for agencies and service businesses with 10-50 people or 10-50 active clients
-        </TrustBadge>
+        <TrustIndicators>
+          <TrustBadge>
+            <ShieldCheck size={16} />
+            Reliability-first builds (fallbacks, approvals, audit trails)
+          </TrustBadge>
+          <TrustBadge>
+            <Workflow size={16} />
+            Tool-agnostic (Zapier &middot; Make &middot; n8n &middot; custom AI)
+          </TrustBadge>
+          <TrustBadge>
+            <ClipboardCheck size={16} />
+            Designed to be maintainable by your team
+          </TrustBadge>
+        </TrustIndicators>
       </HeroContent>
     </HeroOuter>
   );
@@ -598,36 +617,36 @@ const BulletList = styled.ul`
 
 const VALUE_COLS = [
   {
-    icon: Rocket,
-    title: 'Onboarding That Runs Itself',
+    icon: Workflow,
+    title: 'Workflow Automation',
     bullets: [
-      'Auto-generate contracts & SOWs from templates',
-      'Trigger payment collection & deposit tracking',
-      'Spin up project folders, channels, and boards',
-      'Send branded welcome sequences & next steps',
-      'AI-powered kickoff brief from intake forms',
+      'Map your processes and find the repetitive 70–80%',
+      'Build automations with approvals and fallbacks',
+      'Connect the tools your team already uses',
+      'Clear documentation and runbooks included',
+      'Designed so your team can own it from day one',
     ],
   },
   {
-    icon: Workflow,
-    title: 'Delivery Without the Chaos',
+    icon: Bot,
+    title: 'Custom AI Assistants',
     bullets: [
-      'Real-time status updates across all channels',
-      'AI communication hub for client questions',
-      'Automated handoffs between departments',
-      'Milestone tracking with proactive alerts',
-      'Quality control checklists before delivery',
+      'Purpose-built for your specific workflows',
+      'Answer questions from your knowledge base',
+      'Draft reports, summaries, and follow-ups',
+      'Human approval gates on all external outputs',
+      'Audit trails for transparency and control',
     ],
   },
   {
     icon: BarChart3,
-    title: 'Reporting That Writes Itself',
+    title: 'Reporting & Visibility',
     bullets: [
-      'Auto-generated weekly & monthly client reports',
-      'Invoice creation triggered by milestones',
-      'Data pulled from tools your team already uses',
-      'Real-time dashboards for ops and leadership',
-      'Financial reporting tied to project profitability',
+      'Auto-generated reports from your source data',
+      'Real-time dashboards for leadership and ops',
+      'Data pulled from tools you already use',
+      'Scheduled delivery with human review step',
+      'Financial and operational metrics in one place',
     ],
   },
 ];
@@ -723,24 +742,24 @@ const HoverHint = styled.span`
 
 const PAINS = [
   {
-    title: '🔥 Onboarding Hell',
-    pain: 'New clients stall in asset chasing, access requests, and kickoff prep. The first month burns delivery time.',
-    solution: 'Automated intake gathers assets, access, and payments, then produces a kickoff brief so delivery starts fast.',
+    title: 'Manual Data Entry',
+    pain: 'Your team re-types the same information across spreadsheets, CRMs, and project tools — wasting hours and inviting errors.',
+    solution: 'Automated data flows sync information across your tools, eliminating double-entry and keeping records consistent.',
   },
   {
-    title: 'Status Update Treadmill',
-    pain: 'Status lives in Slack, email, and PM tools, so client questions keep piling up anyway.',
-    solution: 'A client status hub pulls live progress, sends scheduled updates, and escalates exceptions to humans.',
-  },
-  {
-    title: 'Reporting Nightmare',
-    pain: 'Reporting means days of copy-paste across tools, then late or inconsistent client reports.',
+    title: 'Reporting Takes Forever',
+    pain: 'Compiling reports means pulling data from multiple tools, formatting spreadsheets, and chasing people for numbers.',
     solution: 'Reports compile from source data, auto-format, and queue for a quick human review before sending.',
   },
   {
-    title: '💸 Scope Creep & Surprises',
-    pain: 'Scope and budget drift until the client points it out, usually after the deadline slips.',
-    solution: 'Budget and milestone tracking flag risks early and trigger change-order prompts before delivery slips.',
+    title: 'Dropped Handoffs',
+    pain: 'Work stalls between team members because handoff steps live in someone\'s head, not in a system.',
+    solution: 'Automated handoff workflows route tasks to the right person with context, deadlines, and escalation rules.',
+  },
+  {
+    title: 'Repetitive Follow-ups',
+    pain: 'Someone on your team spends hours each week sending the same reminder emails, status updates, and check-ins.',
+    solution: 'Scheduled workflows handle routine communications, with human approval on anything external-facing.',
   },
 ];
 
@@ -910,7 +929,7 @@ const STEPS = [
     num: 3,
     title: 'Launch',
     duration: '1 Week',
-    items: ['Team training + enablement', 'Monitoring dashboards live', 'Pilot with select clients', 'Adjustments from real feedback'],
+    items: ['Team training + enablement', 'Monitoring dashboards live', 'Pilot with select workflows', 'Adjustments from real feedback'],
   },
   {
     num: 4,
@@ -927,7 +946,7 @@ function HowItWorksSection() {
     <SectionWrapper id="how-it-works">
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>Simple Process. Serious Results. 💡</SectionHeading>
+          <SectionHeading>How We Work</SectionHeading>
           <SectionSub>
             From audit to ongoing support in four clear steps.
           </SectionSub>
@@ -1023,39 +1042,39 @@ const Disclaimer = styled.p`
 const AI_BOXES = [
   {
     icon: Bot,
-    title: '24/7 Client Communication Hub',
+    title: 'Internal Knowledge Assistant',
     bullets: [
-      'Answers FAQs from an approved knowledge base',
-      'Pulls live status from your PM tool',
-      'Routes exceptions to the right human with context',
-      'Client-facing replies require approval gates',
+      'Answers team questions from your docs and SOPs',
+      'Surfaces relevant information without searching',
+      'Routes complex questions to the right person',
+      'Learns from your existing knowledge base',
       'Audit trail for every response',
     ],
-    result: 'Often cuts status pings by 60-80% with human approval on client-facing replies.',
+    result: 'Reduces time spent searching for information and answering repeated questions.',
   },
   {
     icon: Zap,
-    title: 'AI Meeting Assistant',
+    title: 'Document & Report Drafting',
     bullets: [
-      'Captures decisions, action items, and owners',
-      'Creates structured notes inside your PM tool',
-      'Drafts follow-ups for human review',
-      'Flags risks and unresolved questions',
-      'Tracks commitments across teams',
+      'Drafts reports, summaries, and follow-ups',
+      'Pulls data from your existing tools',
+      'Follows your templates and formatting rules',
+      'Human review before anything goes out',
+      'Tracks revisions and approvals',
     ],
-    result: 'Cleaner handoffs and fewer missed action items after every client call.',
+    result: 'Turns hours of document prep into minutes of review.',
   },
   {
     icon: ShieldCheck,
-    title: 'Quality Control Agent',
+    title: 'Process Quality Checks',
     bullets: [
-      'Checks deliverables against briefs and brand rules',
-      'Runs pre-flight checklists at each stage',
-      'Flags inconsistencies for human review',
-      'Validates data accuracy in reports',
-      'Approval required before client delivery',
+      'Validates work against checklists and standards',
+      'Flags inconsistencies before they reach stakeholders',
+      'Runs pre-flight checks at each workflow stage',
+      'Catches data errors in reports and deliverables',
+      'Approval gates before final delivery',
     ],
-    result: 'Often reduces revision loops by 20-40% with QA gates in place.',
+    result: 'Fewer errors, fewer revision loops, more consistent output.',
   },
 ];
 
@@ -1066,9 +1085,9 @@ function AISection() {
     <SectionWrapper $bg="transparent">
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>🤖 AI That Actually Works (Not Just Hype)</SectionHeading>
+          <SectionHeading>AI Assistants That Actually Work</SectionHeading>
           <SectionSub>
-            AI assistants that handle the repetitive stuff so your team can focus on strategy and relationships.
+            Purpose-built AI that handles the repetitive stuff so your team can focus on the work that matters.
           </SectionSub>
         </FadeIn>
         <FadeIn $visible={inView} $delay="0.15s">
@@ -1166,9 +1185,9 @@ function LeadMagnetsSection() {
     <SectionWrapper>
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>Start Free. See The Numbers First. 🎯</SectionHeading>
+          <SectionHeading>Start Free. See the Numbers First.</SectionHeading>
           <SectionSub>
-            Two ways to start: a 2-minute estimate or a diagnostic audit.
+            Two ways to start: a 2-minute cost estimate or a diagnostic audit.
           </SectionSub>
         </FadeIn>
         <FadeIn $visible={inView} $delay="0.15s">
@@ -1177,11 +1196,11 @@ function LeadMagnetsSection() {
               <LeadIconWrap>
                 <Calculator size={28} />
               </LeadIconWrap>
-              <LeadTitle>Agency Delivery Cost Calculator</LeadTitle>
+              <LeadTitle>Hidden Cost Calculator</LeadTitle>
               <LeadDesc>
-                Calculator: a 2-minute estimate of time and money leakage from
-                handoffs, reporting, and scope churn. Get a personalized breakdown
-                fast.
+                A 2-minute estimate of time and money lost to manual processes,
+                repetitive tasks, and inefficient handoffs. Get a personalized
+                breakdown.
               </LeadDesc>
               <LeadTime>Takes about 2 minutes</LeadTime>
               <PrimaryButton to="/calculator">
@@ -1192,10 +1211,10 @@ function LeadMagnetsSection() {
               <LeadIconWrap>
                 <ClipboardCheck size={28} />
               </LeadIconWrap>
-              <LeadTitle>Client Chaos Audit</LeadTitle>
+              <LeadTitle>Operations Audit</LeadTitle>
               <LeadDesc>
-                Audit: a short diagnostic that identifies bottlenecks and next
-                actions across onboarding, delivery, reporting, and communication.
+                A short diagnostic that identifies bottlenecks and next
+                actions across your workflows, reporting, and team coordination.
               </LeadDesc>
               <LeadTime>Takes about 3 minutes</LeadTime>
               <PrimaryButton to="/audit">
@@ -1289,7 +1308,7 @@ function AboutSection() {
     <SectionWrapper>
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>🏔️ Built by Someone Who's Seen the Chaos</SectionHeading>
+          <SectionHeading>Who's Behind This</SectionHeading>
           <div style={{ height: 40 }} />
         </FadeIn>
         <FadeIn $visible={inView} $delay="0.15s">
@@ -1307,12 +1326,11 @@ function AboutSection() {
             <AboutText>
               <h3>Kunal Deshmukh</h3>
               <p>
-                15+ years building systems that keep teams sane. I have worked
-                inside agencies, consulted for agencies, and built the internal
-                tools agencies wished they had. Today I help founders, ops, delivery,
-                and client success leads at 10-50 person teams (or 10-50 active
-                clients) replace duct-tape processes with automation that sticks
-                -- maintainable, secure, and designed so your team stays in control.
+                15+ years building systems that keep teams sane. I've worked
+                inside agencies, consultancies, and professional service firms — building
+                the internal tools teams wished they had. Today I help teams of
+                10–50 people replace manual, error-prone processes with automation
+                that's maintainable, secure, and designed so your team stays in control.
               </p>
               <SecondaryLink to="/about">
                 Learn More About My Approach
@@ -1394,7 +1412,7 @@ const FAQS = [
   },
   {
     q: 'Our process is too custom for automation.',
-    a: 'We map your workflow end-to-end, then automate the repeatable 70-80% with modular components. The custom 20-30% stays flexible where it matters most.',
+    a: 'We map your workflow end-to-end, then automate the repeatable 70–80% with modular components. The custom 20–30% stays flexible where it matters most.',
   },
   {
     q: 'What if our tools change?',
@@ -1409,8 +1427,8 @@ const FAQS = [
     a: 'No. You get documentation, runbooks, and training so non-technical teams can run it. Optional support covers maintenance and improvements.',
   },
   {
-    q: 'What if AI makes mistakes with clients?',
-    a: 'AI outputs pass through approval gates. Client-facing messages are reviewed by your team, with confidence thresholds and audit trails on every step.',
+    q: 'What if AI makes mistakes?',
+    a: 'AI outputs pass through approval gates. External-facing messages are reviewed by your team, with confidence thresholds and audit trails on every step.',
   },
 ];
 
@@ -1495,23 +1513,23 @@ function FinalCTASection() {
     <FinalCTAOuter>
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>⚡ Ready to Stop Wasting 15+ Hours Per Week?</SectionHeading>
+          <SectionHeading>Ready to Get Hours Back Every Week?</SectionHeading>
           <SectionSub>
-            Start with a quick estimate or a diagnostic audit. Both are free.
+            Start with a quick estimate or a diagnostic audit. Both are free, no commitment required.
           </SectionSub>
           <FinalCTAGroup>
             <PrimaryButton to="/calculator">
               Calculate Your Hidden Costs
             </PrimaryButton>
             <SecondaryLink to="/audit">
-              Take The Chaos Audit
+              Take The Operations Audit
             </SecondaryLink>
           </FinalCTAGroup>
           <FinePrint>
-            Calculator = 2-minute estimate of time/money leakage. Audit = diagnostic with bottlenecks + next actions.
+            Calculator = 2-minute estimate of time and money leakage. Audit = diagnostic with bottlenecks + next actions.
           </FinePrint>
           <FinePrint style={{ marginTop: 8 }}>
-            Peak Work Studios &middot; Calgary, Canada &middot; Kunal Deshmukh, 15+ years in automation &amp; ops
+            Peak Work Studios &middot; Calgary, Canada
           </FinePrint>
         </FadeIn>
       </Container>
@@ -1535,7 +1553,6 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
-      <SocialProofSection />
       <ValuePropSectionFixed />
       <PainPointsSection />
       <HowItWorksSection />
@@ -1556,10 +1573,10 @@ function ValuePropSectionFixed() {
     <ValueSectionWrapper>
       <Container ref={ref}>
         <FadeIn $visible={inView}>
-          <SectionHeading>🎯 The Agency Delivery Accelerator</SectionHeading>
+          <SectionHeading>What We Build</SectionHeading>
           <SectionSub>
-            End-to-end client journey automation. From signed contract to final
-            invoice.
+            We find the repetitive, error-prone work in your operations and replace it with
+            reliable systems your team controls.
           </SectionSub>
         </FadeIn>
         <FadeIn $visible={inView} $delay="0.15s">

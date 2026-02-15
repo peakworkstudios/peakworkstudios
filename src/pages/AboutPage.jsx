@@ -370,9 +370,9 @@ const AboutPage = () => {
       {/* Hero */}
       <HeroSection ref={heroRef}>
         <FadeIn $visible={heroInView}>
-          <HeroHeadline>🏔️ Why Peak Work Studios Exists</HeroHeadline>
+          <HeroHeadline>Why Peak Work Studios Exists</HeroHeadline>
           <HeroSub>
-            I got tired of watching talented agencies hit a ceiling because their operations couldn't keep up.
+            I got tired of watching talented teams hit a ceiling because their operations couldn't keep up.
           </HeroSub>
         </FadeIn>
       </HeroSection>
@@ -394,16 +394,16 @@ const AboutPage = () => {
             </AvatarOuter>
             <StoryText>
               <p>
-                <strong>I'm Kunal Deshmukh.</strong> I've spent more than 15 years building software systems, data pipelines, and automation frameworks across industries. A few years ago, I started working closely with a creative agency — helping them streamline reporting, automate client onboarding, and fix the handoff problems that kept burning hours every week.
+                <strong>I'm Kunal Deshmukh.</strong> I've spent more than 15 years building software systems, data pipelines, and automation frameworks across industries. A few years ago, I started working closely with a professional services firm — helping them streamline reporting, automate onboarding, and fix the handoff problems that kept burning hours every week.
               </p>
               <p>
-                What I saw surprised me. This was a talented, fast-moving team — great work, loyal clients, solid reputation. But behind the scenes, everything ran on spreadsheets, manual follow-ups, and tribal knowledge. Projects slipped through cracks. Reporting took half a day. Onboarding a new client meant reinventing the wheel every time.
+                What I saw surprised me. This was a talented, fast-moving team — great work, loyal clients, solid reputation. But behind the scenes, everything ran on spreadsheets, manual follow-ups, and tribal knowledge. Projects slipped through cracks. Reporting took half a day. Onboarding meant reinventing the wheel every time.
               </p>
               <p>
-                The more agencies I talked to, the more I saw the same pattern: <strong>teams hitting $2-5M in revenue and stalling</strong> — not because of talent or demand, but because their operations couldn't scale. They were spending so much time on process overhead that the actual creative work suffered.
+                The more teams I talked to — agencies, consultancies, professional service firms — the more I saw the same pattern: <strong>teams growing fast but stalling</strong> — not because of talent or demand, but because their operations couldn't scale. They were spending so much time on process overhead that the actual work suffered.
               </p>
               <p>
-                That's why I built Peak Work Studios. Not as a dev shop. Not as an AI consultancy. As a focused automation practice for agencies that are ready to stop fighting their own operations and start scaling with confidence.
+                That's why I built Peak Work Studios. Not as a dev shop. Not as an AI consultancy. As a focused automation practice for teams that are ready to stop fighting their own operations and start scaling with confidence.
               </p>
             </StoryText>
           </StoryGrid>
@@ -414,7 +414,7 @@ const AboutPage = () => {
       {/* Philosophy */}
       <Section ref={philRef}>
         <FadeIn $visible={philInView}>
-        <SectionTitle>💡 How I Think About Automation</SectionTitle>
+        <SectionTitle>How I Think About Automation</SectionTitle>
         <SectionSubtitle>
           Three principles that guide every system I build.
         </SectionSubtitle>
@@ -423,16 +423,16 @@ const AboutPage = () => {
             <CardIcon>
               <Shield size={22} />
             </CardIcon>
-            <CardTitle>🛡️ Reliability Over Flashiness</CardTitle>
+            <CardTitle>Reliability Over Flashiness</CardTitle>
             <CardBody>
-              I'd rather build something boring that works every single time than something impressive that breaks when a client sends an edge-case request at 11pm. The systems I build handle the weird inputs, the retry logic, the error notifications — because that's where trust is built.
+              I'd rather build something boring that works every single time than something impressive that breaks on an edge-case at 11pm. The systems I build handle the weird inputs, the retry logic, the error notifications — because that's where trust is built.
             </CardBody>
           </Card>
           <Card>
             <CardIcon>
               <Cog size={22} />
             </CardIcon>
-            <CardTitle>⚡ Simple to Run, Hard to Break</CardTitle>
+            <CardTitle>Simple to Run, Hard to Break</CardTitle>
             <CardBody>
               Your team shouldn't need to be technical to use what I build. If an automation requires a manual from an engineer to operate, it's a failure. Everything comes with clear documentation, runbooks, and enough guardrails that your ops team can own it day one.
             </CardBody>
@@ -441,9 +441,9 @@ const AboutPage = () => {
             <CardIcon>
               <Zap size={22} />
             </CardIcon>
-            <CardTitle>🎯 Built for How Agencies Actually Work</CardTitle>
+            <CardTitle>Built for How Your Team Actually Works</CardTitle>
             <CardBody>
-              Agency work is messy, fast-moving, and client-driven. I don't try to force your team into rigid workflows. Instead, I build systems that flex with how you actually operate — handling scope changes, last-minute requests, and the creative chaos that comes with the territory.
+              Professional services work is messy, fast-moving, and client-driven. I don't try to force your team into rigid workflows. Instead, I build systems that flex with how you actually operate — handling scope changes, last-minute requests, and the day-to-day reality of service delivery.
             </CardBody>
           </Card>
         </CardsGrid>
@@ -454,7 +454,7 @@ const AboutPage = () => {
       <FullWidthSection $bg={theme.surface}>
         <SectionInner ref={approachRef}>
           <FadeIn $visible={approachInView}>
-          <SectionTitle>🚀 What Makes This Different</SectionTitle>
+          <SectionTitle>What Makes This Different</SectionTitle>
           <SectionSubtitle $maxWidth="700px" style={{ margin: '0 auto 48px' }}>
             It's not about the tools — it's about understanding the work.
           </SectionSubtitle>
@@ -495,7 +495,7 @@ const AboutPage = () => {
           </BackgroundItem>
           <BackgroundItem>
             <strong>Based in Calgary, Canada</strong>
-            Working with agencies across North America, available in Mountain and Pacific time zones.
+            Working with teams across North America, available in Mountain and Pacific time zones.
           </BackgroundItem>
         </BackgroundGrid>
         <SocialLinks>

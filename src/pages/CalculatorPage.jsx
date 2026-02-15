@@ -60,7 +60,7 @@ const generateResultsPDF = ({
   doc.setFontSize(12);
   doc.setFont(undefined, 'normal');
   doc.setTextColor(107, 114, 128);
-  doc.text('Delivery Cost Analysis', pageWidth / 2, y, { align: 'center' });
+  doc.text('Hidden Cost Analysis', pageWidth / 2, y, { align: 'center' });
   y += 12;
 
   // Horizontal line under header
@@ -97,7 +97,7 @@ const generateResultsPDF = ({
   doc.setFontSize(14);
   doc.setFont(undefined, 'bold');
   doc.setTextColor(26, 26, 26);
-  doc.text('Your Agency Is Losing:', 15, y);
+  doc.text('Your Team Is Losing:', 15, y);
   y += 12;
 
   doc.setFontSize(36);
@@ -109,7 +109,7 @@ const generateResultsPDF = ({
   doc.setFontSize(11);
   doc.setTextColor(107, 114, 128);
   doc.setFont(undefined, 'normal');
-  doc.text('per year in delivery chaos', 15, y);
+  doc.text('per year in hidden costs', 15, y);
   y += 16;
 
   // Summary Table
@@ -936,31 +936,44 @@ const Divider = styled.div`
   margin: 0 auto;
 `;
 
+const Disclaimer = styled.p`
+  text-align: center;
+  font-size: 13px;
+  color: ${p => p.theme.textSecondary};
+  max-width: 700px;
+  margin: 32px auto;
+  padding: 16px 24px;
+  background: ${p => p.theme.surface};
+  border: 1px solid ${p => p.theme.border};
+  border-radius: 8px;
+  line-height: 1.6;
+`;
+
 // ─── Category Data ───
 
 const CATEGORIES = [
   {
-    key: 'onboarding',
-    label: 'Client onboarding (contracts, kickoff, setup)',
-    meta: 'Typical time: 8-12 hours per new client',
+    key: 'dataEntry',
+    label: 'Manual data entry and copy-paste between tools',
+    meta: 'Typical time: 5-10 hours/week for the team',
     bullets: [
-      'Automated welcome sequences, contract generation, and project setup in minutes',
-      'Standardized kickoff templates ensure nothing gets missed on day one',
+      'Automated data syncing between your CRM, PM tool, and spreadsheets',
+      'Eliminate double-entry and reduce errors across systems',
     ],
   },
   {
     key: 'statusUpdates',
-    label: 'Status update emails and calls',
-    meta: 'Typical time: 10-15 hours/week for the team',
+    label: 'Status updates and progress tracking',
+    meta: 'Typical time: 8-12 hours/week for the team',
     bullets: [
-      'Auto-generated status dashboards clients can check anytime',
-      'Scheduled digest emails replace ad-hoc update requests entirely',
+      'Auto-generated dashboards pull live data from your tools',
+      'Scheduled digest emails replace ad-hoc update requests',
     ],
   },
   {
     key: 'reporting',
     label: 'Manual reporting and data compilation',
-    meta: 'Typical time: 5-8 hours per report, per client',
+    meta: 'Typical time: 5-8 hours per report',
     bullets: [
       'Real-time dashboards pull data automatically from your tools',
       'One-click report generation replaces hours of spreadsheet work',
@@ -968,7 +981,7 @@ const CATEGORIES = [
   },
   {
     key: 'meetings',
-    label: 'Meeting notes and follow-up',
+    label: 'Meeting notes and follow-up tasks',
     meta: 'Typical time: 3-5 hours/week',
     bullets: [
       'AI transcription with auto-extracted action items and assignments',
@@ -977,7 +990,7 @@ const CATEGORIES = [
   },
   {
     key: 'handoffs',
-    label: 'Project handoffs between team members',
+    label: 'Handoffs and coordination between team members',
     meta: 'Typical time: 2-4 hours per handoff',
     bullets: [
       'Structured handoff checklists with automatic context transfer',
@@ -985,29 +998,29 @@ const CATEGORIES = [
     ],
   },
   {
-    key: 'invoicing',
-    label: 'Invoice generation and payment follow-up',
+    key: 'followUps',
+    label: 'Repetitive emails, reminders, and follow-ups',
     meta: 'Typical time: 4-6 hours/week',
     bullets: [
-      'Auto-generated invoices from tracked time and approved scopes',
-      'Automated payment reminders reduce overdue invoices by 60%+',
+      'Automated scheduling of routine communications and reminders',
+      'Templated follow-ups triggered by project milestones or deadlines',
     ],
   },
   {
-    key: 'clientQuestions',
-    label: "Client questions and 'quick requests'",
+    key: 'infoRequests',
+    label: 'Answering repeated questions and info requests',
     meta: 'Typical time: 1-2 hours/day across team',
     bullets: [
-      'Self-serve client portal handles FAQs and project lookups instantly',
-      'Structured request forms prevent scope creep and capture details upfront',
+      'Knowledge base and self-serve tools handle common questions instantly',
+      'Structured request forms capture details upfront and route to the right person',
     ],
   },
   {
     key: 'qc',
-    label: 'Quality control and final reviews',
+    label: 'Quality checks and review processes',
     meta: 'Typical time: 3-5 hours per deliverable',
     bullets: [
-      'Automated QA checklists and review workflows catch issues before clients do',
+      'Automated QA checklists and review workflows catch issues early',
       'Standardized approval pipelines ensure consistent quality every time',
     ],
   },
@@ -1019,20 +1032,20 @@ const RATE_PRESETS = [50, 75, 100, 125];
 
 const calcWeeklyHours = (key, teamSize, clients) => {
   switch (key) {
-    case 'onboarding':
-      return (clients * 0.4 * 10) / 52;
+    case 'dataEntry':
+      return Math.min(teamSize * 1.5, clients * 0.5 + 3);
     case 'statusUpdates':
-      return Math.min(clients * 0.6, teamSize * 3);
+      return Math.min(clients * 0.5, teamSize * 2.5);
     case 'reporting':
-      return (clients * 6) / 4.33;
+      return (clients * 5) / 4.33;
     case 'meetings':
       return 4;
     case 'handoffs':
-      return teamSize * 2;
-    case 'invoicing':
-      return Math.min(clients * 0.2 + 2, 8);
-    case 'clientQuestions':
-      return clients * 0.5;
+      return teamSize * 1.5;
+    case 'followUps':
+      return Math.min(clients * 0.3 + 2, 8);
+    case 'infoRequests':
+      return clients * 0.4;
     case 'qc':
       return teamSize * 1.5;
     default:
@@ -1294,9 +1307,9 @@ const CalculatorPage = () => {
     <PageWrapper>
       {/* ─── Hero ─── */}
       <HeroSection>
-        <HeroHeadline>💰 How Much Is Delivery Chaos Costing Your Agency?</HeroHeadline>
+        <HeroHeadline>How Much Is Manual Work Costing Your Team?</HeroHeadline>
         <HeroSub>
-          Most agency owners are shocked when they see the real numbers. Find out in 90 seconds.
+          Most teams are surprised when they see the real numbers. Find out in 90 seconds.
         </HeroSub>
       </HeroSection>
 
@@ -1304,11 +1317,11 @@ const CalculatorPage = () => {
       <CalculatorSection>
         <InputPanel>
           <Card>
-            <SectionTitle>📊 Tell us about your agency:</SectionTitle>
+            <SectionTitle>Tell us about your team:</SectionTitle>
 
             {/* Team Size */}
             <FieldGroup>
-              <FieldLabel>How many people work on client delivery?</FieldLabel>
+              <FieldLabel>How many people are on your team?</FieldLabel>
               <HelpText>Project managers, account managers, designers, developers, copywriters</HelpText>
               <SliderRow>
                 <StyledSlider
@@ -1346,7 +1359,7 @@ const CalculatorPage = () => {
 
             {/* Clients */}
             <FieldGroup>
-              <FieldLabel>How many active clients do you manage?</FieldLabel>
+              <FieldLabel>How many active clients or projects do you manage?</FieldLabel>
               <SliderRow>
                 <StyledSlider
                   min={5}
@@ -1361,7 +1374,7 @@ const CalculatorPage = () => {
             {/* Categories */}
             <FieldGroup>
               <FieldLabel>What's eating up your team's time?</FieldLabel>
-              <HelpText>Select all that apply to your agency</HelpText>
+              <HelpText>Select all that apply to your team</HelpText>
               <CheckboxList>
                 {CATEGORIES.map(cat => (
                   <CheckboxItem key={cat.key} $checked={checked[cat.key]}>
@@ -1384,7 +1397,7 @@ const CalculatorPage = () => {
         {/* ─── Results Panel ─── */}
         <ResultsPanel>
           <ResultsCard>
-            <ResultsHeadline>🚀 Your Agency Is Losing:</ResultsHeadline>
+            <ResultsHeadline>Your Team Is Losing:</ResultsHeadline>
             <BigNumber>
               <AnimatedNumber value={totalAnnualCost} prefix="$" />
             </BigNumber>
@@ -1409,7 +1422,7 @@ const CalculatorPage = () => {
 
             {/* Equivalents */}
             <EquivalentSection>
-              <EquivalentTitle>⚡ That's Equivalent To:</EquivalentTitle>
+              <EquivalentTitle>That's Equivalent To:</EquivalentTitle>
               <EquivalentItem>
                 <Users size={18} />
                 <span><strong>{formatNumber(totalAnnualCost / 52000)}</strong> full-time salaries (at $52k/yr)</span>
@@ -1447,7 +1460,7 @@ const CalculatorPage = () => {
       {categoryBreakdown.length > 0 && (
         <FullWidthSection>
           <SectionTitle style={{ textAlign: 'center', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-            🎯 Here's What You Could Recover:
+            Here's What You Could Recover:
           </SectionTitle>
           <p style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 8px', fontSize: 16, opacity: 0.65 }}>
             With targeted automation, you can recover up to 70% of these costs.
@@ -1476,7 +1489,7 @@ const CalculatorPage = () => {
       {/* ─── Bar Chart ─── */}
       <FullWidthSection>
         <SectionTitle style={{ textAlign: 'center', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-          📊 Annual Cost vs. Savings
+          Annual Cost vs. Savings
         </SectionTitle>
         <ChartWrapper>
           <ChartBar>
@@ -1517,13 +1530,13 @@ const CalculatorPage = () => {
       {/* ─── CTA ─── */}
       <CTASection>
         <SectionTitle style={{ fontSize: 'clamp(24px, 4vw, 32px)', textAlign: 'center' }}>
-          💡 Want The Full Automation Roadmap?
+          Want The Full Automation Roadmap?
         </SectionTitle>
         <CTAGrid>
           <CTACard $primary>
-            <CTACardTitle>✅ Get Your Free 30-Minute Audit</CTACardTitle>
+            <CTACardTitle>Get Your Free 30-Minute Audit</CTACardTitle>
             <BulletList style={{ marginBottom: 24 }}>
-              <li>Personalized automation roadmap for your agency</li>
+              <li>Personalized automation roadmap for your team</li>
               <li>Top 3 quick wins ranked by ROI</li>
               <li>Implementation timeline and cost estimates</li>
               <li>No obligation, no sales pressure</li>
@@ -1561,30 +1574,11 @@ const CalculatorPage = () => {
 
       <Divider />
 
-      {/* ─── Social Proof ─── */}
-      <SocialProofSection>
-        <SectionTitle style={{ fontSize: 'clamp(20px, 3vw, 24px)' }}>
-          ⚡ Agencies using these automations typically see:
-        </SectionTitle>
-        <StatsGrid>
-          <StatCard>
-            <StatNumber>15-20hrs</StatNumber>
-            <StatLabel>Saved per person per week on admin tasks</StatLabel>
-          </StatCard>
-          <StatCard>
-            <StatNumber>60%</StatNumber>
-            <StatLabel>Reduction in client onboarding time</StatLabel>
-          </StatCard>
-          <StatCard>
-            <StatNumber>3x</StatNumber>
-            <StatLabel>Faster reporting and data compilation</StatLabel>
-          </StatCard>
-          <StatCard>
-            <StatNumber>40%</StatNumber>
-            <StatLabel>Fewer dropped balls and missed follow-ups</StatLabel>
-          </StatCard>
-        </StatsGrid>
-      </SocialProofSection>
+      <Disclaimer>
+        These estimates are based on industry averages and the inputs you provided. Actual results will vary depending on your
+        specific workflows, tools, and team structure. This calculator is intended to give a directional sense of where time
+        is being spent — not a guarantee of savings.
+      </Disclaimer>
     </PageWrapper>
   );
 };

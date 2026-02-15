@@ -422,7 +422,7 @@ function App() {
         <DesktopNav>
           <NavLinkStyled to="/">Home</NavLinkStyled>
           <NavLinkStyled to="/calculator">Calculator</NavLinkStyled>
-          <NavLinkStyled to="/audit">Chaos Audit</NavLinkStyled>
+          <NavLinkStyled to="/audit">Audit</NavLinkStyled>
           <NavLinkStyled to="/about">About</NavLinkStyled>
           <NavLinkStyled to="/contact">Contact</NavLinkStyled>
         </DesktopNav>
@@ -440,7 +440,7 @@ function App() {
         <MobileMenu $open={mobileMenuOpen}>
           <MobileNavItem to="/" onClick={closeMobile}>Home</MobileNavItem>
           <MobileNavItem to="/calculator" onClick={closeMobile}>Calculator</MobileNavItem>
-          <MobileNavItem to="/audit" onClick={closeMobile}>Chaos Audit</MobileNavItem>
+          <MobileNavItem to="/audit" onClick={closeMobile}>Audit</MobileNavItem>
           <MobileNavItem to="/about" onClick={closeMobile}>About</MobileNavItem>
           <MobileNavItem to="/contact" onClick={closeMobile}>Contact</MobileNavItem>
         </MobileMenu>
@@ -460,14 +460,14 @@ function App() {
         <FooterGrid>
           <FooterCol>
             <h4>Peak Work Studios</h4>
-            <p style={{ marginBottom: '8px' }}>Reliable automation for growing agencies.</p>
+            <p style={{ marginBottom: '8px' }}>AI &amp; Automation Consulting for professional service teams.</p>
             <p>Calgary, Canada</p>
           </FooterCol>
           <FooterCol>
             <h4>Resources</h4>
             <Link to="/">Home</Link>
             <Link to="/calculator">Calculator</Link>
-            <Link to="/audit">Chaos Audit</Link>
+            <Link to="/audit">Operations Audit</Link>
             <Link to="/about">About</Link>
           </FooterCol>
           <FooterCol>

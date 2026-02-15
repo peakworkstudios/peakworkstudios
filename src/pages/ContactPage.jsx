@@ -522,7 +522,7 @@ const ContactPage = () => {
       {/* Hero */}
       <HeroSection ref={heroRef}>
         <FadeIn $visible={heroInView}>
-          <HeroHeadline>🤝 Let's Talk About Your Operations</HeroHeadline>
+          <HeroHeadline>Let's Talk About Your Operations</HeroHeadline>
           <HeroSub>
             30-minute call. No sales pitch. Just an honest conversation about what's slowing you down.
           </HeroSub>
@@ -579,14 +579,14 @@ const ContactPage = () => {
                     name="email"
                     value={form.email}
                     onChange={handleChange}
-                    placeholder="you@agency.com"
+                    placeholder="you@company.com"
                     $error={!!errors.email}
                   />
                   {errors.email && <FieldError>{errors.email}</FieldError>}
                 </FormGroup>
 
                 <FormGroup>
-                  <Label>Agency name</Label>
+                  <Label>Company name</Label>
                   <Input
                     type="text"
                     name="agency"
@@ -608,9 +608,9 @@ const ContactPage = () => {
                 </FormGroup>
 
                 <FormGroup>
-                  <Label>Number of active clients</Label>
+                  <Label>Number of active clients/projects</Label>
                   <Select name="activeClients" value={form.activeClients} onChange={handleChange}>
-                    <option value="">Select number of clients</option>
+                    <option value="">Select number of clients/projects</option>
                     <option value="1-10">1-10</option>
                     <option value="11-25">11-25</option>
                     <option value="26-50">26-50</option>
@@ -625,7 +625,7 @@ const ContactPage = () => {
                     name="painPoint"
                     value={form.painPoint}
                     onChange={handleChange}
-                    placeholder="E.g., We spend 10 hours a week on manual reporting, or client onboarding takes too long..."
+                    placeholder="E.g., We spend 10 hours a week on manual reporting, or onboarding new projects takes too long..."
                     rows={5}
                     $error={!!errors.painPoint}
                   />
@@ -655,7 +655,7 @@ const ContactPage = () => {
                 </Honeypot>
 
                 <SubmitButton type="submit" disabled={submitting}>
-                  {submitting ? 'Sending...' : '🚀 Send Message'}
+                  {submitting ? 'Sending...' : 'Send Message'}
                   {!submitting && <ArrowRight size={18} />}
                 </SubmitButton>
               </Form>
@@ -681,7 +681,7 @@ const ContactPage = () => {
       <FullWidthSection $bg={theme.surface}>
         <SectionInner ref={timelineRef}>
           <FadeIn $visible={timelineInView}>
-          <SectionTitle>✅ What to Expect</SectionTitle>
+          <SectionTitle>What to Expect</SectionTitle>
           <SectionSubtitle>
             A clear, low-pressure process from start to finish.
           </SectionSubtitle>
@@ -693,7 +693,7 @@ const ContactPage = () => {
               <TimelineText>We'll schedule a 30-minute call</TimelineText>
             </TimelineItem>
             <TimelineItem>
-              <TimelineText>You walk me through your current client delivery process</TimelineText>
+              <TimelineText>You walk me through your current workflows and pain points</TimelineText>
             </TimelineItem>
             <TimelineItem>
               <TimelineText>I'll identify 2-3 quick wins and map out a longer-term plan</TimelineText>

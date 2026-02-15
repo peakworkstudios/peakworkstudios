@@ -16,8 +16,8 @@ import {
 const questions = [
   {
     id: 0,
-    category: 'Onboarding Efficiency',
-    text: 'How long does it typically take to onboard a new client (from signed contract to project kickoff)?',
+    category: 'Onboarding & Setup',
+    text: 'How long does it take to set up a new project or engagement (from agreement to active work)?',
     options: [
       { label: 'Less than 24 hours', score: 10 },
       { label: '1-2 days', score: 7 },
@@ -28,19 +28,19 @@ const questions = [
   },
   {
     id: 1,
-    category: 'Client Communication',
-    text: 'How do clients typically get project status updates?',
+    category: 'Communication & Updates',
+    text: 'How do stakeholders typically get project status updates?',
     options: [
       { label: 'They ask, we respond', score: 1 },
-      { label: 'We send weekly email updates', score: 5 },
+      { label: 'We send periodic email updates', score: 5 },
       { label: 'They have access to a dashboard or portal', score: 7 },
-      { label: 'Automated updates + dashboard + they can ask AI anytime', score: 10 },
+      { label: 'Automated updates + dashboard + self-serve access', score: 10 },
     ],
   },
   {
     id: 2,
-    category: 'Status Update Management',
-    text: "How much time does your team spend each week answering client questions like 'What's the status?' or 'When will X be done?'",
+    category: 'Time on Status Updates',
+    text: "How much time does your team spend each week fielding questions like 'What's the status?' or 'When will this be done?'",
     options: [
       { label: 'Less than 2 hours', score: 10 },
       { label: '2-5 hours', score: 7 },
@@ -51,8 +51,8 @@ const questions = [
   },
   {
     id: 3,
-    category: 'Project Handoffs',
-    text: 'How are project handoffs handled between team members?',
+    category: 'Handoffs & Coordination',
+    text: 'How are handoffs handled between team members?',
     options: [
       { label: 'Formal handoff process with checklists and documentation', score: 10 },
       { label: 'Brief meeting or Slack message', score: 5 },
@@ -63,8 +63,8 @@ const questions = [
   },
   {
     id: 4,
-    category: 'Reporting Automation',
-    text: 'How long does it take to generate and send a client report?',
+    category: 'Reporting',
+    text: 'How long does it take to generate and send a report?',
     options: [
       { label: 'Less than 30 minutes (automated)', score: 10 },
       { label: '1-2 hours', score: 7 },
@@ -88,20 +88,20 @@ const questions = [
   },
   {
     id: 6,
-    category: 'After-Hours Coverage',
-    text: 'What happens when a client emails at 9 PM with a question?',
+    category: 'Response Time',
+    text: 'What happens when someone sends an urgent request outside business hours?',
     options: [
-      { label: 'AI responds instantly with accurate info', score: 10 },
+      { label: 'Automated system handles it or routes it appropriately', score: 10 },
       { label: "Auto-reply says we'll respond next business day", score: 6 },
       { label: 'Someone on the team sees it and responds', score: 4 },
-      { label: 'It sits until someone checks email tomorrow', score: 2 },
+      { label: 'It sits until someone checks in the morning', score: 2 },
       { label: "We don't know, depends who sees it", score: 0 },
     ],
   },
   {
     id: 7,
-    category: 'Meeting Documentation',
-    text: 'How do you track what was discussed and decided in client meetings?',
+    category: 'Meeting Follow-through',
+    text: 'How do you track what was discussed and decided in meetings?',
     options: [
       { label: 'AI assistant extracts action items and auto-creates tasks', score: 10 },
       { label: 'Someone takes detailed notes and follows up', score: 7 },
@@ -113,7 +113,7 @@ const questions = [
   {
     id: 8,
     category: 'Quality Control',
-    text: 'How consistent is the quality of deliverables before clients see them?',
+    text: 'How consistent is the quality of deliverables before stakeholders see them?',
     options: [
       { label: 'Automated QC catches issues every time', score: 10 },
       { label: 'Senior team member reviews everything', score: 8 },
@@ -125,11 +125,11 @@ const questions = [
   {
     id: 9,
     category: 'Scalability',
-    text: 'If you wanted to take on 50% more clients tomorrow, what would break first?',
+    text: 'If your workload increased 50% tomorrow, what would break first?',
     options: [
       { label: 'Nothing, our systems would scale', score: 10 },
       { label: "We'd need to hire but could handle it", score: 7 },
-      { label: 'Client communication would collapse', score: 3 },
+      { label: 'Communication and coordination would collapse', score: 3 },
       { label: 'Project management would fall apart', score: 2 },
       { label: 'Everything would break immediately', score: 0 },
     ],
@@ -137,27 +137,27 @@ const questions = [
 ];
 
 const quickWins = {
-  'Onboarding Efficiency': 'Create a standardized onboarding checklist. Cuts onboarding time by 50%.',
-  'Client Communication': 'Set up automated weekly status emails. Reduces inbound questions by 60%.',
-  'Status Update Management': 'Set up a weekly auto-generated status email. Saves 8+ hours immediately.',
-  'Project Handoffs': 'Create a simple handoff template in your PM tool. Takes 30 minutes to set up.',
-  'Reporting Automation': 'Template your most common report. Even a spreadsheet template saves 2+ hours.',
+  'Onboarding & Setup': 'Create a standardized setup checklist. Cuts onboarding time by 50%.',
+  'Communication & Updates': 'Set up automated weekly status emails. Reduces inbound questions significantly.',
+  'Time on Status Updates': 'Set up a weekly auto-generated status email. Saves hours immediately.',
+  'Handoffs & Coordination': 'Create a simple handoff template in your PM tool. Takes 30 minutes to set up.',
+  'Reporting': 'Template your most common report. Even a spreadsheet template saves 2+ hours.',
   'Visibility & Tracking': 'Set up a simple project status dashboard. Even a shared spreadsheet helps.',
-  'After-Hours Coverage': 'Set up an auto-reply with FAQ links. Handles 30% of after-hours questions.',
-  'Meeting Documentation': 'Start recording meetings and use AI transcription. Captures everything.',
+  'Response Time': 'Set up an auto-reply with FAQ links. Handles common questions automatically.',
+  'Meeting Follow-through': 'Start recording meetings and use AI transcription. Captures everything.',
   'Quality Control': 'Create a pre-delivery checklist for your top 3 deliverable types.',
   Scalability: "Document your top 5 processes. You can't scale what isn't written down.",
 };
 
 const priorityData = {
-  'Onboarding Efficiency': { hours: '8 hrs/new client', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
-  'Client Communication': { hours: '10 hrs/week', complexity: 'High', timeline: '4-6 weeks', weeklySavings: 10 },
-  'Status Update Management': { hours: '12 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 12 },
-  'Project Handoffs': { hours: '5 hrs/week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 5 },
-  'Reporting Automation': { hours: '6 hrs/report', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 6 },
+  'Onboarding & Setup': { hours: '8 hrs/new project', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
+  'Communication & Updates': { hours: '10 hrs/week', complexity: 'High', timeline: '4-6 weeks', weeklySavings: 10 },
+  'Time on Status Updates': { hours: '12 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 12 },
+  'Handoffs & Coordination': { hours: '5 hrs/week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 5 },
+  'Reporting': { hours: '6 hrs/report', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 6 },
   'Visibility & Tracking': { hours: '4 hrs/week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 4 },
-  'After-Hours Coverage': { hours: '8 hrs/week', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
-  'Meeting Documentation': { hours: '5 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 5 },
+  'Response Time': { hours: '8 hrs/week', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
+  'Meeting Follow-through': { hours: '5 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 5 },
   'Quality Control': { hours: '4 hrs/deliverable', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 4 },
   Scalability: { hours: 'Foundational', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 0 },
 };
@@ -844,6 +844,19 @@ const ProofLabel = styled.div`
   color: ${p => p.theme.textSecondary};
 `;
 
+const AuditDisclaimer = styled.p`
+  text-align: center;
+  font-size: 13px;
+  color: ${p => p.theme.textSecondary};
+  max-width: 700px;
+  margin: 16px auto 32px;
+  padding: 16px 24px;
+  background: ${p => p.theme.surface};
+  border: 1px solid ${p => p.theme.border};
+  border-radius: 8px;
+  line-height: 1.6;
+`;
+
 const RetakeButton = styled.button`
   display: inline-flex;
   align-items: center;
@@ -870,10 +883,10 @@ const RetakeButton = styled.button`
 // ─── Helper Functions ───
 
 function getScoreInfo(score) {
-  if (score >= 80) return { label: '🚀 Scaling Machine', color: '#10b981', description: 'Your agency runs like a well-oiled machine. You have strong systems in place, and you are well-positioned to scale without adding proportional headcount. Focus on fine-tuning and staying ahead of the curve.' };
-  if (score >= 60) return { label: '⚡ Growing Pains', color: '#f59e0b', description: 'You have some solid processes, but gaps are starting to show as you grow. A few targeted automations could eliminate the bottlenecks holding you back and free up serious capacity.' };
-  if (score >= 40) return { label: '🔥 Duct Tape & Prayer', color: '#f97316', description: 'Your team is working hard, but a lot of effort goes into keeping things from falling apart. The good news: the biggest improvements are often the easiest to implement. You are sitting on a goldmine of recoverable hours.' };
-  return { label: '🔥 Controlled Chaos', color: '#ef4444', description: 'Things are getting done, but it is costing you far more time, money, and stress than it should. The upside is massive: agencies at your score typically recover 20-30 hours per week with the right automations.' };
+  if (score >= 80) return { label: 'Scaling Machine', color: '#10b981', description: 'Your operations run like a well-oiled machine. You have strong systems in place, and you are well-positioned to scale without adding proportional headcount. Focus on fine-tuning and staying ahead of the curve.' };
+  if (score >= 60) return { label: 'Growing Pains', color: '#f59e0b', description: 'You have some solid processes, but gaps are starting to show as you grow. A few targeted automations could eliminate the bottlenecks holding you back and free up serious capacity.' };
+  if (score >= 40) return { label: 'Duct Tape & Workarounds', color: '#f97316', description: 'Your team is working hard, but a lot of effort goes into keeping things from falling apart. The good news: the biggest improvements are often the easiest to implement. You are sitting on a goldmine of recoverable hours.' };
+  return { label: 'Needs Attention', color: '#ef4444', description: 'Things are getting done, but it is costing you far more time, money, and stress than it should. The upside is massive: teams at your score typically recover 20-30 hours per week with the right automations.' };
 }
 
 function getBarColor(score) {
@@ -960,7 +973,7 @@ export default function AuditPage() {
   }, [answers, currentQuestion, showResults]);
 
   useEffect(() => {
-    document.title = 'Client Chaos Audit | Peak Work Studios';
+    document.title = 'Operations Audit | Peak Work Studios';
   }, []);
 
   const selectAnswer = (questionIdx, optionIdx) => {
@@ -1050,9 +1063,9 @@ export default function AuditPage() {
     return (
       <PageWrapper>
         <HeroSection>
-          <HeroHeadline>🎯 The Client Chaos Audit</HeroHeadline>
+          <HeroHeadline>The Operations Audit</HeroHeadline>
           <HeroSub>
-            10 questions about your delivery process. Get scored results with prioritized fixes in 3 minutes.
+            10 questions about your workflows. Get scored results with prioritized fixes in 3 minutes.
           </HeroSub>
         </HeroSection>
 
@@ -1131,7 +1144,7 @@ export default function AuditPage() {
       <ResultsWrapper>
         {/* Category Breakdown */}
         <SectionBlock>
-          <SectionTitle>📊 Where You're Strong (and Where You're Bleeding Time)</SectionTitle>
+          <SectionTitle>Where You're Strong (and Where You're Losing Time)</SectionTitle>
           {categoryScores.map((cat, idx) => (
             <React.Fragment key={cat.category}>
               <CategoryRow $delay={`${idx * 0.08}s`}>
@@ -1151,7 +1164,7 @@ export default function AuditPage() {
                 <QuickWinBadge $delay={`${idx * 0.08 + 0.1}s`}>
                   <Lightbulb size={16} />
                   <span>
-                    <strong>💡 Quick win:</strong> {quickWins[cat.category]}
+                    <strong>Quick win:</strong> {quickWins[cat.category]}
                   </span>
                 </QuickWinBadge>
               )}
@@ -1161,7 +1174,7 @@ export default function AuditPage() {
 
         {/* Top 3 Priorities */}
         <SectionBlock>
-          <SectionTitle>🎯 Your Top 3 Priorities</SectionTitle>
+          <SectionTitle>Your Top 3 Priorities</SectionTitle>
           <PriorityGrid>
             {top3.map((cat, idx) => {
               const data = priorityData[cat.category];
@@ -1219,7 +1232,7 @@ export default function AuditPage() {
                 opacity: 0.7,
               }}
             >
-              Agencies your size average a score of 42/100.
+              Teams your size average a score of 42/100.
             </p>
             <p
               style={{
@@ -1229,7 +1242,7 @@ export default function AuditPage() {
                 opacity: 0.7,
               }}
             >
-              Top-performing agencies score 85+ and typically:
+              Top-performing teams score 85+ and typically:
             </p>
             <BulletList>
               <li>Onboard new clients in under 24 hours</li>
@@ -1244,7 +1257,7 @@ export default function AuditPage() {
         <CTASection>
           {!formSubmitted ? (
             <>
-              <CTATitle>🚀 Want a Custom Automation Roadmap?</CTATitle>
+              <CTATitle>Want a Custom Automation Roadmap?</CTATitle>
               <CTASub>We will analyze your results and send a personalized report with implementation steps.</CTASub>
               <form onSubmit={handleFormSubmit}>
                 <FormGrid>
@@ -1267,7 +1280,7 @@ export default function AuditPage() {
                     onChange={(e) => setFormData({ ...formData, agencySize: e.target.value })}
                     required
                   >
-                    <option value="">Agency size</option>
+                    <option value="">Team size</option>
                     <option value="1-5">1-5 people</option>
                     <option value="6-15">6-15 people</option>
                     <option value="16-30">16-30 people</option>
@@ -1315,19 +1328,19 @@ export default function AuditPage() {
 
         {/* Social Proof */}
         <SectionBlock>
-          <SectionTitle style={{ textAlign: 'center' }}>✅ Agencies That Took the Audit</SectionTitle>
+          <SectionTitle style={{ textAlign: 'center' }}>Teams That Took the Audit</SectionTitle>
           <SocialProofGrid>
             <ProofCard $delay="0s">
               <ProofScore>
                 34 <ProofArrow>&rarr;</ProofArrow> 87
               </ProofScore>
-              <ProofLabel>Digital marketing agency &middot; 8 weeks</ProofLabel>
+              <ProofLabel>Marketing team &middot; 8 weeks</ProofLabel>
             </ProofCard>
             <ProofCard $delay="0.1s">
               <ProofScore>
                 41 <ProofArrow>&rarr;</ProofArrow> 82
               </ProofScore>
-              <ProofLabel>Creative agency &middot; 10 weeks</ProofLabel>
+              <ProofLabel>Consulting firm &middot; 10 weeks</ProofLabel>
             </ProofCard>
             <ProofCard $delay="0.2s">
               <ProofScore>
@@ -1337,6 +1350,12 @@ export default function AuditPage() {
             </ProofCard>
           </SocialProofGrid>
         </SectionBlock>
+
+        <AuditDisclaimer>
+          This audit provides a directional assessment based on your responses. Scores and recommendations are
+          estimates intended to highlight areas for improvement — not guarantees of specific outcomes. Every team
+          is different, and actual results will depend on your specific workflows and implementation.
+        </AuditDisclaimer>
 
         {/* Retake */}
         <div style={{ textAlign: 'center', paddingBottom: '40px' }}>
