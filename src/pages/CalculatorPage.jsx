@@ -98,7 +98,7 @@ const generateResultsPDF = ({
   doc.setFont(undefined, 'bold');
   doc.setTextColor(26, 26, 26);
   doc.text('Your Agency Is Losing:', 15, y);
-  y += 9;
+  y += 12;
 
   doc.setFontSize(36);
   doc.setTextColor(239, 68, 68);
