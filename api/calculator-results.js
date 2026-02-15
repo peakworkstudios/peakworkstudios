@@ -61,6 +61,9 @@ export default async function handler(req, res) {
       from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: email,
       subject: 'Your Delivery Cost Results',
+      headers: {
+        'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
+      },
       html: `
         <div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;">
           <h1 style="color:#38bdf8;">Your Delivery Cost Results</h1>
@@ -109,7 +112,9 @@ export default async function handler(req, res) {
           ` : ''}
           <p style="margin-top:24px;">If you want the full automation roadmap, book a free audit call.</p>
           <p><a href="https://peakworkstudios.com/contact" style="color:#38bdf8;">Book your audit</a></p>
-          <p style="color:#999;font-size:12px;margin-top:32px;">Peak Work Studios · Calgary, Canada</p>
+          <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+          <p style="font-size:12px;color:#999;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from emails</a></p>
+          <p style="color:#999;font-size:12px;margin-top:8px;">Peak Work Studios · Calgary, Canada</p>
         </div>
       `,
     });

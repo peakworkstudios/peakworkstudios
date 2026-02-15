@@ -39,6 +39,9 @@ export default async function handler(req, res) {
       from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: 'kunal.deshmukh@hotmail.com',
       subject: `New Contact: ${name} from ${agencyName || 'Unknown Agency'}`,
+      headers: {
+        'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
+      },
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
@@ -48,6 +51,8 @@ export default async function handler(req, res) {
         <p><strong>Active Clients:</strong> ${clientCount || 'Not provided'}</p>
         <p><strong>Pain Point:</strong> ${painPoint}</p>
         <p><strong>Source:</strong> ${source || 'Not provided'}</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+        <p style="font-size:12px;color:#999;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from notifications</a></p>
       `,
     });
 

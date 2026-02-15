@@ -40,6 +40,9 @@ export default async function handler(req, res) {
       from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: email,
       subject: `Your Client Chaos Audit Results: ${totalScore}/100`,
+      headers: {
+        'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
+      },
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
           <h1 style="color:#38bdf8;">Your Client Chaos Audit Results</h1>
@@ -48,7 +51,9 @@ export default async function handler(req, res) {
           <h2 style="text-align:center;font-size:48px;color:#38bdf8;margin:24px 0;">${totalScore}/100</h2>
           ${scoreRows ? `<table style="width:100%;border-collapse:collapse;margin:24px 0;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid #38bdf8;">Category</th><th style="text-align:center;padding:8px;border-bottom:2px solid #38bdf8;">Score</th></tr></thead><tbody>${scoreRows}</tbody></table>` : ''}
           <p>Want to talk through your results? <a href="https://calendly.com/peakworkstudios/30min" style="color:#38bdf8;">Book a free 30-minute audit call</a>.</p>
-          <p style="color:#999;font-size:12px;margin-top:40px;">Peak Work Studios &middot; Calgary, Canada</p>
+          <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+          <p style="color:#999;font-size:12px;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from emails</a></p>
+          <p style="color:#999;font-size:12px;margin-top:8px;">Peak Work Studios &middot; Calgary, Canada</p>
         </div>
       `,
     });
@@ -58,6 +63,9 @@ export default async function handler(req, res) {
       from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
       to: 'kunal.deshmukh@hotmail.com',
       subject: `New Audit Submission: ${name} (${totalScore}/100)`,
+      headers: {
+        'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
+      },
       html: `
         <h2>New Audit Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
@@ -66,6 +74,8 @@ export default async function handler(req, res) {
         <p><strong>Pain Point:</strong> ${painPoint || 'Not provided'}</p>
         <p><strong>Total Score:</strong> ${totalScore}/100</p>
         ${scoreRows ? `<table style="width:100%;border-collapse:collapse;margin:16px 0;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid #38bdf8;">Category</th><th style="text-align:center;padding:8px;border-bottom:2px solid #38bdf8;">Score</th></tr></thead><tbody>${scoreRows}</tbody></table>` : ''}
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
+        <p style="font-size:12px;color:#999;margin:8px 0;"><a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#999;text-decoration:none;">Unsubscribe from notifications</a></p>
       `,
     });
 
