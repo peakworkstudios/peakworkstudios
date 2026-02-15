@@ -708,6 +708,17 @@ const EmailButton = styled.button`
   &:hover {
     background: ${p => p.theme.primaryHover};
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+const EmailStatus = styled.div`
+  margin-top: 10px;
+  font-size: 13px;
+  color: ${p => (p.$type === 'error' ? p.theme.error : p.theme.success)};
 `;
 
 // ─── Social Proof ───
@@ -957,6 +968,8 @@ const CalculatorPage = () => {
   });
 
   const [email, setEmail] = useState('');
+  const [isSendingResults, setIsSendingResults] = useState(false);
+  const [sendStatus, setSendStatus] = useState(null);
 
   // ─── Persist to localStorage ───
   useEffect(() => {
@@ -1039,6 +1052,60 @@ const CalculatorPage = () => {
       setIsCustomRate(true);
     }
   }, []);
+
+  const handleSendResults = useCallback(async () => {
+    if (isSendingResults) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSendStatus({ type: 'error', message: 'Enter a valid email address.' });
+      return;
+    }
+
+    setIsSendingResults(true);
+    setSendStatus(null);
+
+    try {
+      const response = await fetch('/api/calculator-results', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          teamSize,
+          hourlyRate,
+          clients,
+          totalAnnualCost,
+          potentialSavings,
+          remainingCost,
+          categoryBreakdown: categoryBreakdown.map(cat => ({
+            label: cat.label,
+            weeklyHours: cat.weeklyHours,
+            annualCost: cat.annualCost,
+          })),
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Unable to send results. Please try again.');
+      }
+
+      setSendStatus({ type: 'success', message: 'Results sent. Check your inbox.' });
+    } catch (error) {
+      setSendStatus({ type: 'error', message: error.message || 'Unable to send results.' });
+    } finally {
+      setIsSendingResults(false);
+    }
+  }, [
+    isSendingResults,
+    email,
+    teamSize,
+    hourlyRate,
+    clients,
+    totalAnnualCost,
+    potentialSavings,
+    remainingCost,
+    categoryBreakdown,
+  ]);
 
   // ─── Document title ───
   useEffect(() => {
@@ -1305,10 +1372,13 @@ const CalculatorPage = () => {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
-              <EmailButton onClick={() => {}}>
+              <EmailButton onClick={handleSendResults} disabled={isSendingResults}>
                 <Download size={16} />
               </EmailButton>
             </EmailRow>
+            {sendStatus && (
+              <EmailStatus $type={sendStatus.type}>{sendStatus.message}</EmailStatus>
+            )}
           </CTACard>
         </CTAGrid>
       </CTASection>

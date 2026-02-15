@@ -218,7 +218,7 @@ const SecondaryLink = styled(Link)`
    ════════════════════════════════════════════ */
 
 const HeroOuter = styled.section`
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -229,11 +229,11 @@ const HeroOuter = styled.section`
     ${p => p.theme.surface} 40%,
     ${p => p.theme.background} 100%
   );
-  padding: 120px 40px 100px;
+  padding: 96px 40px 80px;
   overflow: hidden;
 
   @media (max-width: 768px) {
-    padding: 100px 20px 60px;
+    padding: 84px 20px 56px;
   }
 `;
 
