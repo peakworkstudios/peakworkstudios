@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom'
 import styled, { createGlobalStyle, ThemeProvider, keyframes } from 'styled-components';
 import { Sun, Moon, Menu, X, ChevronUp, Mountain } from 'lucide-react';
 import HomePage from './pages/HomePage';
+import UseCasesPage from './pages/UseCasesPage';
 import CalculatorPage from './pages/CalculatorPage';
 import AuditPage from './pages/AuditPage';
 import AboutPage from './pages/AboutPage';
@@ -421,6 +422,7 @@ function App() {
 
         <DesktopNav>
           <NavLinkStyled to="/">Home</NavLinkStyled>
+          <NavLinkStyled to="/use-cases">Use Cases</NavLinkStyled>
           <NavLinkStyled to="/calculator">Calculator</NavLinkStyled>
           <NavLinkStyled to="/audit">Audit</NavLinkStyled>
           <NavLinkStyled to="/about">About</NavLinkStyled>
@@ -439,6 +441,7 @@ function App() {
 
         <MobileMenu $open={mobileMenuOpen}>
           <MobileNavItem to="/" onClick={closeMobile}>Home</MobileNavItem>
+          <MobileNavItem to="/use-cases" onClick={closeMobile}>Use Cases</MobileNavItem>
           <MobileNavItem to="/calculator" onClick={closeMobile}>Calculator</MobileNavItem>
           <MobileNavItem to="/audit" onClick={closeMobile}>Audit</MobileNavItem>
           <MobileNavItem to="/about" onClick={closeMobile}>About</MobileNavItem>
@@ -449,6 +452,7 @@ function App() {
       <main style={{ paddingTop: '64px', minHeight: '100vh' }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/use-cases" element={<UseCasesPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/audit" element={<AuditPage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -466,6 +470,7 @@ function App() {
           <FooterCol>
             <h4>Resources</h4>
             <Link to="/">Home</Link>
+            <Link to="/use-cases">Use Cases</Link>
             <Link to="/calculator">Calculator</Link>
             <Link to="/audit">Operations Audit</Link>
             <Link to="/about">About</Link>

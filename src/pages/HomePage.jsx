@@ -740,26 +740,72 @@ const HoverHint = styled.span`
   font-weight: 600;
 `;
 
+const ImpactBadge = styled.div`
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 12px;
+  background: ${p => {
+    switch(p.$severity) {
+      case 'high': return '#fef2f2';
+      case 'medium': return '#fffbeb';
+      case 'low': return '#f0fdf4';
+      default: return '#f1f5f9';
+    }
+  }};
+  color: ${p => {
+    switch(p.$severity) {
+      case 'high': return '#991b1b';
+      case 'medium': return '#92400e';
+      case 'low': return '#166534';
+      default: return '#334155';
+    }
+  }};
+  border: 1px solid ${p => {
+    switch(p.$severity) {
+      case 'high': return '#fecaca';
+      case 'medium': return '#fde68a';
+      case 'low': return '#86efac';
+      default: return '#cbd5e1';
+    }
+  }};
+`;
+
+const PainHighlight = styled.strong`
+  color: ${p => p.$severity === 'high' ? p.theme.error : p.theme.primary};
+  font-weight: 800;
+`;
+
 const PAINS = [
   {
     title: 'Manual Data Entry',
     pain: 'Your team re-types the same information across spreadsheets, CRMs, and project tools — wasting hours and inviting errors.',
     solution: 'Automated data flows sync information across your tools, eliminating double-entry and keeping records consistent.',
+    impact: '8-12 hrs/week',
+    severity: 'high',
   },
   {
     title: 'Reporting Takes Forever',
     pain: 'Compiling reports means pulling data from multiple tools, formatting spreadsheets, and chasing people for numbers.',
     solution: 'Reports compile from source data, auto-format, and queue for a quick human review before sending.',
+    impact: '5-7 hrs/week',
+    severity: 'high',
   },
   {
     title: 'Dropped Handoffs',
     pain: 'Work stalls between team members because handoff steps live in someone\'s head, not in a system.',
     solution: 'Automated handoff workflows route tasks to the right person with context, deadlines, and escalation rules.',
+    impact: '3-5 hrs/week',
+    severity: 'medium',
   },
   {
     title: 'Repetitive Follow-ups',
     pain: 'Someone on your team spends hours each week sending the same reminder emails, status updates, and check-ins.',
     solution: 'Scheduled workflows handle routine communications, with human approval on anything external-facing.',
+    impact: '4-6 hrs/week',
+    severity: 'medium',
   },
 ];
 
@@ -783,12 +829,18 @@ function PainPointsSection() {
                   <FlipFront>
                     <PainTitle>{p.title}</PainTitle>
                     <PainText>{p.pain}</PainText>
+                    <ImpactBadge $severity={p.severity}>
+                      Lost time: <PainHighlight $severity={p.severity}>{p.impact}</PainHighlight>
+                    </ImpactBadge>
                     <HoverHint>Hover to see the fix &rarr;</HoverHint>
                   </FlipFront>
                   <FlipBack>
                     <SolutionLabel>With Peak Work Studios</SolutionLabel>
                     <PainTitle>{p.title}</PainTitle>
                     <PainText>{p.solution}</PainText>
+                    <ImpactBadge $severity="low">
+                      Saves: <PainHighlight $severity="low">{p.impact}</PainHighlight>
+                    </ImpactBadge>
                   </FlipBack>
                 </FlipInner>
               </FlipCard>
