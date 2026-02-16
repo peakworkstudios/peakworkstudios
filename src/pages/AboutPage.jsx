@@ -366,6 +366,8 @@ const AboutPage = () => {
     if (metaDescription) {
       metaDescription.content = 'Meet the team behind Peak Work Studios. AI and automation consulting for professional service teams in Calgary, Canada.';
     }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/about';
   }, []);
   const [storyRef, storyInView] = useInView();
   const [philRef, philInView] = useInView();

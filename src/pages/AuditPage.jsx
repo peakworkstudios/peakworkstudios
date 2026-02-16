@@ -974,6 +974,12 @@ export default function AuditPage() {
 
   useEffect(() => {
     document.title = 'Operations Audit | Peak Work Studios';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = 'Take a free 5-minute operations audit to find out where your team is losing time to manual work and get quick-win recommendations.';
+    }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/audit';
   }, []);
 
   const selectAnswer = (questionIdx, optionIdx) => {

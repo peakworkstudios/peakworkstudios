@@ -129,6 +129,12 @@ const TermsPage = () => {
     if (metaDescription) {
       metaDescription.content = 'Terms of Service for Peak Work Studios. Review the terms governing your use of our website and services.';
     }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/terms';
+    let robots = document.querySelector('meta[name="robots"]');
+    if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
+    robots.content = 'noindex, follow';
+    return () => { if (robots) robots.content = 'index, follow'; };
   }, []);
 
   return (

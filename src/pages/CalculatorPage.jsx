@@ -1298,7 +1298,13 @@ const CalculatorPage = () => {
 
   // ─── Document title ───
   useEffect(() => {
-    document.title = 'ROI Calculator | Peak Work Studios';
+    document.title = 'Hidden Cost Calculator | Peak Work Studios';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = 'Calculate how much manual work is costing your team. Free interactive calculator for professional service teams.';
+    }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/calculator';
   }, []);
 
   const chartMax = totalAnnualCost || 1;

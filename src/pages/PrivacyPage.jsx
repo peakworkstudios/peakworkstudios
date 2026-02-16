@@ -129,6 +129,12 @@ const PrivacyPage = () => {
     if (metaDescription) {
       metaDescription.content = 'Privacy Policy for Peak Work Studios. Learn how we collect, use, and protect your information.';
     }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/privacy';
+    let robots = document.querySelector('meta[name="robots"]');
+    if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
+    robots.content = 'noindex, follow';
+    return () => { if (robots) robots.content = 'index, follow'; };
   }, []);
 
   return (

@@ -308,17 +308,12 @@ const RELIABILITY_CASES = [
 function UseCasesPage() {
   useEffect(() => {
     document.title = 'Automation + AI Use Cases | Peak Work Studios';
-    
-    // SEO meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.content = 'See what we build: Workflow automation and custom AI assistants that eliminate repetitive work for professional service teams.';
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = 'See what we build: Workflow automation and custom AI assistants that eliminate repetitive work for professional service teams.';
-      document.head.appendChild(meta);
     }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/use-cases';
   }, []);
 
   return (

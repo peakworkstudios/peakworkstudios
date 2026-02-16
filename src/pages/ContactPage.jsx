@@ -462,6 +462,8 @@ const ContactPage = () => {
     if (metaDescription) {
       metaDescription.content = 'Get in touch with Peak Work Studios. Book a discovery call to discuss workflow automation for your team.';
     }
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = 'https://peakworkstudios.com/contact';
   }, []);
   const [formRef, formInView] = useInView();
   const [timelineRef, timelineInView] = useInView();
