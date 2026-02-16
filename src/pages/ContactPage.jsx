@@ -732,8 +732,8 @@ const ContactPage = () => {
               <Mail size={20} />
             </ContactCardIcon>
             <ContactCardLabel>Email</ContactCardLabel>
-            <ContactCardValue href="mailto:audit@peakworkstudios.com">
-              audit@peakworkstudios.com
+            <ContactCardValue href="mailto:info@peakworkstudios.com">
+              info@peakworkstudios.com
             </ContactCardValue>
           </ContactCard>
           <ContactCard>

@@ -212,7 +212,7 @@ const TermsPage = () => {
           <SectionTitle>11. Contact Us</SectionTitle>
           <Paragraph>
             If you have questions about these Terms, contact us at{' '}
-            <ExternalLink href="mailto:audit@peakworkstudios.com">audit@peakworkstudios.com</ExternalLink>.
+            <ExternalLink href="mailto:info@peakworkstudios.com">info@peakworkstudios.com</ExternalLink>.
           </Paragraph>
           <Paragraph style={{ marginTop: '8px' }}>
             Peak Work Studios<br />
