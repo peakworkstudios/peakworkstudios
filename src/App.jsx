@@ -484,7 +484,7 @@ function App() {
             <a href="https://kunaldeshmukh.com" target="_blank" rel="noopener noreferrer">kunaldeshmukh.com</a>
             <a href="mailto:audit@peakworkstudios.com">audit@peakworkstudios.com</a>
             <a href="https://linkedin.com/in/kunaldeshmukh" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://github.com/kunaldeshmukh" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://github.com/codestorycooked" target="_blank" rel="noopener noreferrer">GitHub</a>
           </FooterCol>
           <FooterCol>
             <h4>Legal</h4>

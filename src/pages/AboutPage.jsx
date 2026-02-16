@@ -513,7 +513,7 @@ const AboutPage = () => {
             <Linkedin size={18} />
             LinkedIn
           </SocialLink>
-          <SocialLink href="https://github.com/kunaldeshmukh" target="_blank" rel="noopener noreferrer">
+          <SocialLink href="https://github.com/codestorycooked" target="_blank" rel="noopener noreferrer">
             <Github size={18} />
             GitHub
           </SocialLink>
