@@ -455,6 +455,14 @@ function validate(values) {
 const ContactPage = () => {
   const theme = useTheme();
   const [heroRef, heroInView] = useInView();
+
+  useEffect(() => {
+    document.title = 'Contact | Peak Work Studios';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = 'Get in touch with Peak Work Studios. Book a discovery call to discuss workflow automation for your team.';
+    }
+  }, []);
   const [formRef, formInView] = useInView();
   const [timelineRef, timelineInView] = useInView();
   const [contactRef, contactInView] = useInView();

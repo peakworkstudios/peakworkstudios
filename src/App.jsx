@@ -8,6 +8,8 @@ import CalculatorPage from './pages/CalculatorPage';
 import AuditPage from './pages/AuditPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 
 // ─── Themes ───
 const lightTheme = {
@@ -383,8 +385,8 @@ function App() {
     return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
   });
 
-  const [cookieAccepted, setCookieAccepted] = useState(() => {
-    return localStorage.getItem('pws-cookie-accepted') === 'true';
+  const [cookieDismissed, setCookieDismissed] = useState(() => {
+    return localStorage.getItem('pws-cookie-accepted') !== null;
   });
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -457,6 +459,8 @@ function App() {
           <Route path="/audit" element={<AuditPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
         </Routes>
       </main>
 
@@ -484,8 +488,8 @@ function App() {
           </FooterCol>
           <FooterCol>
             <h4>Legal</h4>
-            <Link to="/">Privacy Policy</Link>
-            <Link to="/">Terms of Service</Link>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Service</Link>
           </FooterCol>
         </FooterGrid>
         <FooterBottom>
@@ -504,10 +508,13 @@ function App() {
         <ChevronUp size={20} />
       </BackToTop>
 
-      {!cookieAccepted && (
+      {!cookieDismissed && (
         <CookieBanner>
-          <p style={{ margin: 0 }}>We use cookies to enhance your experience. By continuing, you accept our use of cookies.</p>
-          <button onClick={() => { setCookieAccepted(true); localStorage.setItem('pws-cookie-accepted', 'true'); }}>Accept</button>
+          <p style={{ margin: 0 }}>We use local storage to save your theme preference and consent choice. See our <Link to="/privacy" style={{ textDecoration: 'underline' }}>Privacy Policy</Link> for details.</p>
+          <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+            <button onClick={() => { setCookieDismissed(true); localStorage.setItem('pws-cookie-accepted', 'false'); }} style={{ background: 'transparent', color: 'inherit', border: `1px solid currentColor` }}>Decline</button>
+            <button onClick={() => { setCookieDismissed(true); localStorage.setItem('pws-cookie-accepted', 'true'); }}>Accept</button>
+          </div>
         </CookieBanner>
       )}
     </ThemeProvider>

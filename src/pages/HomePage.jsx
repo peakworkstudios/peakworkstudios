@@ -1604,6 +1604,14 @@ const ValueSectionWrapper = styled(SectionWrapper)`
    ════════════════════════════════════════════ */
 
 const HomePage = () => {
+  useEffect(() => {
+    document.title = 'Peak Work Studios | AI & Automation Consulting';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = 'We find repetitive, error-prone processes and replace them with workflow automation or custom AI assistants. Built for professional service teams.';
+    }
+  }, []);
+
   return (
     <>
       <HeroSection />

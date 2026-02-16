@@ -359,6 +359,14 @@ const AboutPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [heroRef, heroInView] = useInView();
+
+  useEffect(() => {
+    document.title = 'About | Peak Work Studios';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = 'Meet the team behind Peak Work Studios. AI and automation consulting for professional service teams in Calgary, Canada.';
+    }
+  }, []);
   const [storyRef, storyInView] = useInView();
   const [philRef, philInView] = useInView();
   const [approachRef, approachInView] = useInView();
