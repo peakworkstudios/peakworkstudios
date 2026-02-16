@@ -416,8 +416,8 @@ function HeroSection() {
         <HeroEyebrow>Peak Work Studios &middot; AI &amp; Automation Consulting</HeroEyebrow>
         <HeroH1>Stop Drowning in Manual Work</HeroH1>
         <HeroSub>
-          We find repetitive, error-prone processes and replace them with workflow
-          automation or custom AI assistants—so your team gets hours back every week.
+          We replace repetitive, error-prone work with workflow automation or
+          custom AI assistants—so your team gets hours back every week.
         </HeroSub>
         <p style={{ fontSize: '14px', color: '#6B7280', margin: '-24px auto 32px', maxWidth: '600px', fontStyle: 'italic' }}>
           Examples: intake routing, follow-ups, weekly reporting, meeting-to-action, support triage
@@ -433,21 +433,21 @@ function HeroSection() {
             Calculate Your Hidden Costs
           </PrimaryButton>
           <SecondaryButton onClick={handleScrollToHow}>
-            See How It Works
+            Get a 1-Page Automation Plan
           </SecondaryButton>
         </HeroCTAGroup>
         <TrustIndicators>
           <TrustBadge>
             <ShieldCheck size={16} />
-            Reliability-first: fallbacks, approvals, audit trails built in
+            Reliability-first: fallbacks, approvals, and audit trails
           </TrustBadge>
           <TrustBadge>
             <Workflow size={16} />
-            Tool-agnostic: Zapier, Make, n8n, or custom-built
+            Tool-agnostic: Zapier, Make, n8n, or custom builds
           </TrustBadge>
           <TrustBadge>
             <ClipboardCheck size={16} />
-            Built so your team can maintain it
+            Maintainable: documentation + handoff so your team can run it
           </TrustBadge>
         </TrustIndicators>
       </HeroContent>
