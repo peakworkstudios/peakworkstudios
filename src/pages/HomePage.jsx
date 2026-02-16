@@ -416,10 +416,12 @@ function HeroSection() {
         <HeroEyebrow>Peak Work Studios &middot; AI &amp; Automation Consulting</HeroEyebrow>
         <HeroH1>Stop Drowning in Manual Work</HeroH1>
         <HeroSub>
-          We find repetitive, error-prone processes and fix them with workflow
-          automation or custom AI assistants—so routine work runs reliably and
-          your team gets hours back every week.
+          We find repetitive, error-prone processes and replace them with workflow
+          automation or custom AI assistants—so your team gets hours back every week.
         </HeroSub>
+        <p style={{ fontSize: '14px', color: '#6B7280', margin: '-24px auto 32px', maxWidth: '600px', fontStyle: 'italic' }}>
+          Examples: intake routing, follow-ups, weekly reporting, meeting-to-action, support triage
+        </p>
         <HeroFitGroup>
           <HeroFitNote>
             Built for agencies, consultancies, and professional service teams (10–50 people).
@@ -437,15 +439,15 @@ function HeroSection() {
         <TrustIndicators>
           <TrustBadge>
             <ShieldCheck size={16} />
-            Reliability-first builds (fallbacks, approvals, audit trails)
+            Reliability-first: fallbacks, approvals, audit trails built in
           </TrustBadge>
           <TrustBadge>
             <Workflow size={16} />
-            Tool-agnostic (Zapier &middot; Make &middot; n8n &middot; custom AI)
+            Tool-agnostic: Zapier, Make, n8n, or custom-built
           </TrustBadge>
           <TrustBadge>
             <ClipboardCheck size={16} />
-            Designed to be maintainable by your team
+            Built so your team can maintain it
           </TrustBadge>
         </TrustIndicators>
       </HeroContent>

@@ -433,7 +433,7 @@ function App() {
           <ThemeToggle onClick={() => setIsDarkMode(!isDarkMode)} aria-label="Toggle dark mode">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </ThemeToggle>
-          <HeaderCTA to="/calculator">Calculate Your Costs</HeaderCTA>
+          <HeaderCTA to="/contact">Book a Discovery Call</HeaderCTA>
           <MobileMenuBtn onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle menu">
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </MobileMenuBtn>

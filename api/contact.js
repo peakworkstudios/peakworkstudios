@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Agency:</strong> ${agencyName || 'Not provided'}</p>
+        <p><strong>Company:</strong> ${agencyName || 'Not provided'}</p>
         <p><strong>Team Size:</strong> ${teamSize || 'Not provided'}</p>
         <p><strong>Active Clients:</strong> ${clientCount || 'Not provided'}</p>
         <p><strong>Pain Point:</strong> ${painPoint}</p>

@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           .map(([category, score], idx) => {
             const bgColor = idx % 2 === 0 ? '#f1f5f9' : '#ffffff';
             const scoreColor = score >= 7 ? '#22c55e' : score >= 5 ? '#f59e0b' : '#ef4444';
-            const status = score >= 7 ? '✅ Strong' : score >= 5 ? '⚠️ Moderate' : '🔴 Needs Work';
+            const status = score >= 7 ? 'Strong' : score >= 5 ? 'Moderate' : 'Needs Work';
             const benchmark = score >= 7 ? 'Above average' : score >= 5 ? 'Average' : 'Below average';
             return `
               <tr style="background:${bgColor};">
@@ -123,13 +123,13 @@ export default async function handler(req, res) {
 
             <!-- Interpretation -->
             <div style="background:#fef2f2;border-left:4px solid ${interpretation.color};padding:20px;margin-bottom:32px;border-radius:8px;">
-              <div style="font-size:14px;font-weight:700;color:#7f1d1d;margin-bottom:8px;">💡 What This Means:</div>
+              <div style="font-size:14px;font-weight:700;color:#7f1d1d;margin-bottom:8px;">What This Means:</div>
               <p style="font-size:14px;color:#7f1d1d;line-height:1.7;margin:0 0 12px;">${interpretation.message}</p>
               <p style="font-size:14px;color:#7f1d1d;line-height:1.7;margin:0;font-weight:600;">Focus area: ${interpretation.focus}</p>
             </div>
 
             <!-- Detailed Scores -->
-            <h3 style="font-size:18px;font-weight:700;color:#0f172a;margin:32px 0 16px;">📊 Category Breakdown</h3>
+            <h3 style="font-size:18px;font-weight:700;color:#0f172a;margin:32px 0 16px;">Category Breakdown</h3>
             ${scoreRows ? `
               <table style="width:100%;border-collapse:collapse;margin:0 0 32px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
                 <thead>
@@ -145,14 +145,14 @@ export default async function handler(req, res) {
 
             <!-- Industry Benchmark -->
             <div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:20px;margin-bottom:32px;border-radius:8px;">
-              <div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px;">📈 Industry Context:</div>
-              <p style="font-size:14px;color:#78350f;line-height:1.7;margin:0;">Most 10-50 person agencies score between 40-60 on this audit. Scores above 70 indicate well-optimized operations. Scores below 50 typically mean <strong>15-20 hours per week</strong> are lost to manual work.</p>
+              <div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:8px;">Industry Context:</div>
+              <p style="font-size:14px;color:#78350f;line-height:1.7;margin:0;">Most 10-50 person teams score between 40-60 on this audit. Scores above 70 indicate well-optimized operations. Scores below 50 typically mean <strong>15-20 hours per week</strong> are lost to manual work.</p>
             </div>
 
             ${quickWins.length > 0 ? `
               <!-- Quick Wins -->
               <div style="background:#f0fdf4;border:1px solid #86efac;padding:20px;margin-bottom:32px;border-radius:8px;">
-                <div style="font-size:14px;font-weight:700;color:#166534;margin-bottom:12px;">🎯 Your Quick Wins:</div>
+                <div style="font-size:14px;font-weight:700;color:#166534;margin-bottom:12px;">Your Quick Wins:</div>
                 <ul style="margin:0;padding-left:20px;font-size:14px;color:#166534;line-height:1.8;">
                   ${quickWins.map(win => `<li style="margin-bottom:8px;">${win}</li>`).join('')}
                 </ul>
@@ -169,7 +169,7 @@ export default async function handler(req, res) {
 
           <!-- Footer -->
           <div style="background:#f8fafc;padding:24px;margin-top:32px;border-top:1px solid #e2e8f0;">
-            <p style="font-size:11px;color:#64748b;line-height:1.6;margin:0 0 8px;"><strong>Disclaimer:</strong> This audit provides a high-level assessment of common operational inefficiencies. Actual time savings and implementation complexity vary by agency workflow, team structure, and tooling. Recommendations are based on typical outcomes — not guarantees.</p>
+            <p style="font-size:11px;color:#64748b;line-height:1.6;margin:0 0 8px;"><strong>Disclaimer:</strong> This audit provides a high-level assessment of common operational inefficiencies. Actual time savings and implementation complexity vary by team workflow, team structure, and tooling. Recommendations are based on typical outcomes — not guarantees.</p>
             <hr style="border:none;border-top:1px solid #cbd5e1;margin:16px 0;" />
             <p style="font-size:12px;color:#64748b;margin:8px 0;text-align:center;">
               <a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#64748b;text-decoration:underline;">Unsubscribe</a> · 
@@ -193,7 +193,7 @@ export default async function handler(req, res) {
         <h2>New Audit Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Agency Size:</strong> ${agencySize || 'Not provided'}</p>
+        <p><strong>Team Size:</strong> ${agencySize || 'Not provided'}</p>
         <p><strong>Pain Point:</strong> ${painPoint || 'Not provided'}</p>
         <p><strong>Total Score:</strong> ${totalScore}/100</p>
         ${scoreRows ? `<table style="width:100%;border-collapse:collapse;margin:16px 0;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:2px solid #38bdf8;">Category</th><th style="text-align:center;padding:8px;border-bottom:2px solid #38bdf8;">Score</th></tr></thead><tbody>${scoreRows}</tbody></table>` : ''}
