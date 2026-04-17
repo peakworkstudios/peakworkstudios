@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { keyframes, css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
-  Send,
-  RotateCcw,
   ChevronRight,
   Lightbulb,
+  RotateCcw,
+  Send,
 } from 'lucide-react';
-
-// ─── Data ───
 
 const questions = [
   {
     id: 0,
     category: 'Onboarding & Setup',
-    text: 'How long does it take to set up a new project or engagement (from agreement to active work)?',
+    text: 'How long does it take to set up a new project or engagement from agreement to active work?',
     options: [
       { label: 'Less than 24 hours', score: 10 },
       { label: '1-2 days', score: 7 },
@@ -31,16 +29,16 @@ const questions = [
     category: 'Communication & Updates',
     text: 'How do stakeholders typically get project status updates?',
     options: [
-      { label: 'They ask, we respond', score: 1 },
+      { label: 'They ask and we respond manually', score: 1 },
       { label: 'We send periodic email updates', score: 5 },
       { label: 'They have access to a dashboard or portal', score: 7 },
-      { label: 'Automated updates + dashboard + self-serve access', score: 10 },
+      { label: 'Automated updates plus dashboard plus self-serve access', score: 10 },
     ],
   },
   {
     id: 2,
     category: 'Time on Status Updates',
-    text: "How much time does your team spend each week fielding questions like 'What's the status?' or 'When will this be done?'",
+    text: "How much time does your team spend each week fielding questions like 'What is the status?' or 'When will this be done?'",
     options: [
       { label: 'Less than 2 hours', score: 10 },
       { label: '2-5 hours', score: 7 },
@@ -55,10 +53,10 @@ const questions = [
     text: 'How are handoffs handled between team members?',
     options: [
       { label: 'Formal handoff process with checklists and documentation', score: 10 },
-      { label: 'Brief meeting or Slack message', score: 5 },
-      { label: 'Files get dumped in a shared folder', score: 2 },
-      { label: 'People just figure it out', score: 0 },
-      { label: "What's a handoff process?", score: 0 },
+      { label: 'A brief meeting or message', score: 5 },
+      { label: 'Files get dropped in a shared folder', score: 2 },
+      { label: 'People figure it out as they go', score: 0 },
+      { label: 'There is no real handoff process', score: 0 },
     ],
   },
   {
@@ -66,18 +64,18 @@ const questions = [
     category: 'Reporting',
     text: 'How long does it take to generate and send a report?',
     options: [
-      { label: 'Less than 30 minutes (automated)', score: 10 },
+      { label: 'Less than 30 minutes and mostly automated', score: 10 },
       { label: '1-2 hours', score: 7 },
       { label: '3-5 hours', score: 4 },
       { label: '6-8 hours', score: 2 },
       { label: 'More than 8 hours', score: 0 },
-      { label: "We don't send regular reports", score: 1 },
+      { label: 'We do not send regular reports', score: 1 },
     ],
   },
   {
     id: 5,
     category: 'Visibility & Tracking',
-    text: "How often do projects go off-track without you realizing until it's too late?",
+    text: 'How often do projects go off-track without you realizing until it is too late?',
     options: [
       { label: 'Never, we have real-time visibility', score: 10 },
       { label: 'Rarely', score: 8 },
@@ -91,11 +89,11 @@ const questions = [
     category: 'Response Time',
     text: 'What happens when someone sends an urgent request outside business hours?',
     options: [
-      { label: 'Automated system handles it or routes it appropriately', score: 10 },
-      { label: "Auto-reply says we'll respond next business day", score: 6 },
-      { label: 'Someone on the team sees it and responds', score: 4 },
-      { label: 'It sits until someone checks in the morning', score: 2 },
-      { label: "We don't know, depends who sees it", score: 0 },
+      { label: 'An automated system handles or routes it appropriately', score: 10 },
+      { label: 'An auto-reply sets expectations for the next business day', score: 6 },
+      { label: 'Someone on the team sees it and responds manually', score: 4 },
+      { label: 'It waits until someone checks in the morning', score: 2 },
+      { label: 'It depends who happens to see it', score: 0 },
     ],
   },
   {
@@ -103,11 +101,11 @@ const questions = [
     category: 'Meeting Follow-through',
     text: 'How do you track what was discussed and decided in meetings?',
     options: [
-      { label: 'AI assistant extracts action items and auto-creates tasks', score: 10 },
+      { label: 'AI extracts action items and creates tasks automatically', score: 10 },
       { label: 'Someone takes detailed notes and follows up', score: 7 },
-      { label: 'Quick notes in a doc or Slack', score: 4 },
-      { label: 'We try to remember', score: 1 },
-      { label: 'We usually forget half of it', score: 0 },
+      { label: 'Quick notes in a doc or chat thread', score: 4 },
+      { label: 'We mostly rely on memory', score: 1 },
+      { label: 'We usually forget part of it', score: 0 },
     ],
   },
   {
@@ -116,19 +114,19 @@ const questions = [
     text: 'How consistent is the quality of deliverables before stakeholders see them?',
     options: [
       { label: 'Automated QC catches issues every time', score: 10 },
-      { label: 'Senior team member reviews everything', score: 8 },
-      { label: 'Peer review for most things', score: 5 },
-      { label: 'Whoever did it reviews their own work', score: 3 },
-      { label: 'Things slip through regularly', score: 0 },
+      { label: 'A senior team member reviews everything', score: 8 },
+      { label: 'Peer review happens for most work', score: 5 },
+      { label: 'People review their own work', score: 3 },
+      { label: 'Issues slip through regularly', score: 0 },
     ],
   },
   {
     id: 9,
     category: 'Scalability',
-    text: 'If your workload increased 50% tomorrow, what would break first?',
+    text: 'If your workload increased by 50% tomorrow, what would break first?',
     options: [
-      { label: 'Nothing, our systems would scale', score: 10 },
-      { label: "We'd need to hire but could handle it", score: 7 },
+      { label: 'Nothing significant, the system would scale', score: 10 },
+      { label: 'We would need to hire but could handle it', score: 7 },
       { label: 'Communication and coordination would collapse', score: 3 },
       { label: 'Project management would fall apart', score: 2 },
       { label: 'Everything would break immediately', score: 0 },
@@ -137,490 +135,681 @@ const questions = [
 ];
 
 const quickWins = {
-  'Onboarding & Setup': 'Create a standardized setup checklist. Cuts onboarding time by 50%.',
-  'Communication & Updates': 'Set up automated weekly status emails. Reduces inbound questions significantly.',
-  'Time on Status Updates': 'Set up a weekly auto-generated status email. Saves hours immediately.',
-  'Handoffs & Coordination': 'Create a simple handoff template in your PM tool. Takes 30 minutes to set up.',
-  'Reporting': 'Template your most common report. Even a spreadsheet template saves 2+ hours.',
-  'Visibility & Tracking': 'Set up a simple project status dashboard. Even a shared spreadsheet helps.',
-  'Response Time': 'Set up an auto-reply with FAQ links. Handles common questions automatically.',
-  'Meeting Follow-through': 'Start recording meetings and use AI transcription. Captures everything.',
-  'Quality Control': 'Create a pre-delivery checklist for your top 3 deliverable types.',
-  Scalability: "Document your top 5 processes. You can't scale what isn't written down.",
+  'Onboarding & Setup': 'Standardize setup with one intake form, one checklist, and one kickoff template.',
+  'Communication & Updates': 'Ship one weekly automated status digest before building a more ambitious dashboard.',
+  'Time on Status Updates': 'Automate recurring status snapshots so the team stops answering the same questions manually.',
+  'Handoffs & Coordination': 'Add a single handoff template with owner, due date, status, and next action.',
+  Reporting: 'Template the most common report and pull recurring metrics from one source of truth.',
+  'Visibility & Tracking': 'Create one shared delivery board with clear stages and blockers visible to everyone.',
+  'Response Time': 'Use triage rules and auto-replies so urgent work reaches the right person immediately.',
+  'Meeting Follow-through': 'Record meetings, summarize actions automatically, and push them into your task system.',
+  'Quality Control': 'Start with a pre-delivery checklist for the three deliverables you ship most often.',
+  Scalability: 'Document the five most repeated workflows first. Scale starts with repeatability.',
 };
 
 const priorityData = {
-  'Onboarding & Setup': { hours: '8 hrs/new project', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
-  'Communication & Updates': { hours: '10 hrs/week', complexity: 'High', timeline: '4-6 weeks', weeklySavings: 10 },
-  'Time on Status Updates': { hours: '12 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 12 },
-  'Handoffs & Coordination': { hours: '5 hrs/week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 5 },
-  'Reporting': { hours: '6 hrs/report', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 6 },
-  'Visibility & Tracking': { hours: '4 hrs/week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 4 },
-  'Response Time': { hours: '8 hrs/week', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
-  'Meeting Follow-through': { hours: '5 hrs/week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 5 },
-  'Quality Control': { hours: '4 hrs/deliverable', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 4 },
+  'Onboarding & Setup': { hours: '8 hrs per new project', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
+  'Communication & Updates': { hours: '10 hrs per week', complexity: 'High', timeline: '4-6 weeks', weeklySavings: 10 },
+  'Time on Status Updates': { hours: '12 hrs per week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 12 },
+  'Handoffs & Coordination': { hours: '5 hrs per week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 5 },
+  Reporting: { hours: '6 hrs per report cycle', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 6 },
+  'Visibility & Tracking': { hours: '4 hrs per week', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 4 },
+  'Response Time': { hours: '8 hrs per week', complexity: 'Medium', timeline: '3-4 weeks', weeklySavings: 8 },
+  'Meeting Follow-through': { hours: '5 hrs per week', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 5 },
+  'Quality Control': { hours: '4 hrs per deliverable', complexity: 'Medium', timeline: '2-3 weeks', weeklySavings: 4 },
   Scalability: { hours: 'Foundational', complexity: 'Low', timeline: '1-2 weeks', weeklySavings: 0 },
 };
 
-// ─── Keyframes ───
+const fadeUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `;
 
-const slideInRight = keyframes`
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
-`;
+const slideCard = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 
-const slideInLeft = keyframes`
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `;
-
-const growWidth = keyframes`
-  from { width: 0; }
-`;
-
-const drawCircleAnimation = keyframes`
-  from { stroke-dashoffset: 283; }
-`;
-
-const AnimatedCircle = styled.circle`
-  animation: ${drawCircleAnimation} 1.2s ease-out forwards;
-`;
-
-const pulse = keyframes`
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-`;
-
-// ─── Styled Components ───
 
 const PageWrapper = styled.div`
   min-height: 100vh;
-  font-family: ${p => p.theme.fontFamily};
-`;
-
-const HeroSection = styled.section`
-  text-align: center;
-  padding: 60px 20px 40px;
-  animation: ${fadeIn} 0.6s ease-out;
+  padding: 92px 16px 88px;
+  background:
+    radial-gradient(circle at top right, rgba(193, 147, 27, 0.16), transparent 24%),
+    linear-gradient(180deg, rgba(251, 248, 241, 0.64), rgba(239, 232, 218, 0.94));
 
   @media (min-width: 769px) {
-    padding: 100px 40px 60px;
+    padding: 116px 28px 120px;
   }
 `;
 
-const HeroHeadline = styled.h1`
-  font-size: clamp(32px, 7vw, 52px);
+const Shell = styled.div`
+  max-width: 1220px;
+  margin: 0 auto;
+`;
+
+const Eyebrow = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
   font-weight: 800;
-  color: ${p => p.theme.text};
-  margin: 0 0 16px;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
-`;
-
-const HeroSub = styled.p`
-  font-size: clamp(16px, 3.5vw, 20px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: ${p => p.theme.textSecondary};
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-`;
 
-const QuizContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px 80px;
-
-  @media (min-width: 769px) {
-    padding: 0 40px 120px;
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${p => p.theme.primary};
   }
 `;
 
-const ProgressWrapper = styled.div`
-  margin-bottom: 40px;
+const HeroGrid = styled.section`
+  display: grid;
+  gap: 20px;
+  margin-bottom: 28px;
+  animation: ${fadeUp} 0.45s ease-out both;
+
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+    align-items: stretch;
+  }
 `;
 
-const ProgressLabel = styled.div`
-  font-size: 14px;
-  font-weight: 600;
+const HeroPanel = styled.div`
+  border: 1px solid ${p => p.theme.border};
+  border-radius: ${p => p.theme.borderRadiusLg};
+  background:
+    linear-gradient(135deg, rgba(193, 147, 27, 0.11), transparent 40%),
+    ${p => p.theme.surface};
+  box-shadow: ${p => p.theme.cardShadow};
+`;
+
+const HeroCopy = styled(HeroPanel)`
+  padding: 24px;
+
+  @media (min-width: 769px) {
+    padding: 38px;
+  }
+`;
+
+const HeroTitle = styled.h1`
+  margin: 16px 0 18px;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2.05rem, 6vw, 4.15rem);
+  line-height: 1.01;
+  letter-spacing: -0.04em;
+  color: ${p => p.theme.text};
+`;
+
+const HeroBody = styled.p`
+  margin: 0;
+  max-width: 720px;
+  font-size: clamp(1rem, 2.1vw, 1.17rem);
+  line-height: 1.75;
   color: ${p => p.theme.textSecondary};
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
 `;
 
-const ProgressBarTrack = styled.div`
-  width: 100%;
-  height: 6px;
+const HeroStats = styled(HeroPanel)`
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+
+  @media (min-width: 769px) {
+    padding: 28px;
+  }
+`;
+
+const StatCard = styled.div`
+  padding: 18px 18px 16px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(214, 204, 184, 0.92);
+`;
+
+const StatValue = styled.div`
+  font-family: ${p => p.theme.headingFont};
+  font-size: 2rem;
+  line-height: 1;
+  color: ${p => p.theme.text};
+  margin-bottom: 8px;
+`;
+
+const StatLabel = styled.div`
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const QuizShell = styled.section`
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 980px) {
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: start;
+  }
+`;
+
+const Sidebar = styled.aside`
+  display: grid;
+  gap: 16px;
+`;
+
+const SidebarCard = styled(HeroPanel)`
+  padding: 22px;
+`;
+
+const SidebarTitle = styled.h2`
+  margin: 0 0 14px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const ProgressValue = styled.div`
+  font-family: ${p => p.theme.headingFont};
+  font-size: 2.3rem;
+  line-height: 1;
+  color: ${p => p.theme.text};
+  margin-bottom: 12px;
+`;
+
+const ProgressTrack = styled.div`
+  height: 10px;
+  border-radius: 999px;
   background: ${p => p.theme.border};
-  border-radius: 3px;
   overflow: hidden;
+  margin-bottom: 12px;
 `;
 
-const ProgressBarFill = styled.div`
+const ProgressFill = styled.div`
   height: 100%;
   width: ${p => p.$percent}%;
-  background: ${p => p.theme.primary};
-  border-radius: 3px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: inherit;
+  background: linear-gradient(90deg, ${p => p.theme.primary}, ${p => p.theme.accent});
+  transition: width 220ms ease;
 `;
 
-const QuestionCard = styled.div`
-  background: ${p => p.theme.surface};
-  border-radius: ${p => p.theme.borderRadiusLg};
-  padding: 40px 32px;
-  box-shadow: ${p => p.theme.cardShadow};
-  animation: ${p => (p.$direction === 'left' ? slideInLeft : slideInRight)} 0.35s ease-out;
+const SidebarCopy = styled.p`
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: ${p => p.theme.textSecondary};
+`;
 
-  @media (max-width: 480px) {
-    padding: 28px 20px;
+const StepList = styled.div`
+  display: grid;
+  gap: 10px;
+`;
+
+const StepItem = styled.div`
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: ${p => (p.$active ? p.theme.text : p.theme.textSecondary)};
+  opacity: ${p => (p.$active ? 1 : 0.74)};
+`;
+
+const StepNumber = styled.div`
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: ${p => p.theme.buttonText};
+  background: ${p => (p.$active ? p.theme.primary : p.theme.border)};
+`;
+
+const StepText = styled.div`
+  font-size: 0.92rem;
+  line-height: 1.5;
+`;
+
+const QuestionPanel = styled(HeroPanel)`
+  padding: 26px;
+  animation: ${slideCard} 0.28s ease-out both;
+
+  @media (min-width: 769px) {
+    padding: 34px;
   }
+`;
+
+const CategoryChip = styled.div`
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(193, 147, 27, 0.14);
+  color: ${p => p.theme.secondary};
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 `;
 
 const QuestionText = styled.h2`
-  font-size: clamp(18px, 4vw, 24px);
-  font-weight: 700;
+  margin: 18px 0 24px;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   color: ${p => p.theme.text};
-  margin: 0 0 32px;
-  line-height: 1.4;
-  letter-spacing: -0.3px;
 `;
 
-const OptionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const OptionList = styled.div`
+  display: grid;
   gap: 12px;
 `;
 
 const OptionButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 16px;
   width: 100%;
-  min-height: 52px;
-  padding: 14px 20px;
-  background: ${p => (p.$selected ? p.theme.primary + '15' : p.theme.background)};
-  border: 2px solid ${p => (p.$selected ? p.theme.primary : p.theme.border)};
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 16px 18px;
   border-radius: ${p => p.theme.borderRadius};
-  cursor: pointer;
-  font-family: ${p => p.theme.fontFamily};
-  font-size: clamp(14px, 3.5vw, 16px);
+  border: 1px solid ${p => (p.$selected ? p.theme.primary : p.theme.border)};
+  background: ${p => (p.$selected ? 'rgba(193, 147, 27, 0.13)' : p.theme.background)};
   color: ${p => p.theme.text};
   text-align: left;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
+    transform: translateY(-1px);
     border-color: ${p => p.theme.primary};
-    background: ${p => p.theme.primary}10;
-    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
   }
 
   &:active {
-    transform: scale(0.99);
+    transform: translateY(0);
   }
 `;
 
-const RadioCircle = styled.span`
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
+const Dot = styled.div`
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 2px solid ${p => (p.$selected ? p.theme.primary : p.theme.border)};
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  margin-top: 1px;
 
   &::after {
     content: '';
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: ${p => (p.$selected ? p.theme.primary : 'transparent')};
-    transition: all 0.2s ease;
+    background: ${p => p.theme.primary};
     transform: scale(${p => (p.$selected ? 1 : 0)});
+    transition: transform 180ms ease;
   }
+`;
+
+const OptionText = styled.div`
+  font-size: 1rem;
+  line-height: 1.6;
 `;
 
 const NavRow = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
+  gap: 12px;
+  margin-top: 28px;
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const NavButton = styled.button`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: ${p => p.theme.borderRadius};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 15px;
-  font-weight: 600;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid ${p => p.theme.border};
+  background: ${p => (p.$primary ? p.theme.primary : 'transparent')};
+  color: ${p => (p.$primary ? p.theme.buttonText : p.theme.text)};
+  font-size: 0.96rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 
-  ${p =>
-    p.$primary
-      ? css`
-          background: ${p.theme.primary};
-          color: #000;
-          &:hover {
-            background: ${p.theme.primaryHover};
-            transform: translateY(-1px);
-          }
-        `
-      : css`
-          background: transparent;
-          color: ${p.theme.textSecondary};
-          &:hover {
-            color: ${p.theme.text};
-          }
-        `}
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: ${p => p.theme.primary};
+    background: ${p => (p.$primary ? p.theme.primaryHover : 'rgba(193, 147, 27, 0.08)')};
+  }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.42;
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
-// ─── Results Styled Components ───
+const ResultsLayout = styled.div`
+  display: grid;
+  gap: 20px;
+  animation: ${fadeUp} 0.4s ease-out both;
+`;
 
-const ResultsWrapper = styled.div`
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px 80px;
-  animation: ${fadeIn} 0.6s ease-out;
+const ResultsTop = styled.section`
+  display: grid;
+  gap: 20px;
 
-  @media (min-width: 769px) {
-    padding: 0 40px 120px;
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(340px, 0.78fr) minmax(0, 1.22fr);
   }
 `;
 
-const ResultsHero = styled.section`
+const ScoreCard = styled(HeroPanel)`
+  padding: 28px;
   text-align: center;
-  padding: 60px 20px 40px;
 
   @media (min-width: 769px) {
-    padding: 100px 40px 60px;
+    padding: 34px;
   }
 `;
 
-const ScoreGaugeWrapper = styled.div`
+const ScoreRing = styled.div`
+  width: 188px;
+  height: 188px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(${p => p.$color} ${p => p.$degrees}deg, rgba(15, 23, 42, 0.08) 0deg);
+
+  &::before {
+    content: '';
+    width: 142px;
+    height: 142px;
+    border-radius: 50%;
+    background: ${p => p.theme.surface};
+    border: 1px solid ${p => p.theme.border};
+    position: absolute;
+  }
+`;
+
+const ScoreInner = styled.div`
   position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 24px;
-
-  @media (min-width: 769px) {
-    width: 240px;
-    height: 240px;
-  }
-`;
-
-const ScoreLabel = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  z-index: 1;
   text-align: center;
 `;
 
-const ScoreNumber = styled.div`
-  font-size: 48px;
-  font-weight: 800;
+const ScoreValue = styled.div`
+  font-family: ${p => p.theme.headingFont};
+  font-size: 3.7rem;
+  line-height: 0.95;
   color: ${p => p.theme.text};
-  letter-spacing: -2px;
-  line-height: 1;
+`;
+
+const ScoreSuffix = styled.div`
+  margin-top: 4px;
+  font-size: 0.94rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const ScoreTag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: ${p => p.$color};
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+`;
+
+const ScoreBody = styled.p`
+  margin: 16px 0 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const ResultsSummary = styled(HeroPanel)`
+  padding: 28px;
+  display: grid;
+  gap: 20px;
 
   @media (min-width: 769px) {
-    font-size: 56px;
+    padding: 34px;
   }
 `;
 
-const ScoreMax = styled.span`
-  font-size: 20px;
-  font-weight: 500;
+const SummaryTitle = styled.h2`
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: ${p => p.theme.text};
+`;
+
+const SummaryText = styled.p`
+  margin: 0;
+  max-width: 760px;
+  font-size: 1.02rem;
+  line-height: 1.75;
   color: ${p => p.theme.textSecondary};
 `;
 
-const ScoreBadge = styled.div`
-  display: inline-block;
-  padding: 8px 24px;
-  border-radius: 100px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  background: ${p => p.$color};
-  margin-bottom: 16px;
-  animation: ${pulse} 2.5s ease-in-out infinite;
+const InsightGrid = styled.div`
+  display: grid;
+  gap: 14px;
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 `;
 
-const ScoreDescription = styled.p`
-  font-size: clamp(16px, 3.5vw, 18px);
+const InsightCard = styled.div`
+  padding: 18px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid ${p => p.theme.border};
+`;
+
+const InsightLabel = styled.div`
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: ${p => p.theme.textSecondary};
-  max-width: 600px;
-  margin: 0 auto;
+  margin-bottom: 10px;
+`;
+
+const InsightValue = styled.div`
+  font-size: 1rem;
   line-height: 1.6;
+  color: ${p => p.theme.text};
+`;
+
+const Section = styled.section`
+  display: grid;
+  gap: 20px;
+`;
+
+const SectionHeader = styled.div`
+  display: grid;
+  gap: 10px;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: clamp(22px, 5vw, 30px);
-  font-weight: 800;
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(1.9rem, 3vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
   color: ${p => p.theme.text};
-  margin: 0 0 32px;
-  letter-spacing: -0.5px;
 `;
 
-const SectionBlock = styled.section`
-  margin-bottom: 60px;
-
-  @media (min-width: 769px) {
-    margin-bottom: 80px;
-  }
-`;
-
-const CategoryRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  animation: ${fadeIn} 0.5s ease-out;
-  animation-delay: ${p => p.$delay || '0s'};
-  animation-fill-mode: both;
-
-  @media (max-width: 600px) {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-`;
-
-const CategoryLabel = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${p => p.theme.text};
-  min-width: 180px;
-  flex-shrink: 0;
-
-  @media (max-width: 600px) {
-    min-width: 100%;
-  }
-`;
-
-const CategoryBarTrack = styled.div`
-  flex: 1;
-  height: 12px;
-  background: ${p => p.theme.border};
-  border-radius: 6px;
-  overflow: hidden;
-  min-width: 100px;
-`;
-
-const CategoryBarFill = styled.div`
-  height: 100%;
-  width: ${p => p.$percent}%;
-  background: ${p => p.$color};
-  border-radius: 6px;
-  animation: ${growWidth} 0.8s ease-out;
-  animation-delay: ${p => p.$delay || '0s'};
-  animation-fill-mode: both;
-`;
-
-const CategoryScore = styled.span`
-  font-size: 14px;
-  font-weight: 700;
-  color: ${p => p.$color};
-  min-width: 40px;
-  text-align: right;
-`;
-
-const QuickWinBadge = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: -8px 0 16px 0;
-  padding: 12px 16px;
-  background: ${p => p.theme.warning}12;
-  border-left: 3px solid ${p => p.theme.warning};
-  border-radius: 0 ${p => p.theme.borderRadiusSm} ${p => p.theme.borderRadiusSm} 0;
-  font-size: 13px;
+const SectionIntro = styled.p`
+  margin: 0;
+  max-width: 760px;
+  font-size: 1rem;
+  line-height: 1.75;
   color: ${p => p.theme.textSecondary};
-  line-height: 1.5;
-  animation: ${fadeIn} 0.5s ease-out;
-  animation-delay: ${p => p.$delay || '0s'};
-  animation-fill-mode: both;
+`;
+
+const BreakdownGrid = styled.div`
+  display: grid;
+  gap: 16px;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1080px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+`;
+
+const BreakdownCard = styled(HeroPanel)`
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+`;
+
+const BreakdownTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+`;
+
+const BreakdownTitle = styled.h3`
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: ${p => p.theme.text};
+`;
+
+const BreakdownScore = styled.div`
+  min-width: 58px;
+  text-align: right;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: ${p => p.$color};
+`;
+
+const BreakdownTrack = styled.div`
+  height: 10px;
+  border-radius: 999px;
+  background: ${p => p.theme.border};
+  overflow: hidden;
+`;
+
+const BreakdownFill = styled.div`
+  width: ${p => p.$percent}%;
+  height: 100%;
+  border-radius: inherit;
+  background: ${p => p.$color};
+`;
+
+const QuickWin = styled.div`
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 10px;
+  padding: 14px;
+  border-radius: ${p => p.theme.borderRadiusSm};
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.18);
+  color: ${p => p.theme.textSecondary};
+  font-size: 0.92rem;
+  line-height: 1.6;
 
   svg {
     color: ${p => p.theme.warning};
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-`;
-
-const PriorityCard = styled.div`
-  background: ${p => p.theme.surface};
-  border-radius: ${p => p.theme.borderRadiusLg};
-  padding: 28px;
-  box-shadow: ${p => p.theme.cardShadow};
-  border-top: 4px solid ${p => p.$color || p.theme.primary};
-  animation: ${fadeIn} 0.5s ease-out;
-  animation-delay: ${p => p.$delay || '0s'};
-  animation-fill-mode: both;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    margin-top: 2px;
   }
 `;
 
 const PriorityGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  gap: 16px;
+
+  @media (min-width: 840px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 `;
 
-const PriorityNumber = styled.span`
+const PriorityCard = styled(HeroPanel)`
+  padding: 22px;
+  border-top: 4px solid ${p => p.$accent};
+  display: grid;
+  gap: 14px;
+`;
+
+const PriorityRank = styled.div`
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: ${p => p.$color};
+  background: ${p => p.$accent};
   color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  margin-right: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
 `;
 
 const PriorityTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 700;
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.4;
   color: ${p => p.theme.text};
-  margin: 0 0 20px;
-  display: flex;
-  align-items: center;
+`;
+
+const MetricList = styled.div`
+  display: grid;
+  gap: 10px;
 `;
 
 const MetricRow = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid ${p => p.theme.border};
-  font-size: 14px;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid ${p => p.theme.border};
+  font-size: 0.94rem;
 `;
 
 const MetricLabel = styled.span`
@@ -628,90 +817,131 @@ const MetricLabel = styled.span`
 `;
 
 const MetricValue = styled.span`
-  font-weight: 600;
-  color: ${p => p.theme.text};
+  text-align: right;
+  font-weight: 700;
+  color: ${p => p.$color || p.theme.text};
 `;
 
-const ComparisonBox = styled.div`
-  background: ${p => p.theme.surface};
-  border-radius: ${p => p.theme.borderRadiusLg};
-  padding: 40px 32px;
-  text-align: center;
-  box-shadow: ${p => p.theme.cardShadow};
+const ComparisonCard = styled(HeroPanel)`
+  padding: 28px;
+  display: grid;
+  gap: 20px;
 
-  @media (max-width: 480px) {
-    padding: 28px 20px;
+  @media (min-width: 900px) {
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: center;
   }
 `;
 
-const PercentileNumber = styled.div`
-  font-size: 56px;
-  font-weight: 800;
+const PercentileBlock = styled.div`
+  padding: 24px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(16, 33, 59, 0.06);
+  text-align: center;
+`;
+
+const PercentileValue = styled.div`
+  font-family: ${p => p.theme.headingFont};
+  font-size: 4rem;
+  line-height: 0.95;
   color: ${p => p.theme.primary};
-  letter-spacing: -2px;
-  line-height: 1;
-  margin-bottom: 8px;
+`;
+
+const PercentileLabel = styled.div`
+  margin-top: 6px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
 `;
 
 const BulletList = styled.ul`
-  text-align: left;
-  max-width: 500px;
-  margin: 20px auto 0;
-  padding-left: 24px;
-  font-size: 15px;
+  margin: 0;
+  padding-left: 18px;
   color: ${p => p.theme.textSecondary};
   line-height: 1.9;
 `;
 
-const CTASection = styled.section`
-  background: ${p => p.theme.surface};
-  border-radius: ${p => p.theme.borderRadiusLg};
-  padding: 48px 32px;
-  text-align: center;
-  box-shadow: ${p => p.theme.cardShadow};
-  margin-bottom: 60px;
+const CtaCard = styled(HeroPanel)`
+  padding: 28px;
+  display: grid;
+  gap: 20px;
 
-  @media (max-width: 480px) {
-    padding: 36px 20px;
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: start;
   }
 `;
 
-const CTATitle = styled.h2`
-  font-size: clamp(22px, 5vw, 30px);
-  font-weight: 800;
-  color: ${p => p.theme.text};
-  margin: 0 0 8px;
-  letter-spacing: -0.5px;
+const CtaCopy = styled.div`
+  display: grid;
+  gap: 12px;
 `;
 
-const CTASub = styled.p`
-  font-size: 16px;
+const CtaTitle = styled.h2`
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: ${p => p.theme.text};
+`;
+
+const CtaBody = styled.p`
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
   color: ${p => p.theme.textSecondary};
-  margin: 0 0 32px;
+`;
+
+const Checklist = styled.div`
+  display: grid;
+  gap: 10px;
+`;
+
+const ChecklistItem = styled.div`
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  color: ${p => p.theme.textSecondary};
+  line-height: 1.6;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 50%;
+    background: ${p => p.theme.primary};
+  }
+`;
+
+const FormWrap = styled.div`
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid ${p => p.theme.border};
+  padding: 20px;
 `;
 
 const FormGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  max-width: 560px;
-  margin: 0 auto;
+  gap: 14px;
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 680px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 
-const FormInput = styled.input`
+const sharedFieldStyles = css`
   width: 100%;
+  min-height: 52px;
   padding: 14px 16px;
+  border-radius: ${p => p.theme.borderRadiusSm};
   border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadius};
-  background: ${p => p.theme.background};
+  background: ${p => p.theme.surface};
   color: ${p => p.theme.text};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 15px;
-  transition: border-color 0.2s ease;
 
   &:focus {
     outline: none;
@@ -723,45 +953,19 @@ const FormInput = styled.input`
   }
 `;
 
-const FormSelect = styled.select`
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadius};
-  background: ${p => p.theme.background};
-  color: ${p => p.theme.text};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 15px;
-  cursor: pointer;
-  appearance: auto;
-
-  &:focus {
-    outline: none;
-    border-color: ${p => p.theme.primary};
-  }
+const Input = styled.input`
+  ${sharedFieldStyles}
 `;
 
-const FormTextarea = styled.textarea`
-  width: 100%;
-  padding: 14px 16px;
-  border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadius};
-  background: ${p => p.theme.background};
-  color: ${p => p.theme.text};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 15px;
+const Select = styled.select`
+  ${sharedFieldStyles}
+`;
+
+const Textarea = styled.textarea`
+  ${sharedFieldStyles}
+  min-height: 126px;
   resize: vertical;
-  min-height: 100px;
   grid-column: 1 / -1;
-
-  &:focus {
-    outline: none;
-    border-color: ${p => p.theme.primary};
-  }
-
-  &::placeholder {
-    color: ${p => p.theme.textSecondary};
-  }
 `;
 
 const SubmitButton = styled.button`
@@ -769,198 +973,172 @@ const SubmitButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 16px 32px;
-  background: ${p => p.theme.primary};
-  color: #000;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 22px;
+  border-radius: 999px;
   border: none;
-  border-radius: ${p => p.theme.borderRadius};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 16px;
-  font-weight: 700;
+  background: ${p => p.theme.primary};
+  color: ${p => p.theme.buttonText};
+  font-size: 0.98rem;
+  font-weight: 800;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 180ms ease, background-color 180ms ease;
 
-  &:hover {
-    background: ${p => p.theme.primaryHover};
+  &:hover:not(:disabled) {
     transform: translateY(-1px);
+    background: ${p => p.theme.primaryHover};
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.56;
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
-const SuccessMessage = styled.div`
-  text-align: center;
-  padding: 32px;
-  animation: ${fadeIn} 0.4s ease-out;
+const SuccessCard = styled.div`
+  display: grid;
+  gap: 12px;
+  place-items: start;
+  text-align: left;
 
   svg {
     color: ${p => p.theme.success};
-    margin-bottom: 12px;
   }
 `;
 
-const SocialProofGrid = styled.div`
+const ProofGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-bottom: 48px;
+  gap: 16px;
+
+  @media (min-width: 760px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 `;
 
-const ProofCard = styled.div`
-  background: ${p => p.theme.surface};
-  border-radius: ${p => p.theme.borderRadius};
-  padding: 28px;
+const ProofCard = styled(HeroPanel)`
+  padding: 22px;
   text-align: center;
-  box-shadow: ${p => p.theme.cardShadow};
-  animation: ${fadeIn} 0.5s ease-out;
-  animation-delay: ${p => p.$delay || '0s'};
-  animation-fill-mode: both;
-`;
-
-const ProofArrow = styled.span`
-  font-size: 24px;
-  font-weight: 800;
-  color: ${p => p.theme.success};
 `;
 
 const ProofScore = styled.div`
-  font-size: 28px;
-  font-weight: 800;
+  font-family: ${p => p.theme.headingFont};
+  font-size: 2.5rem;
+  line-height: 1;
   color: ${p => p.theme.text};
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  margin-bottom: 10px;
 `;
 
-const ProofLabel = styled.div`
-  font-size: 14px;
-  color: ${p => p.theme.textSecondary};
-`;
-
-const AuditDisclaimer = styled.p`
-  text-align: center;
-  font-size: 13px;
-  color: ${p => p.theme.textSecondary};
-  max-width: 700px;
-  margin: 16px auto 32px;
-  padding: 16px 24px;
-  background: ${p => p.theme.surface};
-  border: 1px solid ${p => p.theme.border};
-  border-radius: 8px;
+const ProofMeta = styled.div`
+  font-size: 0.95rem;
   line-height: 1.6;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const FooterActions = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
 `;
 
 const RetakeButton = styled.button`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid ${p => p.theme.border};
   background: transparent;
   color: ${p => p.theme.textSecondary};
-  border: 2px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadius};
-  font-family: ${p => p.theme.fontFamily};
-  font-size: 15px;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin: 0 auto;
-  display: flex;
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
 
   &:hover {
+    color: ${p => p.theme.text};
     border-color: ${p => p.theme.primary};
-    color: ${p => p.theme.primary};
+    transform: translateY(-1px);
   }
 `;
 
-// ─── Helper Functions ───
-
 function getScoreInfo(score) {
-  if (score >= 80) return { label: 'Scaling Machine', color: '#10b981', description: 'Your operations run like a well-oiled machine. You have strong systems in place, and you are well-positioned to scale without adding proportional headcount. Focus on fine-tuning and staying ahead of the curve.' };
-  if (score >= 60) return { label: 'Growing Pains', color: '#f59e0b', description: 'You have some solid processes, but gaps are starting to show as you grow. A few targeted automations could eliminate the bottlenecks holding you back and free up serious capacity.' };
-  if (score >= 40) return { label: 'Duct Tape & Workarounds', color: '#f97316', description: 'Your team is working hard, but a lot of effort goes into keeping things from falling apart. The good news: the biggest improvements are often the easiest to implement. You are sitting on a goldmine of recoverable hours.' };
-  return { label: 'Needs Attention', color: '#ef4444', description: 'Things are getting done, but it is costing you far more time, money, and stress than it should. The upside is massive: teams at your score typically recover 20-30 hours per week with the right automations.' };
+  if (score >= 80) {
+    return {
+      label: 'Scaling Machine',
+      color: '#0f766e',
+      description: 'Your delivery engine already has strong systems behind it. The next gains come from tightening edge cases, exceptions, and high-value handoffs.',
+    };
+  }
+
+  if (score >= 60) {
+    return {
+      label: 'Growing Pains',
+      color: '#b45309',
+      description: 'The team has a workable operating rhythm, but manual coordination is starting to tax delivery. A focused roadmap would unlock capacity without adding headcount immediately.',
+    };
+  }
+
+  if (score >= 40) {
+    return {
+      label: 'Duct Tape Zone',
+      color: '#ea580c',
+      description: 'Important work is getting done, but too much effort is going into keeping the system upright. This is usually where the highest-return automation opportunities live.',
+    };
+  }
+
+  return {
+    label: 'Needs Attention',
+    color: '#b91c1c',
+    description: 'The current workflow is creating avoidable drag in multiple places. The upside is meaningful because even basic structure would recover hours quickly.',
+  };
 }
 
 function getBarColor(score) {
-  if (score > 7) return '#10b981';
-  if (score > 4) return '#f59e0b';
-  return '#ef4444';
+  if (score >= 8) return '#0f766e';
+  if (score >= 5) return '#b45309';
+  return '#b91c1c';
 }
 
 function getComplexityColor(complexity) {
-  if (complexity === 'Low') return '#10b981';
-  if (complexity === 'Medium') return '#f59e0b';
-  return '#ef4444';
+  if (complexity === 'Low') return '#0f766e';
+  if (complexity === 'Medium') return '#b45309';
+  return '#b91c1c';
 }
-
-// ─── Score Gauge Component ───
-
-function ScoreGauge({ score, color }) {
-  const radius = 45;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
-
-  return (
-    <ScoreGaugeWrapper>
-      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
-        <circle cx="50" cy="50" r={radius} fill="none" stroke="currentColor" strokeWidth="6" opacity="0.1" />
-        <AnimatedCircle
-          cx="50"
-          cy="50"
-          r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-        />
-      </svg>
-      <ScoreLabel>
-        <ScoreNumber>
-          {score}
-          <ScoreMax>/100</ScoreMax>
-        </ScoreNumber>
-      </ScoreLabel>
-    </ScoreGaugeWrapper>
-  );
-}
-
-// ─── Main Component ───
 
 export default function AuditPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState(Array(10).fill(null));
   const [showResults, setShowResults] = useState(false);
-  const [slideDir, setSlideDir] = useState('right');
-  const [formData, setFormData] = useState({ name: '', email: '', agencySize: '', painPoint: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    agencySize: '',
+    painPoint: '',
+  });
+  const [cardDirection, setCardDirection] = useState('forward');
   const cardKey = useRef(0);
 
-  // Load saved progress on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('pws-audit-progress');
-      if (saved) {
-        const data = JSON.parse(saved);
-        if (data.answers) setAnswers(data.answers);
-        if (typeof data.currentQuestion === 'number') setCurrentQuestion(data.currentQuestion);
-        if (data.showResults) setShowResults(true);
+      if (!saved) return;
+
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed.answers) && parsed.answers.length === questions.length) {
+        setAnswers(parsed.answers);
+      }
+      if (typeof parsed.currentQuestion === 'number') {
+        setCurrentQuestion(parsed.currentQuestion);
+      }
+      if (parsed.showResults) {
+        setShowResults(true);
       }
     } catch {
-      // ignore
+      // ignore invalid local state
     }
   }, []);
 
-  // Save progress on each answer
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -968,7 +1146,7 @@ export default function AuditPage() {
         JSON.stringify({ answers, currentQuestion, showResults })
       );
     } catch {
-      // ignore
+      // ignore storage errors
     }
   }, [answers, currentQuestion, showResults]);
 
@@ -976,36 +1154,36 @@ export default function AuditPage() {
     document.title = 'Operations Audit | Peak Work Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Take a free 5-minute operations audit to find out where your team is losing time to manual work and get quick-win recommendations.';
+      metaDescription.content = 'Take the Peak Work Studios operations audit to identify workflow bottlenecks, manual coordination debt, and the highest-leverage automation opportunities.';
     }
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.href = 'https://peakworkstudios.com/audit';
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.href = 'https://peakworkstudios.com/audit';
+    }
   }, []);
 
-  const selectAnswer = (questionIdx, optionIdx) => {
-    const newAnswers = [...answers];
-    newAnswers[questionIdx] = optionIdx;
-    setAnswers(newAnswers);
+  const selectAnswer = (questionIndex, optionIndex) => {
+    const nextAnswers = [...answers];
+    nextAnswers[questionIndex] = optionIndex;
+    setAnswers(nextAnswers);
 
-    // Auto-advance after brief delay (except last question)
-    if (questionIdx < 9) {
-      setTimeout(() => {
-        setSlideDir('right');
+    if (questionIndex < questions.length - 1) {
+      window.setTimeout(() => {
+        setCardDirection('forward');
         cardKey.current += 1;
-        setCurrentQuestion(questionIdx + 1);
-      }, 300);
+        setCurrentQuestion(questionIndex + 1);
+      }, 180);
     }
   };
 
   const goBack = () => {
-    if (currentQuestion > 0) {
-      setSlideDir('left');
-      cardKey.current += 1;
-      setCurrentQuestion(currentQuestion - 1);
-    }
+    if (currentQuestion === 0) return;
+    setCardDirection('back');
+    cardKey.current += 1;
+    setCurrentQuestion(currentQuestion - 1);
   };
 
-  const submitQuiz = () => {
+  const showFinalResults = () => {
     setShowResults(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1020,29 +1198,38 @@ export default function AuditPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Compute score
-  const totalScore = answers.reduce((sum, optionIdx, qIdx) => {
-    if (optionIdx === null) return sum;
-    return sum + questions[qIdx].options[optionIdx].score;
+  const totalScore = answers.reduce((sum, optionIndex, questionIndex) => {
+    if (optionIndex === null) return sum;
+    return sum + questions[questionIndex].options[optionIndex].score;
   }, 0);
 
-  const categoryScores = questions.map((q, idx) => ({
-    category: q.category,
-    score: answers[idx] !== null ? q.options[answers[idx]].score : 0,
+  const categoryScores = questions.map((question, index) => ({
+    category: question.category,
+    score: answers[index] === null ? 0 : question.options[answers[index]].score,
   }));
 
+  const sortedCategories = [...categoryScores].sort((a, b) => a.score - b.score);
+  const topPriorities = sortedCategories.slice(0, 3);
   const scoreInfo = getScoreInfo(totalScore);
   const percentile = Math.min(95, Math.max(5, totalScore + 10));
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  const current = questions[currentQuestion];
 
-  // Top 3 priorities (lowest scores)
-  const sortedCategories = [...categoryScores].sort((a, b) => a.score - b.score);
-  const top3 = sortedCategories.slice(0, 3);
+  const weakestArea = topPriorities[0]?.category || 'Workflow coordination';
+  const strongestArea = [...categoryScores].sort((a, b) => b.score - a.score)[0]?.category || 'Delivery visibility';
+  const annualizedValue = topPriorities.reduce((sum, item) => {
+    const weeklySavings = priorityData[item.category]?.weeklySavings || 0;
+    return sum + weeklySavings * 75 * 52;
+  }, 0);
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async event => {
+    event.preventDefault();
     try {
-      const scoreMap = {};
-      categoryScores.forEach(c => { scoreMap[c.category] = c.score; });
+      const scores = {};
+      categoryScores.forEach(item => {
+        scores[item.category] = item.score;
+      });
+
       await fetch('/api/audit-submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1051,326 +1238,397 @@ export default function AuditPage() {
           email: formData.email,
           agencySize: formData.agencySize,
           painPoint: formData.painPoint,
-          scores: scoreMap,
+          scores,
           totalScore,
         }),
       });
     } catch {
-      // still show success
+      // keep UX optimistic even if the endpoint fails
     }
+
     setFormSubmitted(true);
   };
 
-  // ─── Quiz View ───
   if (!showResults) {
-    const q = questions[currentQuestion];
-    const progress = ((currentQuestion + 1) / 10) * 100;
-
     return (
       <PageWrapper>
-        <HeroSection>
-          <HeroHeadline>The Operations Audit</HeroHeadline>
-          <HeroSub>
-            10 questions about your workflows. Get scored results with prioritized fixes in 3 minutes.
-          </HeroSub>
-        </HeroSection>
+        <Shell>
+          <HeroGrid>
+            <HeroCopy>
+              <Eyebrow>Operational maturity audit</Eyebrow>
+              <HeroTitle>A fast operator audit for service teams carrying too much manual work.</HeroTitle>
+              <HeroBody>
+                Answer ten questions about setup, reporting, handoffs, visibility, and delivery control. You will get a scored readout, three priority areas, and clear direction on where automation would actually pay off.
+              </HeroBody>
+            </HeroCopy>
 
-        <QuizContainer>
-          <ProgressWrapper>
-            <ProgressLabel>Question {currentQuestion + 1} of 10</ProgressLabel>
-            <ProgressBarTrack>
-              <ProgressBarFill $percent={progress} />
-            </ProgressBarTrack>
-          </ProgressWrapper>
+            <HeroStats>
+              <StatCard>
+                <StatValue>10</StatValue>
+                <StatLabel>Questions that cut directly into how your team runs delivery.</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>5 min</StatValue>
+                <StatLabel>No fluff. This is built to surface operational drag fast.</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>3</StatValue>
+                <StatLabel>Clear priority areas at the end instead of generic advice.</StatLabel>
+              </StatCard>
+            </HeroStats>
+          </HeroGrid>
 
-          <QuestionCard key={cardKey.current} $direction={slideDir === 'right' ? 'right' : 'left'}>
-            <QuestionText>{q.text}</QuestionText>
-            <OptionsContainer>
-              {q.options.map((opt, idx) => (
-                <OptionButton
-                  key={idx}
-                  $selected={answers[currentQuestion] === idx}
-                  onClick={() => selectAnswer(currentQuestion, idx)}
-                  type="button"
-                >
-                  <RadioCircle $selected={answers[currentQuestion] === idx} />
-                  {opt.label}
-                </OptionButton>
-              ))}
-            </OptionsContainer>
+          <QuizShell>
+            <Sidebar>
+              <SidebarCard>
+                <SidebarTitle>Progress</SidebarTitle>
+                <ProgressValue>{currentQuestion + 1} / {questions.length}</ProgressValue>
+                <ProgressTrack>
+                  <ProgressFill $percent={progress} />
+                </ProgressTrack>
+                <SidebarCopy>
+                  The score rewards consistency, visibility, and repeatable handoffs. Low scores usually point to manual coordination debt rather than lack of effort.
+                </SidebarCopy>
+              </SidebarCard>
 
-            <NavRow>
-              <NavButton onClick={goBack} disabled={currentQuestion === 0} type="button">
-                <ArrowLeft size={16} />
-                Back
-              </NavButton>
+              <SidebarCard>
+                <SidebarTitle>What this covers</SidebarTitle>
+                <StepList>
+                  {[
+                    'Client and project onboarding',
+                    'Status reporting and stakeholder updates',
+                    'Handoffs, meeting follow-through, and QC',
+                    'Scalability and response coverage',
+                  ].map((label, index) => (
+                    <StepItem key={label} $active={index <= Math.floor(currentQuestion / 3)}>
+                      <StepNumber $active={index <= Math.floor(currentQuestion / 3)}>{index + 1}</StepNumber>
+                      <StepText>{label}</StepText>
+                    </StepItem>
+                  ))}
+                </StepList>
+              </SidebarCard>
+            </Sidebar>
 
-              {currentQuestion === 9 ? (
-                <NavButton
-                  $primary
-                  onClick={submitQuiz}
-                  disabled={answers[9] === null}
-                  type="button"
-                >
-                  See My Results
-                  <ArrowRight size={16} />
+            <QuestionPanel key={`${cardDirection}-${cardKey.current}`}>
+              <CategoryChip>{current.category}</CategoryChip>
+              <QuestionText>{current.text}</QuestionText>
+
+              <OptionList>
+                {current.options.map((option, index) => (
+                  <OptionButton
+                    key={option.label}
+                    type="button"
+                    $selected={answers[currentQuestion] === index}
+                    onClick={() => selectAnswer(currentQuestion, index)}
+                  >
+                    <Dot $selected={answers[currentQuestion] === index} />
+                    <OptionText>{option.label}</OptionText>
+                  </OptionButton>
+                ))}
+              </OptionList>
+
+              <NavRow>
+                <NavButton type="button" onClick={goBack} disabled={currentQuestion === 0}>
+                  <ArrowLeft size={16} />
+                  Back
                 </NavButton>
-              ) : (
-                <NavButton
-                  onClick={() => {
-                    if (answers[currentQuestion] !== null) {
-                      setSlideDir('right');
+
+                {currentQuestion === questions.length - 1 ? (
+                  <NavButton
+                    type="button"
+                    $primary
+                    onClick={showFinalResults}
+                    disabled={answers[currentQuestion] === null}
+                  >
+                    See results
+                    <ArrowRight size={16} />
+                  </NavButton>
+                ) : (
+                  <NavButton
+                    type="button"
+                    $primary
+                    onClick={() => {
+                      if (answers[currentQuestion] === null) return;
+                      setCardDirection('forward');
                       cardKey.current += 1;
                       setCurrentQuestion(currentQuestion + 1);
-                    }
-                  }}
-                  disabled={answers[currentQuestion] === null}
-                  type="button"
-                >
-                  Next
-                  <ArrowRight size={16} />
-                </NavButton>
-              )}
-            </NavRow>
-          </QuestionCard>
-        </QuizContainer>
+                    }}
+                    disabled={answers[currentQuestion] === null}
+                  >
+                    Next question
+                    <ArrowRight size={16} />
+                  </NavButton>
+                )}
+              </NavRow>
+            </QuestionPanel>
+          </QuizShell>
+        </Shell>
       </PageWrapper>
     );
   }
 
-  // ─── Results View ───
   return (
     <PageWrapper>
-      <ResultsHero>
-        <ScoreGauge score={totalScore} color={scoreInfo.color} />
-        <ScoreBadge $color={scoreInfo.color}>{scoreInfo.label}</ScoreBadge>
-        <ScoreDescription>{scoreInfo.description}</ScoreDescription>
-      </ResultsHero>
+      <Shell>
+        <ResultsLayout>
+          <ResultsTop>
+            <ScoreCard>
+              <ScoreRing $color={scoreInfo.color} $degrees={Math.max(12, totalScore * 3.6)}>
+                <ScoreInner>
+                  <ScoreValue>{totalScore}</ScoreValue>
+                  <ScoreSuffix>out of 100</ScoreSuffix>
+                </ScoreInner>
+              </ScoreRing>
+              <ScoreTag $color={scoreInfo.color}>{scoreInfo.label}</ScoreTag>
+              <ScoreBody>{scoreInfo.description}</ScoreBody>
+            </ScoreCard>
 
-      <ResultsWrapper>
-        {/* Category Breakdown */}
-        <SectionBlock>
-          <SectionTitle>Where You're Strong (and Where You're Losing Time)</SectionTitle>
-          {categoryScores.map((cat, idx) => (
-            <React.Fragment key={cat.category}>
-              <CategoryRow $delay={`${idx * 0.08}s`}>
-                <CategoryLabel>{cat.category}</CategoryLabel>
-                <CategoryBarTrack>
-                  <CategoryBarFill
-                    $percent={cat.score * 10}
-                    $color={getBarColor(cat.score)}
-                    $delay={`${idx * 0.08}s`}
-                  />
-                </CategoryBarTrack>
-                <CategoryScore $color={getBarColor(cat.score)}>
-                  {cat.score}/10
-                </CategoryScore>
-              </CategoryRow>
-              {cat.score <= 4 && (
-                <QuickWinBadge $delay={`${idx * 0.08 + 0.1}s`}>
-                  <Lightbulb size={16} />
-                  <span>
-                    <strong>Quick win:</strong> {quickWins[cat.category]}
-                  </span>
-                </QuickWinBadge>
-              )}
-            </React.Fragment>
-          ))}
-        </SectionBlock>
+            <ResultsSummary>
+              <Eyebrow>Audit results</Eyebrow>
+              <SummaryTitle>Your operations story is clear.</SummaryTitle>
+              <SummaryText>
+                Your strongest area is {strongestArea.toLowerCase()}, but the biggest drag is showing up in {weakestArea.toLowerCase()}. If those three weakest areas were tightened first, the recovered operating capacity is worth roughly ${annualizedValue.toLocaleString()} per year at a $75 blended hourly rate.
+              </SummaryText>
 
-        {/* Top 3 Priorities */}
-        <SectionBlock>
-          <SectionTitle>Your Top 3 Priorities</SectionTitle>
-          <PriorityGrid>
-            {top3.map((cat, idx) => {
-              const data = priorityData[cat.category];
-              const color = ['#ef4444', '#f97316', '#f59e0b'][idx];
-              const annualValue =
-                data.weeklySavings > 0
-                  ? `$${(75 * data.weeklySavings * 52).toLocaleString()}/year`
+              <InsightGrid>
+                <InsightCard>
+                  <InsightLabel>Weakest area</InsightLabel>
+                  <InsightValue>{weakestArea}</InsightValue>
+                </InsightCard>
+                <InsightCard>
+                  <InsightLabel>Strongest area</InsightLabel>
+                  <InsightValue>{strongestArea}</InsightValue>
+                </InsightCard>
+                <InsightCard>
+                  <InsightLabel>Relative standing</InsightLabel>
+                  <InsightValue>{percentile}th percentile versus teams of similar size</InsightValue>
+                </InsightCard>
+              </InsightGrid>
+            </ResultsSummary>
+          </ResultsTop>
+
+          <Section>
+            <SectionHeader>
+              <SectionTitle>Where the system is holding, and where it is leaking time</SectionTitle>
+              <SectionIntro>
+                This view is meant to be diagnostic. Scores under 5 usually mean the work still depends on human memory, manual chasing, or inconsistent follow-through.
+              </SectionIntro>
+            </SectionHeader>
+
+            <BreakdownGrid>
+              {categoryScores.map(item => {
+                const color = getBarColor(item.score);
+                return (
+                  <BreakdownCard key={item.category}>
+                    <BreakdownTop>
+                      <BreakdownTitle>{item.category}</BreakdownTitle>
+                      <BreakdownScore $color={color}>{item.score}/10</BreakdownScore>
+                    </BreakdownTop>
+                    <BreakdownTrack>
+                      <BreakdownFill $percent={item.score * 10} $color={color} />
+                    </BreakdownTrack>
+                    {item.score <= 4 ? (
+                      <QuickWin>
+                        <Lightbulb size={16} />
+                        <span>{quickWins[item.category]}</span>
+                      </QuickWin>
+                    ) : null}
+                  </BreakdownCard>
+                );
+              })}
+            </BreakdownGrid>
+          </Section>
+
+          <Section>
+            <SectionHeader>
+              <SectionTitle>Your first three priorities</SectionTitle>
+              <SectionIntro>
+                These are the areas most likely to return time quickly and reduce coordination overhead without forcing a full systems overhaul first.
+              </SectionIntro>
+            </SectionHeader>
+
+            <PriorityGrid>
+              {topPriorities.map((item, index) => {
+                const accent = ['#b91c1c', '#ea580c', '#b45309'][index];
+                const details = priorityData[item.category];
+                const annualValue = details.weeklySavings
+                  ? `$${(details.weeklySavings * 75 * 52).toLocaleString()} per year`
                   : 'Foundational investment';
 
-              return (
-                <PriorityCard key={cat.category} $color={color} $delay={`${idx * 0.15}s`}>
-                  <PriorityTitle>
-                    <PriorityNumber $color={color}>{idx + 1}</PriorityNumber>
-                    {cat.category}
-                  </PriorityTitle>
-                  <MetricRow>
-                    <MetricLabel>Current Score</MetricLabel>
-                    <MetricValue style={{ color }}>{cat.score}/10</MetricValue>
-                  </MetricRow>
-                  <MetricRow>
-                    <MetricLabel>Est. Time Saved</MetricLabel>
-                    <MetricValue>{data.hours}</MetricValue>
-                  </MetricRow>
-                  <MetricRow>
-                    <MetricLabel>Est. Annual Value</MetricLabel>
-                    <MetricValue>{annualValue}</MetricValue>
-                  </MetricRow>
-                  <MetricRow>
-                    <MetricLabel>Complexity</MetricLabel>
-                    <MetricValue style={{ color: getComplexityColor(data.complexity) }}>
-                      {data.complexity}
-                    </MetricValue>
-                  </MetricRow>
-                  <MetricRow>
-                    <MetricLabel>Timeline</MetricLabel>
-                    <MetricValue>{data.timeline}</MetricValue>
-                  </MetricRow>
-                </PriorityCard>
-              );
-            })}
-          </PriorityGrid>
-        </SectionBlock>
+                return (
+                  <PriorityCard key={item.category} $accent={accent}>
+                    <PriorityRank $accent={accent}>{index + 1}</PriorityRank>
+                    <PriorityTitle>{item.category}</PriorityTitle>
+                    <MetricList>
+                      <MetricRow>
+                        <MetricLabel>Current score</MetricLabel>
+                        <MetricValue $color={accent}>{item.score}/10</MetricValue>
+                      </MetricRow>
+                      <MetricRow>
+                        <MetricLabel>Recoverable time</MetricLabel>
+                        <MetricValue>{details.hours}</MetricValue>
+                      </MetricRow>
+                      <MetricRow>
+                        <MetricLabel>Annual value</MetricLabel>
+                        <MetricValue>{annualValue}</MetricValue>
+                      </MetricRow>
+                      <MetricRow>
+                        <MetricLabel>Complexity</MetricLabel>
+                        <MetricValue $color={getComplexityColor(details.complexity)}>
+                          {details.complexity}
+                        </MetricValue>
+                      </MetricRow>
+                      <MetricRow>
+                        <MetricLabel>Timeline</MetricLabel>
+                        <MetricValue>{details.timeline}</MetricValue>
+                      </MetricRow>
+                    </MetricList>
+                  </PriorityCard>
+                );
+              })}
+            </PriorityGrid>
+          </Section>
 
-        {/* Comparison */}
-        <SectionBlock>
-          <SectionTitle>How You Compare</SectionTitle>
-          <ComparisonBox>
-            <PercentileNumber>{percentile}th</PercentileNumber>
-            <p style={{ margin: '0 0 4px', fontSize: '16px', fontWeight: 600 }}>percentile</p>
-            <p
-              style={{
-                margin: '16px 0 0',
-                fontSize: '15px',
-                color: 'inherit',
-                opacity: 0.7,
-              }}
-            >
-              Teams your size average a score of 42/100.
-            </p>
-            <p
-              style={{
-                margin: '16px 0 0',
-                fontSize: '15px',
-                color: 'inherit',
-                opacity: 0.7,
-              }}
-            >
-              Top-performing teams score 85+ and typically:
-            </p>
-            <BulletList>
-              <li>Onboard new clients in under 24 hours</li>
-              <li>Spend less than 2 hours per week on status updates</li>
-              <li>Generate client reports in under 30 minutes</li>
-              <li>Scale to 50%+ more clients without proportional hiring</li>
-            </BulletList>
-          </ComparisonBox>
-        </SectionBlock>
+          <Section>
+            <SectionHeader>
+              <SectionTitle>How you compare</SectionTitle>
+              <SectionIntro>
+                Teams your size often sit around 42 out of 100. The top tier tends to score above 85 because updates, reports, and handoffs do not rely on people remembering what to do next.
+              </SectionIntro>
+            </SectionHeader>
 
-        {/* CTA */}
-        <CTASection>
-          {!formSubmitted ? (
-            <>
-              <CTATitle>Want a Custom Automation Roadmap?</CTATitle>
-              <CTASub>We will analyze your results and send a personalized report with implementation steps.</CTASub>
-              <form onSubmit={handleFormSubmit}>
-                <FormGrid>
-                  <FormInput
-                    type="text"
-                    placeholder="Your name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                  />
-                  <FormInput
-                    type="email"
-                    placeholder="Work email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
-                  <FormSelect
-                    value={formData.agencySize}
-                    onChange={(e) => setFormData({ ...formData, agencySize: e.target.value })}
-                    required
-                  >
-                    <option value="">Team size</option>
-                    <option value="1-5">1-5 people</option>
-                    <option value="6-15">6-15 people</option>
-                    <option value="16-30">16-30 people</option>
-                    <option value="31-50">31-50 people</option>
-                    <option value="50+">50+ people</option>
-                  </FormSelect>
-                  <FormTextarea
-                    placeholder="What is your biggest operational pain point right now?"
-                    value={formData.painPoint}
-                    onChange={(e) => setFormData({ ...formData, painPoint: e.target.value })}
-                  />
-                  <SubmitButton type="submit">
-                    <Send size={16} />
-                    Send Me The Full Report
-                  </SubmitButton>
-                </FormGrid>
-              </form>
-            </>
-          ) : (
-            <SuccessMessage>
-              <CheckCircle2 size={48} />
-              <h3 style={{ margin: '0 0 8px', fontSize: '22px' }}>Report Request Sent</h3>
-              <p style={{ margin: '0 0 20px', opacity: 0.7 }}>
-                We will email your custom automation roadmap within 24 hours.
-              </p>
-              <Link
-                to="/contact"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: 'inherit',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '3px',
-                }}
-              >
-                Want to talk sooner? Book a call
-                <ChevronRight size={16} />
-              </Link>
-            </SuccessMessage>
-          )}
-        </CTASection>
+            <ComparisonCard>
+              <PercentileBlock>
+                <PercentileValue>{percentile}th</PercentileValue>
+                <PercentileLabel>Percentile</PercentileLabel>
+              </PercentileBlock>
+              <BulletList>
+                <li>Top-performing teams onboard work quickly and consistently.</li>
+                <li>Status visibility is available without interrupting the delivery team.</li>
+                <li>Reports are assembled from structured data rather than manual cleanup.</li>
+                <li>Meeting actions, QA checks, and handoffs all have explicit ownership.</li>
+              </BulletList>
+            </ComparisonCard>
+          </Section>
 
-        {/* Social Proof */}
-        <SectionBlock>
-          <SectionTitle style={{ textAlign: 'center' }}>Teams That Took the Audit</SectionTitle>
-          <SocialProofGrid>
-            <ProofCard $delay="0s">
-              <ProofScore>
-                34 <ProofArrow>&rarr;</ProofArrow> 87
-              </ProofScore>
-              <ProofLabel>Marketing team &middot; 8 weeks</ProofLabel>
-            </ProofCard>
-            <ProofCard $delay="0.1s">
-              <ProofScore>
-                41 <ProofArrow>&rarr;</ProofArrow> 82
-              </ProofScore>
-              <ProofLabel>Consulting firm &middot; 10 weeks</ProofLabel>
-            </ProofCard>
-            <ProofCard $delay="0.2s">
-              <ProofScore>
-                28 <ProofArrow>&rarr;</ProofArrow> 79
-              </ProofScore>
-              <ProofLabel>Dev shop &middot; 12 weeks</ProofLabel>
-            </ProofCard>
-          </SocialProofGrid>
-        </SectionBlock>
+          <Section>
+            <CtaCard>
+              <CtaCopy>
+                <Eyebrow>Next step</Eyebrow>
+                <CtaTitle>Get the actual roadmap behind this score.</CtaTitle>
+                <CtaBody>
+                  If you want, I will turn these results into a practical sequence: what to automate first, what to standardize before automation, and which bottlenecks are worth ignoring for now.
+                </CtaBody>
+                <Checklist>
+                  <ChecklistItem>Priority order based on impact, not novelty.</ChecklistItem>
+                  <ChecklistItem>Suggested automations mapped to your weak spots.</ChecklistItem>
+                  <ChecklistItem>Implementation scope framed for a real team, not a fantasy greenfield.</ChecklistItem>
+                </Checklist>
+              </CtaCopy>
 
-        <AuditDisclaimer>
-          This audit provides a directional assessment based on your responses. Scores and recommendations are
-          estimates intended to highlight areas for improvement — not guarantees of specific outcomes. Every team
-          is different, and actual results will depend on your specific workflows and implementation.
-        </AuditDisclaimer>
+              <FormWrap>
+                {!formSubmitted ? (
+                  <form onSubmit={handleFormSubmit}>
+                    <FormGrid>
+                      <Input
+                        type="text"
+                        placeholder="Your name"
+                        value={formData.name}
+                        onChange={event => setFormData({ ...formData, name: event.target.value })}
+                        required
+                      />
+                      <Input
+                        type="email"
+                        placeholder="Work email"
+                        value={formData.email}
+                        onChange={event => setFormData({ ...formData, email: event.target.value })}
+                        required
+                      />
+                      <Select
+                        value={formData.agencySize}
+                        onChange={event => setFormData({ ...formData, agencySize: event.target.value })}
+                        required
+                      >
+                        <option value="">Team size</option>
+                        <option value="1-5">1-5 people</option>
+                        <option value="6-15">6-15 people</option>
+                        <option value="16-30">16-30 people</option>
+                        <option value="31-50">31-50 people</option>
+                        <option value="50+">50+ people</option>
+                      </Select>
+                      <div />
+                      <Textarea
+                        placeholder="What is the most painful bottleneck in delivery right now?"
+                        value={formData.painPoint}
+                        onChange={event => setFormData({ ...formData, painPoint: event.target.value })}
+                      />
+                      <SubmitButton type="submit">
+                        <Send size={16} />
+                        Send me the roadmap
+                      </SubmitButton>
+                    </FormGrid>
+                  </form>
+                ) : (
+                  <SuccessCard>
+                    <CheckCircle2 size={44} />
+                    <div>
+                      <strong>Report request sent.</strong>
+                    </div>
+                    <CtaBody>
+                      The custom automation roadmap request is in. If you would rather talk live, book a conversation instead of waiting on email.
+                    </CtaBody>
+                    <Link
+                      to="/contact"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontWeight: 700,
+                        textDecoration: 'underline',
+                        textUnderlineOffset: '3px',
+                      }}
+                    >
+                      Book a call
+                      <ChevronRight size={16} />
+                    </Link>
+                  </SuccessCard>
+                )}
+              </FormWrap>
+            </CtaCard>
+          </Section>
 
-        {/* Retake */}
-        <div style={{ textAlign: 'center', paddingBottom: '40px' }}>
-          <RetakeButton onClick={retake} type="button">
-            <RotateCcw size={16} />
-            Retake Audit
-          </RetakeButton>
-        </div>
-      </ResultsWrapper>
+          <Section>
+            <SectionHeader>
+              <SectionTitle>What this looks like in practice</SectionTitle>
+              <SectionIntro>
+                These are the kinds of score jumps teams make when reporting, coordination, and follow-through stop depending on manual effort.
+              </SectionIntro>
+            </SectionHeader>
+
+            <ProofGrid>
+              <ProofCard>
+                <ProofScore>34 to 87</ProofScore>
+                <ProofMeta>Marketing delivery team after automating status reporting and client intake</ProofMeta>
+              </ProofCard>
+              <ProofCard>
+                <ProofScore>41 to 82</ProofScore>
+                <ProofMeta>Consulting firm after standardizing handoffs and meeting follow-through</ProofMeta>
+              </ProofCard>
+              <ProofCard>
+                <ProofScore>28 to 79</ProofScore>
+                <ProofMeta>Dev shop after reducing manual QA loops and replacing ad hoc updates</ProofMeta>
+              </ProofCard>
+            </ProofGrid>
+          </Section>
+
+          <FooterActions>
+            <RetakeButton type="button" onClick={retake}>
+              <RotateCcw size={16} />
+              Retake audit
+            </RetakeButton>
+          </FooterActions>
+        </ResultsLayout>
+      </Shell>
     </PageWrapper>
   );
 }

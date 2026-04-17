@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { jsPDF } from 'jspdf';
 import {
   Calculator,
   CheckCircle,
@@ -31,7 +30,7 @@ const formatNumber = (num, decimals = 1) => {
 
 // ─── PDF Generation ───
 
-const generateResultsPDF = ({
+const generateResultsPDF = async ({
   teamSize,
   hourlyRate,
   clients,
@@ -40,6 +39,7 @@ const generateResultsPDF = ({
   remainingCost,
   categoryBreakdown,
 }) => {
+  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -206,28 +206,135 @@ const pulseGlow = keyframes`
 
 const PageWrapper = styled.div`
   min-height: 100vh;
-  background: ${p => p.theme.background};
+  padding: 92px 16px 80px;
+  background:
+    radial-gradient(circle at top right, rgba(193, 147, 27, 0.12), transparent 24%),
+    ${p => p.theme.background};
   font-family: ${p => p.theme.fontFamily};
+
+  @media (min-width: 769px) {
+    padding: 116px 28px 100px;
+  }
+`;
+
+const Shell = styled.div`
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+  gap: 24px;
+`;
+
+const HeroGrid = styled.section`
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 980px) {
+    grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+    align-items: stretch;
+  }
+`;
+
+const HeroEyebrow = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${p => p.theme.primary};
+  }
 `;
 
 const HeroSection = styled.section`
   text-align: center;
-  padding: 100px 40px 80px;
-  max-width: 800px;
-  margin: 0 auto;
+  padding: 34px 32px 24px;
+  max-width: none;
+  margin: 0;
   animation: ${fadeInUp} 0.6s ease-out;
+  border: 1px solid ${p => p.theme.border};
+  border-radius: ${p => p.theme.borderRadiusLg};
+  background:
+    linear-gradient(135deg, rgba(193, 147, 27, 0.12), transparent 36%),
+    ${p => p.theme.surface};
+  box-shadow: ${p => p.theme.cardShadow};
 
   @media (max-width: 768px) {
-    padding: 60px 20px 40px;
+    padding: 26px 20px 22px;
   }
 `;
 
-const HeroHeadline = styled.h1`
-  font-size: clamp(32px, 5vw, 48px);
+const HeroAside = styled.div`
+  padding: 26px;
+  border: 1px solid ${p => p.theme.border};
+  border-radius: ${p => p.theme.borderRadiusLg};
+  background:
+    linear-gradient(135deg, rgba(193, 147, 27, 0.08), transparent 38%),
+    ${p => p.theme.surface};
+  box-shadow: ${p => p.theme.cardShadow};
+  display: grid;
+  gap: 16px;
+  align-content: start;
+`;
+
+const AsideLabel = styled.div`
+  font-size: 12px;
   font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const AsideTitle = styled.h2`
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
   color: ${p => p.theme.text};
-  letter-spacing: -1px;
-  line-height: 1.15;
+`;
+
+const AsideStatGrid = styled.div`
+  display: grid;
+  gap: 12px;
+`;
+
+const AsideStat = styled.div`
+  padding: 16px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid ${p => p.theme.border};
+`;
+
+const AsideStatValue = styled.div`
+  font-family: ${p => p.theme.headingFont};
+  font-size: 2rem;
+  line-height: 1;
+  color: ${p => p.$tone || p.theme.text};
+  margin-bottom: 6px;
+`;
+
+const AsideStatLabel = styled.div`
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const HeroHeadline = styled.h1`
+  font-size: clamp(34px, 6vw, 48px);
+  font-family: ${p => p.theme.headingFont};
+  font-weight: 600;
+  color: ${p => p.theme.text};
+  letter-spacing: -1.3px;
+  line-height: 1.05;
   margin: 0 0 20px;
 `;
 
@@ -235,21 +342,22 @@ const HeroSub = styled.p`
   font-size: clamp(17px, 2.5vw, 20px);
   color: ${p => p.theme.textSecondary};
   line-height: 1.6;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 720px;
 `;
 
 const CalculatorSection = styled.section`
-  max-width: 1100px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 0 40px 100px;
+  padding: 24px 24px 72px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 28px;
   align-items: start;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    padding: 0 20px 60px;
+    padding: 0 0 48px;
     gap: 32px;
   }
 `;
@@ -260,7 +368,7 @@ const InputPanel = styled.div`
 
 const ResultsPanel = styled.div`
   position: sticky;
-  top: 88px;
+  top: 102px;
   animation: ${fadeInUp} 0.6s ease-out 0.2s both;
 
   @media (max-width: 900px) {
@@ -274,12 +382,6 @@ const Card = styled.div`
   border-radius: ${p => p.theme.borderRadiusLg};
   padding: 32px;
   box-shadow: ${p => p.theme.cardShadow};
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-  &:hover {
-    transform: translateY(-3px) scale(1.005);
-    box-shadow: ${p => p.theme.cardHoverShadow || p.theme.cardShadow};
-  }
 
   @media (max-width: 768px) {
     padding: 24px 20px;
@@ -288,7 +390,8 @@ const Card = styled.div`
 
 const SectionTitle = styled.h2`
   font-size: clamp(20px, 3vw, 24px);
-  font-weight: 700;
+  font-family: ${p => p.theme.headingFont};
+  font-weight: 600;
   color: ${p => p.theme.text};
   margin: 0 0 28px;
   letter-spacing: -0.5px;
@@ -401,8 +504,7 @@ const PresetButton = styled.button`
   &:hover {
     border-color: ${p => p.theme.primary};
     background: ${p => p.$active ? p.theme.primaryHover : p.theme.surfaceHover};
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
+    transform: translateY(-1px);
   }
 
   &:active {
@@ -451,8 +553,7 @@ const CheckboxItem = styled.label`
 
   &:hover {
     border-color: ${p => p.theme.primary}60;
-    transform: translateX(4px);
-    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.08);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
   }
 `;
 
@@ -505,16 +606,9 @@ const CheckboxMeta = styled.div`
 
 // ─── Results Styled ───
 
-const subtleGlow = keyframes`
-  0%, 100% { box-shadow: 0 0 8px 0 rgba(56, 189, 248, 0.06); }
-  50% { box-shadow: 0 0 20px 6px rgba(56, 189, 248, 0.12); }
-`;
-
 const ResultsCard = styled(Card)`
-  animation: ${pulseGlow} 3s ease-in-out infinite, ${subtleGlow} 4s ease-in-out infinite;
-
   &:hover {
-    transform: translateY(-3px) scale(1.005);
+    transform: translateY(-2px);
   }
 `;
 
@@ -648,11 +742,36 @@ const BarFill = styled.div`
 const FullWidthSection = styled.section`
   max-width: 1100px;
   margin: 0 auto;
-  padding: 100px 40px;
+  padding: 72px 40px;
 
   @media (max-width: 768px) {
-    padding: 60px 20px;
+    padding: 48px 20px;
   }
+`;
+
+const StoryGrid = styled.section`
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 980px) {
+    grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+    align-items: start;
+  }
+`;
+
+const StoryCard = styled(Card)`
+  padding: 28px;
+
+  @media (max-width: 768px) {
+    padding: 24px 20px;
+  }
+`;
+
+const StoryBody = styled.p`
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: ${p => p.theme.textSecondary};
 `;
 
 const OpportunityGrid = styled.div`
@@ -668,12 +787,6 @@ const OpportunityGrid = styled.div`
 
 const OpportunityCard = styled(Card)`
   padding: 24px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${p => p.theme.cardHoverShadow};
-  }
 `;
 
 const OpportunityHeader = styled.div`
@@ -761,13 +874,13 @@ const ChartFill = styled.div`
 // ─── CTA Section ───
 
 const CTASection = styled.section`
-  max-width: 1100px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 100px 40px;
+  padding: 72px 40px;
   text-align: center;
 
   @media (max-width: 768px) {
-    padding: 60px 20px;
+    padding: 48px 20px;
   }
 `;
 
@@ -880,9 +993,9 @@ const EmailStatus = styled.div`
 // ─── Social Proof ───
 
 const SocialProofSection = styled.section`
-  max-width: 1100px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 80px 40px 100px;
+  padding: 64px 40px 72px;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -908,11 +1021,6 @@ const StatsGrid = styled.div`
 const StatCard = styled(Card)`
   padding: 28px 20px;
   text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-  &:hover {
-    transform: translateY(-4px) scale(1.02);
-  }
 `;
 
 const StatNumber = styled.div`
@@ -1202,6 +1310,8 @@ const CalculatorPage = () => {
   const potentialSavings = totalAnnualCost * 0.7;
   const remainingCost = totalAnnualCost * 0.3;
   const maxCategoryCost = categoryBreakdown.length > 0 ? categoryBreakdown[0].annualCost : 1;
+  const selectedCategoryCount = categoryBreakdown.length;
+  const topCategory = categoryBreakdown[0];
 
   const handleToggle = useCallback((key) => {
     setChecked(prev => ({ ...prev, [key]: !prev[key] }));
@@ -1311,19 +1421,42 @@ const CalculatorPage = () => {
 
   return (
     <PageWrapper>
-      {/* ─── Hero ─── */}
-      <HeroSection>
-        <HeroHeadline>How Much Is Manual Work Costing Your Team?</HeroHeadline>
-        <HeroSub>
-          Most teams are surprised when they see the real numbers. Find out in 90 seconds.
-        </HeroSub>
-      </HeroSection>
+      <Shell>
+      <HeroGrid>
+        <HeroSection>
+          <HeroEyebrow>Manual work cost calculator</HeroEyebrow>
+          <HeroHeadline>Quantify the cost of manual delivery work before you decide what to automate.</HeroHeadline>
+          <HeroSub>
+            Model the cost of reporting, follow-up, handoffs, QA, and status chasing so the automation conversation starts with real operating loss instead of guesswork.
+          </HeroSub>
+        </HeroSection>
 
-      {/* ─── Calculator ─── */}
+        <HeroAside>
+          <AsideLabel>At a glance</AsideLabel>
+          <AsideTitle>The page reads cleaner when the operating picture is visible immediately.</AsideTitle>
+          <AsideStatGrid>
+            <AsideStat>
+              <AsideStatValue $tone="#b91c1c">{formatCurrency(totalAnnualCost)}</AsideStatValue>
+              <AsideStatLabel>Estimated annual cost tied to the manual work categories currently selected.</AsideStatLabel>
+            </AsideStat>
+            <AsideStat>
+              <AsideStatValue $tone="#0f766e">{formatCurrency(potentialSavings)}</AsideStatValue>
+              <AsideStatLabel>Directional recovery potential if the highest-friction work is redesigned and automated first.</AsideStatLabel>
+            </AsideStat>
+            <AsideStat>
+              <AsideStatValue>{selectedCategoryCount}</AsideStatValue>
+              <AsideStatLabel>
+                Workflow categories in scope{topCategory ? `, with ${topCategory.label.toLowerCase()} currently the largest cost center.` : '.'}
+              </AsideStatLabel>
+            </AsideStat>
+          </AsideStatGrid>
+        </HeroAside>
+      </HeroGrid>
+
       <CalculatorSection>
         <InputPanel>
           <Card>
-            <SectionTitle>Tell us about your team:</SectionTitle>
+            <SectionTitle>Model your current operating load</SectionTitle>
 
             {/* Team Size */}
             <FieldGroup>
@@ -1403,7 +1536,7 @@ const CalculatorPage = () => {
         {/* ─── Results Panel ─── */}
         <ResultsPanel>
           <ResultsCard>
-            <ResultsHeadline>Your Team Is Losing:</ResultsHeadline>
+            <ResultsHeadline>Estimated cost of manual delivery work</ResultsHeadline>
             <BigNumber>
               <AnimatedNumber value={totalAnnualCost} prefix="$" />
             </BigNumber>
@@ -1460,105 +1593,102 @@ const CalculatorPage = () => {
         </ResultsPanel>
       </CalculatorSection>
 
-      <Divider />
+      <StoryGrid>
+        {categoryBreakdown.length > 0 ? (
+          <StoryCard>
+            <SectionTitle style={{ textAlign: 'left', fontSize: 'clamp(24px, 4vw, 32px)' }}>
+              What the team could recover
+            </SectionTitle>
+            <StoryBody>
+              With targeted automation and cleaner process design, a large share of this cost can usually be removed. Keeping these opportunities in the same analysis block makes the page feel closer to the audit page and less like stacked marketing slices.
+            </StoryBody>
+            <OpportunityGrid>
+              {categoryBreakdown.map(cat => (
+                <OpportunityCard key={cat.key}>
+                  <OpportunityHeader>
+                    <CheckCircle size={20} />
+                    <span style={{ fontWeight: 600, fontSize: 15 }}>{cat.label.split('(')[0].trim()}</span>
+                  </OpportunityHeader>
+                  <OpportunitySavings>Save {formatCurrency(cat.annualCost * 0.7)}/year</OpportunitySavings>
+                  <BulletList>
+                    {cat.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </BulletList>
+                </OpportunityCard>
+              ))}
+            </OpportunityGrid>
+          </StoryCard>
+        ) : null}
 
-      {/* ─── Opportunity Breakdown ─── */}
-      {categoryBreakdown.length > 0 && (
-        <FullWidthSection>
-          <SectionTitle style={{ textAlign: 'center', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-            Here's What You Could Recover:
+        <StoryCard>
+          <SectionTitle style={{ textAlign: 'left', fontSize: 'clamp(24px, 4vw, 32px)' }}>
+            Annual cost vs. savings
           </SectionTitle>
-          <p style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto 8px', fontSize: 16, opacity: 0.65 }}>
-            With targeted automation, you can recover up to 70% of these costs.
-          </p>
-          <OpportunityGrid>
-            {categoryBreakdown.map(cat => (
-              <OpportunityCard key={cat.key}>
-                <OpportunityHeader>
-                  <CheckCircle size={20} />
-                  <span style={{ fontWeight: 600, fontSize: 15 }}>{cat.label.split('(')[0].trim()}</span>
-                </OpportunityHeader>
-                <OpportunitySavings>Save {formatCurrency(cat.annualCost * 0.7)}/year</OpportunitySavings>
-                <BulletList>
-                  {cat.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </BulletList>
-              </OpportunityCard>
-            ))}
-          </OpportunityGrid>
-        </FullWidthSection>
-      )}
-
-      <Divider />
-
-      {/* ─── Bar Chart ─── */}
-      <FullWidthSection>
-        <SectionTitle style={{ textAlign: 'center', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-          Annual Cost vs. Savings
-        </SectionTitle>
-        <ChartWrapper>
-          <ChartBar>
-            <ChartLabel>Current Annual Cost</ChartLabel>
-            <ChartTrack>
-              <ChartFill $width={100} $color="#ef4444">
-                {formatCurrency(totalAnnualCost)}
-              </ChartFill>
-            </ChartTrack>
-          </ChartBar>
-          <ChartBar>
-            <ChartLabel>Potential Savings</ChartLabel>
-            <ChartTrack>
-              <ChartFill
-                $width={chartMax > 0 ? (potentialSavings / chartMax) * 100 : 0}
-                $color="#10b981"
-              >
-                {formatCurrency(potentialSavings)}
-              </ChartFill>
-            </ChartTrack>
-          </ChartBar>
-          <ChartBar>
-            <ChartLabel>Remaining Cost</ChartLabel>
-            <ChartTrack>
-              <ChartFill
-                $width={chartMax > 0 ? (remainingCost / chartMax) * 100 : 0}
-                $color="#6B7280"
-              >
-                {formatCurrency(remainingCost)}
-              </ChartFill>
-            </ChartTrack>
-          </ChartBar>
-        </ChartWrapper>
-      </FullWidthSection>
-
-      <Divider />
+          <StoryBody>
+            This condensed comparison sits beside the recovery breakdown so the decision frame is visible in one scan rather than buried beneath another full-width section.
+          </StoryBody>
+          <ChartWrapper>
+            <ChartBar>
+              <ChartLabel>Current Annual Cost</ChartLabel>
+              <ChartTrack>
+                <ChartFill $width={100} $color="#ef4444">
+                  {formatCurrency(totalAnnualCost)}
+                </ChartFill>
+              </ChartTrack>
+            </ChartBar>
+            <ChartBar>
+              <ChartLabel>Potential Savings</ChartLabel>
+              <ChartTrack>
+                <ChartFill
+                  $width={chartMax > 0 ? (potentialSavings / chartMax) * 100 : 0}
+                  $color="#10b981"
+                >
+                  {formatCurrency(potentialSavings)}
+                </ChartFill>
+              </ChartTrack>
+            </ChartBar>
+            <ChartBar>
+              <ChartLabel>Remaining Cost</ChartLabel>
+              <ChartTrack>
+                <ChartFill
+                  $width={chartMax > 0 ? (remainingCost / chartMax) * 100 : 0}
+                  $color="#6B7280"
+                >
+                  {formatCurrency(remainingCost)}
+                </ChartFill>
+              </ChartTrack>
+            </ChartBar>
+          </ChartWrapper>
+        </StoryCard>
+      </StoryGrid>
 
       {/* ─── CTA ─── */}
       <CTASection>
         <SectionTitle style={{ fontSize: 'clamp(24px, 4vw, 32px)', textAlign: 'center' }}>
-          Want The Full Automation Roadmap?
+          Want the full automation roadmap?
         </SectionTitle>
         <CTAGrid>
           <CTACard $primary>
-            <CTACardTitle>Get Your Free 30-Minute Audit</CTACardTitle>
+            <CTACardTitle>Book a focused operating review</CTACardTitle>
             <BulletList style={{ marginBottom: 24 }}>
-              <li>Personalized automation roadmap for your team</li>
-              <li>Top 3 quick wins ranked by ROI</li>
-              <li>Implementation timeline and cost estimates</li>
-              <li>No obligation, no sales pressure</li>
+              <li>Priority bottlenecks ranked by likely return</li>
+              <li>Quick wins separated from heavier systems work</li>
+              <li>Implementation order framed for your current team</li>
+              <li>Low-pressure conversation, not a generic sales call</li>
             </BulletList>
             <CTAButton to="/contact">
-              Book Your Audit <ArrowRight size={16} />
+              Book the review <ArrowRight size={16} />
             </CTAButton>
           </CTACard>
 
           <CTACard>
-            <CTACardTitle>Download Your Results</CTACardTitle>
+            <CTACardTitle>Email the results to yourself</CTACardTitle>
             <BulletList style={{ marginBottom: 24 }}>
-              <li>PDF summary of your cost breakdown</li>
-              <li>Category-by-category savings estimates</li>
-              <li>Share with your team or partners</li>
-              <li>Reference for future planning</li>
+              <li>PDF summary of the current cost profile</li>
+              <li>Category-level recovery estimates</li>
+              <li>Useful for internal planning or stakeholder review</li>
+              <li>A cleaner starting point for the next conversation</li>
             </BulletList>
             <EmailRow>
               <EmailInput
@@ -1578,13 +1708,12 @@ const CalculatorPage = () => {
         </CTAGrid>
       </CTASection>
 
-      <Divider />
-
       <Disclaimer>
         These estimates are based on industry averages and the inputs you provided. Actual results will vary depending on your
         specific workflows, tools, and team structure. This calculator is intended to give a directional sense of where time
         is being spent — not a guarantee of savings.
       </Disclaimer>
+      </Shell>
     </PageWrapper>
   );
 };

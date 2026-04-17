@@ -1,1667 +1,974 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import {
-  Workflow,
-  BarChart3,
-  Calculator,
-  ClipboardCheck,
-  ChevronDown,
-  Zap,
+  ArrowRight,
   Bot,
+  ChartColumn,
+  CheckCheck,
+  ClipboardCheck,
+  FileCheck,
+  Gauge,
+  Lock,
+  MessagesSquare,
   ShieldCheck,
+  Sparkles,
+  Waypoints,
 } from 'lucide-react';
 
-/* ════════════════════════════════════════════
-   HOOKS
-   ════════════════════════════════════════════ */
+const opportunityAreas = [
+  {
+    label: 'Status chasing',
+    value: '5-10 hrs / week',
+    detail: 'Project managers answering the same delivery questions in Slack, email, and meetings.',
+  },
+  {
+    label: 'Report assembly',
+    value: '3-6 hrs / report',
+    detail: 'Pulling metrics from multiple tools, reformatting spreadsheets, and checking for mistakes.',
+  },
+  {
+    label: 'Manual follow-up',
+    value: '4-8 hrs / week',
+    detail: 'Client reminders, internal nudges, and approval requests that still depend on memory.',
+  },
+];
 
-function useInView(options = {}) {
-  const ref = useRef(null);
-  const [isInView, setIsInView] = useState(false);
+const painPoints = [
+  {
+    title: 'Work lives in people, not systems',
+    body: 'Critical handoffs still depend on who remembers the next step, which makes delivery quality fragile the moment volume goes up.',
+  },
+  {
+    title: 'Teams duplicate the same admin work',
+    body: 'Client data gets re-entered across CRMs, boards, docs, spreadsheets, and reporting decks because no one owns the flow end-to-end.',
+  },
+  {
+    title: 'Leadership gets lagging visibility',
+    body: 'By the time a report is assembled, the risk has already happened. The team knows the status, but the system does not.',
+  },
+];
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15, ...options }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+const capabilities = [
+  {
+    icon: Waypoints,
+    title: 'Workflow automation',
+    body: 'Intake, project setup, routing, QA, approvals, follow-ups, and recurring operational steps stitched into one dependable flow.',
+    bullets: ['Tool-agnostic implementation', 'Fallback paths when data breaks', 'Approval gates before external actions'],
+  },
+  {
+    icon: Bot,
+    title: 'Custom AI assistants',
+    body: 'Task-specific assistants that summarize meetings, draft updates, answer internal questions, and prepare work without pretending to run the company.',
+    bullets: ['Knowledge-grounded outputs', 'Human review where it matters', 'Clear boundaries on autonomy'],
+  },
+  {
+    icon: ChartColumn,
+    title: 'Reporting and visibility',
+    body: 'Operational dashboards and scheduled reporting built from source systems so delivery, utilization, and risk are visible before clients feel it.',
+    bullets: ['Leadership-ready summaries', 'Scheduled delivery', 'One version of the truth'],
+  },
+];
 
-  return [ref, isInView];
-}
+const transformationRows = [
+  {
+    label: 'New client setup',
+    before: 'Checklist in someone’s head, scattered across email and notes.',
+    after: 'Structured intake, auto-created records, routed tasks, and visible ownership.',
+  },
+  {
+    label: 'Weekly reporting',
+    before: 'Manual data pulls and slide polishing at the end of the week.',
+    after: 'Metrics assembled from source tools with a final human QA pass.',
+  },
+  {
+    label: 'Internal handoffs',
+    before: 'Slack messages, vague context, and inconsistent next steps.',
+    after: 'Assigned tasks with context, due dates, and escalation logic.',
+  },
+  {
+    label: 'Meeting follow-through',
+    before: 'Action items disappear into transcripts or memory.',
+    after: 'Summaries, action items, and follow-ups prepared automatically for review.',
+  },
+];
 
-function useCountUp(end, isActive, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const numericEnd = useMemo(() => parseFloat(String(end).replace(/[^0-9.]/g, '')), [end]);
+const processSteps = [
+  {
+    step: '01',
+    title: 'Audit the operation',
+    body: 'We identify where the team is paying the manual-work tax and where automation can reduce risk fastest.',
+  },
+  {
+    step: '02',
+    title: 'Design the system',
+    body: 'Flows, approvals, exceptions, ownership, and reporting are mapped before anything gets built.',
+  },
+  {
+    step: '03',
+    title: 'Build with guardrails',
+    body: 'Automations and assistants are implemented with fallbacks, checkpoints, and practical operating constraints.',
+  },
+  {
+    step: '04',
+    title: 'Hand off cleanly',
+    body: 'The team gets documentation, walkthroughs, and a system they can actually run after delivery.',
+  },
+];
 
-  useEffect(() => {
-    if (!isActive || numericEnd === 0) return;
-    let start = 0;
-    const startTime = performance.now();
+const guardrails = [
+  {
+    icon: ShieldCheck,
+    title: 'Human review stays in the loop',
+    body: 'Nothing client-facing needs to go out blind. Approval gates are part of the architecture, not an afterthought.',
+  },
+  {
+    icon: Lock,
+    title: 'Audit trails and traceability',
+    body: 'Actions, triggers, and decisions are visible so the team can understand what happened and why.',
+  },
+  {
+    icon: FileCheck,
+    title: 'Documented for the operator',
+    body: 'The final system ships with instructions, ownership, and maintenance context instead of tribal knowledge.',
+  },
+  {
+    icon: Gauge,
+    title: 'Built for reliability first',
+    body: 'If a tool fails, a record changes, or a request is incomplete, the flow degrades safely instead of silently breaking.',
+  },
+];
 
-    function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(eased * numericEnd));
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }, [isActive, numericEnd, duration]);
+const nextActions = [
+  {
+    icon: ClipboardCheck,
+    title: 'Run the operations audit',
+    body: 'Answer ten questions and surface the first automation priorities worth fixing.',
+    to: '/audit',
+    cta: 'Start the audit',
+  },
+  {
+    icon: MessagesSquare,
+    title: 'Review practical use cases',
+    body: 'See where workflow automation, AI assistants, and reporting systems usually pay off fastest.',
+    to: '/use-cases',
+    cta: 'See use cases',
+  },
+  {
+    icon: Sparkles,
+    title: 'Estimate the cost of delay',
+    body: 'Quantify what manual operations are costing the team before deciding what to automate first.',
+    to: '/calculator',
+    cta: 'Open calculator',
+  },
+];
 
-  return count;
-}
-
-/* ════════════════════════════════════════════
-   ANIMATIONS
-   ════════════════════════════════════════════ */
-
-const fadeInUp = keyframes`
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
+const Page = styled.div`
+  color: ${p => p.theme.text};
 `;
 
-const floatAnim = keyframes`
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
-`;
+const Section = styled.section`
+  padding: ${p => (p.$hero ? '42px 16px 24px' : '36px 16px')};
 
-const pulseGlow = keyframes`
-  0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.3); }
-  50%      { box-shadow: 0 0 20px 4px rgba(56, 189, 248, 0.15); }
-`;
-
-const subtleGlow = keyframes`
-  0%, 100% { box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2); }
-  50%      { box-shadow: 0 4px 25px rgba(56, 189, 248, 0.35); }
-`;
-
-
-/* ════════════════════════════════════════════
-   SHARED STYLED COMPONENTS
-   ════════════════════════════════════════════ */
-
-const SectionWrapper = styled.section`
-  padding: 100px 40px;
-  background: ${p => p.$bg || 'transparent'};
-  position: relative;
-  overflow: hidden;
-
-  @media (max-width: 768px) {
-    padding: 60px 20px;
+  @media (min-width: 768px) {
+    padding: ${p => (p.$hero ? '54px 24px 34px' : '48px 24px')};
   }
 `;
 
-const Container = styled.div`
-  max-width: 1100px;
+const Frame = styled.div`
+  max-width: 1220px;
   margin: 0 auto;
 `;
 
-const FadeIn = styled.div`
-  opacity: ${p => (p.$visible ? 1 : 0)};
-  transform: translateY(${p => (p.$visible ? '0' : '30px')});
-  transition: opacity 0.7s ease, transform 0.7s ease;
-  transition-delay: ${p => p.$delay || '0s'};
-`;
-
-const SectionHeading = styled.h2`
-  font-size: clamp(28px, 5vw, 44px);
-  font-weight: 800;
-  letter-spacing: -1px;
-  color: ${p => p.theme.text};
-  text-align: center;
-  margin: 0 0 16px;
-  line-height: 1.15;
-`;
-
-const SectionSub = styled.p`
-  font-size: clamp(16px, 2.5vw, 19px);
-  color: ${p => p.theme.textSecondary};
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto 56px;
-  line-height: 1.65;
-`;
-
-const Card = styled.div`
-  background: ${p => p.theme.surface};
-  border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadius};
-  padding: 32px;
-  box-shadow: ${p => p.theme.cardShadow};
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${p => p.theme.cardHoverShadow};
-  }
-`;
-
-const PrimaryButton = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: ${p => p.theme.primary};
-  color: #000;
-  padding: 14px 32px;
-  border-radius: ${p => p.theme.borderRadius};
-  font-size: 16px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  animation: ${subtleGlow} 3s ease-in-out infinite;
-
-  &:hover {
-    background: ${p => p.theme.primaryHover};
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    padding: 12px 20px;
-    font-size: 15px;
-    gap: 6px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 11px 16px;
-    font-size: 14px;
-    gap: 4px;
-
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-  }
-`;
-
-const SecondaryButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: transparent;
-  color: ${p => p.theme.primary};
-  border: 2px solid ${p => p.theme.primary};
-  padding: 12px 28px;
-  border-radius: ${p => p.theme.borderRadius};
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
-
-  &:hover {
-    background: ${p => p.theme.primary}15;
-    transform: translateY(-2px);
-  }
-`;
-
-const SecondaryLink = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: transparent;
-  color: ${p => p.theme.primary};
-  border: 2px solid ${p => p.theme.primary};
-  padding: 12px 28px;
-  border-radius: ${p => p.theme.borderRadius};
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${p => p.theme.primary}15;
-    transform: translateY(-2px);
-  }
-`;
-
-/* ════════════════════════════════════════════
-   SECTION 1 — HERO
-   ════════════════════════════════════════════ */
-
-const HeroOuter = styled.section`
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const Panel = styled.div`
   position: relative;
-  background: linear-gradient(
-    170deg,
-    ${p => p.theme.background} 0%,
-    ${p => p.theme.surface} 40%,
-    ${p => p.theme.background} 100%
-  );
-  padding: 96px 40px 80px;
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    padding: 84px 20px 56px;
-  }
-`;
-
-const HeroContent = styled.div`
-  max-width: 780px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-  animation: ${fadeInUp} 0.8s ease both;
-`;
-
-const HeroH1 = styled.h1`
-  font-size: clamp(32px, 6vw, 56px);
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
-  color: ${p => p.theme.text};
-  margin: 0 0 24px;
-`;
-
-const HeroSub = styled.p`
-  font-size: clamp(16px, 2.5vw, 20px);
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.7;
-  max-width: 600px;
-  margin: 0 auto 40px;
-`;
-
-const HeroFitGroup = styled.div`
-  display: grid;
-  gap: 10px;
-  max-width: 680px;
-  margin: 0 auto 32px;
-`;
-
-const HeroFitNote = styled.div`
-  background: ${p => p.theme.surface};
   border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadiusSm};
-  padding: 10px 14px;
-  font-size: 14px;
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.6;
+  border-radius: ${p => (p.$tight ? p.theme.borderRadius : p.theme.borderRadiusLg)};
+  background: ${p => (p.$dark ? p.theme.secondary : p.theme.surface)};
+  color: ${p => (p.$dark ? '#f8fafc' : p.theme.text)};
+  box-shadow: ${p => p.theme.cardShadow};
+`;
 
-  strong {
-    color: ${p => p.theme.text};
-    font-weight: 700;
+const HeroPanel = styled(Panel)`
+  padding: 28px;
+  background:
+    linear-gradient(135deg, rgba(193, 147, 27, 0.12), transparent 34%),
+    linear-gradient(180deg, ${p => p.theme.surface} 0%, rgba(255, 255, 255, 0.35) 100%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(${p => p.theme.gridLine} 1px, transparent 1px),
+      linear-gradient(90deg, ${p => p.theme.gridLine} 1px, transparent 1px);
+    background-size: 36px 36px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  @media (min-width: 960px) {
+    padding: 40px;
   }
 `;
 
-const HeroCTAGroup = styled.div`
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
+const HeroGrid = styled.div`
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 28px;
+
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.86fr);
+    align-items: start;
+  }
 `;
 
-const HeroEyebrow = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${p => p.theme.textSecondary};
-  letter-spacing: 0.5px;
-  margin-bottom: 16px;
-`;
-
-const TrustBadge = styled.div`
+const Eyebrow = styled.div`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: ${p => p.theme.textSecondary};
-  background: ${p => p.theme.surface};
-  border: 1px solid ${p => p.theme.border};
-  padding: 10px 20px;
-  border-radius: 100px;
 `;
 
-const TrustIndicators = styled.div`
+const Dot = styled.span`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${p => p.theme.primary};
+`;
+
+const HeroTitle = styled.h1`
+  max-width: 11ch;
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+  color: ${p => p.theme.text};
+`;
+
+const HeroLead = styled.p`
+  max-width: 680px;
+  margin: 24px 0 0;
+  font-size: clamp(1rem, 2.3vw, 1.2rem);
+  line-height: 1.8;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const HeroMeta = styled.p`
+  max-width: 620px;
+  margin: 18px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${p => p.theme.text};
+`;
+
+const ActionRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  justify-content: center;
-`;
-
-/* Decorative CSS-only illustration */
-const HeroVisual = styled.div`
-  position: absolute;
-  bottom: 60px;
-  right: 10%;
-  width: 180px;
-  height: 120px;
-  opacity: 0.12;
-  pointer-events: none;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    border-radius: 8px;
-  }
-
-  &::before {
-    width: 60px;
-    height: 60px;
-    top: 0;
-    left: 0;
-    border: 3px dashed ${p => p.theme.textSecondary};
-    transform: rotate(-8deg);
-    animation: ${floatAnim} 4s ease-in-out infinite;
-  }
-
-  &::after {
-    width: 60px;
-    height: 60px;
-    bottom: 0;
-    right: 0;
-    border: 3px solid ${p => p.theme.primary};
-    transform: rotate(4deg);
-    animation: ${floatAnim} 4s ease-in-out 1s infinite;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const HeroVisualLeft = styled.div`
-  position: absolute;
-  top: 30%;
-  left: 6%;
-  width: 100px;
-  height: 100px;
-  opacity: 0.08;
-  pointer-events: none;
-
-  &::before {
-    content: '';
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid ${p => p.theme.primary};
-    animation: ${floatAnim} 5s ease-in-out 0.5s infinite;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-function HeroSection() {
-  const handleScrollToHow = useCallback(() => {
-    const el = document.getElementById('how-it-works');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
-  return (
-    <HeroOuter>
-      <HeroVisualLeft />
-      <HeroVisual />
-      <HeroContent>
-        <HeroEyebrow>Peak Work Studios &middot; AI &amp; Automation Consulting</HeroEyebrow>
-        <HeroH1>Stop Drowning in Manual Work</HeroH1>
-        <HeroSub>
-          We replace repetitive, error-prone work with workflow automation or
-          custom AI assistants—so your team gets hours back every week.
-        </HeroSub>
-        <p style={{ fontSize: '14px', color: '#6B7280', margin: '-24px auto 32px', maxWidth: '600px', fontStyle: 'italic' }}>
-          Examples: intake routing, follow-ups, weekly reporting, meeting-to-action, support triage
-        </p>
-        <HeroFitGroup>
-          <HeroFitNote>
-            Built for agencies, consultancies, and professional service teams (10–50 people).
-          </HeroFitNote>
-        </HeroFitGroup>
-        <HeroCTAGroup>
-          <PrimaryButton to="/calculator">
-            <Calculator size={18} />
-            Calculate Your Hidden Costs
-          </PrimaryButton>
-          <SecondaryButton onClick={handleScrollToHow}>
-            Get a 1-Page Automation Plan
-          </SecondaryButton>
-        </HeroCTAGroup>
-        <TrustIndicators>
-          <TrustBadge>
-            <ShieldCheck size={16} />
-            Reliability-first: fallbacks, approvals, and audit trails
-          </TrustBadge>
-          <TrustBadge>
-            <Workflow size={16} />
-            Tool-agnostic: Zapier, Make, n8n, or custom builds
-          </TrustBadge>
-          <TrustBadge>
-            <ClipboardCheck size={16} />
-            Maintainable: documentation + handoff so your team can run it
-          </TrustBadge>
-        </TrustIndicators>
-      </HeroContent>
-    </HeroOuter>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 2 — SOCIAL PROOF
-   ════════════════════════════════════════════ */
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const StatCard = styled(Card)`
-  text-align: center;
-  padding: 40px 24px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-6px) scale(1.03);
-  }
-`;
-
-const StatNumber = styled.div`
-  font-size: clamp(36px, 5vw, 48px);
-  font-weight: 800;
-  color: ${p => p.theme.primary};
-  letter-spacing: -1px;
-  margin-bottom: 8px;
-`;
-
-const StatLabel = styled.div`
-  font-size: 15px;
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.5;
-`;
-
-const OutcomesCard = styled(Card)`
   margin-top: 28px;
-  text-align: left;
 `;
 
-const OutcomesTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 12px;
-`;
-
-const STATS = [
-  { value: '67', prefix: '$', suffix: 'K', label: '💰 Saved per year in PM labor costs' },
-  { value: '18', prefix: '', suffix: 'hrs', label: '⏱️ Recovered per week per account manager' },
-  { value: '3', prefix: '', suffix: 'x', label: '⚡ More clients handled with the same team' },
-  { value: '0', prefix: '', suffix: '', display: 'Zero', label: '✅ Missed deliverables or dropped handoffs' },
-];
-
-function StatItem({ stat, isActive }) {
-  const count = useCountUp(stat.value, isActive);
-  const display = stat.display
-    ? (isActive ? stat.display : '0')
-    : `${stat.prefix}${count}${stat.suffix}`;
-
-  return (
-    <StatCard>
-      <StatNumber>{display}</StatNumber>
-      <StatLabel>{stat.label}</StatLabel>
-    </StatCard>
-  );
-}
-
-const MemoStatItem = React.memo(StatItem);
-
-function SocialProofSection() {
-  const [ref, inView] = useInView();
-
-  return (
-    <SectionWrapper $bg="transparent">
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>📊 Real Results for Real Agencies</SectionHeading>
-          <SectionSub>Numbers from agencies that replaced chaos with systems.</SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <StatsGrid>
-            {STATS.map((s, i) => (
-              <MemoStatItem key={i} stat={s} isActive={inView} />
-            ))}
-          </StatsGrid>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.3s">
-          <OutcomesCard>
-            <OutcomesTitle>Typical outcomes (often see)</OutcomesTitle>
-            <BulletList>
-              <li>Reporting time goes from days to under 60 minutes per week.</li>
-              <li>20-40% fewer revision loops from clearer handoffs and QA.</li>
-              <li>15-30% improvement in on-time delivery after launch.</li>
-            </BulletList>
-          </OutcomesCard>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 3 — VALUE PROP
-   ════════════════════════════════════════════ */
-
-const ValueGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ValueCard = styled(Card)`
-  text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-6px) scale(1.02);
-  }
-`;
-
-const ValueIconWrap = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: ${p => p.theme.borderRadiusSm};
-  background: ${p => p.theme.primary}18;
-  display: flex;
+const PrimaryAction = styled(Link)`
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: ${p => p.theme.primary};
-  margin-bottom: 20px;
-`;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: ${p => p.theme.primary};
+  color: ${p => p.theme.buttonText};
+  font-size: 15px;
+  font-weight: 800;
+  transition: transform 180ms ease, background-color 180ms ease;
 
-const ValueTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 16px;
-`;
-
-const BulletList = styled.ul`
-  margin: 0;
-  padding: 0 0 0 18px;
-  list-style: disc;
-
-  li {
-    font-size: 15px;
-    color: ${p => p.theme.textSecondary};
-    line-height: 1.75;
+  &:hover {
+    transform: translateY(-1px);
+    background: ${p => p.theme.primaryHover};
   }
 `;
 
-const VALUE_COLS = [
-  {
-    icon: Workflow,
-    title: 'Workflow Automation',
-    bullets: [
-      'Map your processes and find the repetitive 70–80%',
-      'Build automations with approvals and fallbacks',
-      'Connect the tools your team already uses',
-      'Clear documentation and runbooks included',
-      'Designed so your team can own it from day one',
-    ],
-  },
-  {
-    icon: Bot,
-    title: 'Custom AI Assistants',
-    bullets: [
-      'Purpose-built for your specific workflows',
-      'Answer questions from your knowledge base',
-      'Draft reports, summaries, and follow-ups',
-      'Human approval gates on all external outputs',
-      'Audit trails for transparency and control',
-    ],
-  },
-  {
-    icon: BarChart3,
-    title: 'Reporting & Visibility',
-    bullets: [
-      'Auto-generated reports from your source data',
-      'Real-time dashboards for leadership and ops',
-      'Data pulled from tools you already use',
-      'Scheduled delivery with human review step',
-      'Financial and operational metrics in one place',
-    ],
-  },
-];
+const SecondaryAction = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid ${p => p.theme.border};
+  background: ${p => p.theme.surface};
+  color: ${p => p.theme.text};
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 180ms ease, background-color 180ms ease;
 
+  &:hover {
+    transform: translateY(-1px);
+    background: ${p => p.theme.surfaceHover};
+  }
+`;
 
-/* ════════════════════════════════════════════
-   SECTION 4 — PAIN POINTS
-   ════════════════════════════════════════════ */
+const HeroNotes = styled.div`
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+`;
+
+const HeroNote = styled.div`
+  max-width: 620px;
+  padding: 12px 14px;
+  border-left: 4px solid ${p => p.theme.primary};
+  background: ${p => (p.theme.background === '#0b1220' ? 'rgba(17, 28, 46, 0.88)' : 'rgba(255, 255, 255, 0.55)')};
+  font-size: 14px;
+  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(248, 250, 252, 0.9)' : p.theme.textSecondary)};
+`;
+
+const BriefCard = styled(Panel)`
+  padding: 24px;
+  background: ${p => (p.theme.background === '#0b1220'
+    ? 'linear-gradient(180deg, rgba(17, 28, 46, 0.96) 0%, rgba(11, 18, 32, 0.98) 100%)'
+    : p.theme.secondary)};
+  color: ${p => (p.theme.background === '#0b1220' ? p.theme.text : '#f8fafc')};
+
+  @media (min-width: 960px) {
+    position: sticky;
+    top: 118px;
+  }
+`;
+
+const BriefLabel = styled.div`
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.9)' : 'rgba(248, 250, 252, 0.72)')};
+`;
+
+const BriefTitle = styled.h2`
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+`;
+
+const BriefText = styled.p`
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(219, 229, 246, 0.88)' : 'rgba(248, 250, 252, 0.76)')};
+`;
+
+const OpportunityList = styled.div`
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+`;
+
+const OpportunityItem = styled.div`
+  padding-top: 14px;
+  border-top: 1px solid ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.16)' : 'rgba(248, 250, 252, 0.14)')};
+`;
+
+const OpportunityValue = styled.div`
+  font-size: 22px;
+  font-weight: 800;
+  color: ${p => p.theme.primary};
+`;
+
+const OpportunityLabel = styled.div`
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(248, 250, 252, 0.96)' : 'inherit')};
+`;
+
+const OpportunityDetail = styled.p`
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.92)' : 'rgba(248, 250, 252, 0.72)')};
+`;
+
+const HeadingBlock = styled.div`
+  display: grid;
+  gap: 12px;
+  max-width: 760px;
+  margin-bottom: 28px;
+`;
+
+const SectionLabel = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const SectionTitle = styled.h2`
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+`;
+
+const SectionIntro = styled.p`
+  margin: 0;
+  max-width: 680px;
+  font-size: 17px;
+  line-height: 1.85;
+  color: ${p => p.theme.textSecondary};
+`;
 
 const PainGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 16px;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
-const FlipCard = styled.div`
-  perspective: 800px;
-  height: 280px;
-
-  @media (max-width: 480px) {
-    height: 300px;
-  }
+const PainCard = styled(Panel)`
+  padding: 24px;
 `;
 
-const FlipInner = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s ease;
-  transform-style: preserve-3d;
-
-  ${FlipCard}:hover & {
-    transform: rotateY(180deg);
-  }
-`;
-
-const FlipFace = styled.div`
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  border-radius: ${p => p.theme.borderRadius};
-  border: 1px solid ${p => p.theme.border};
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const FlipFront = styled(FlipFace)`
-  background: ${p => p.theme.surface};
-  box-shadow: ${p => p.theme.cardShadow};
-`;
-
-const FlipBack = styled(FlipFace)`
-  background: linear-gradient(135deg, ${p => p.theme.primary}12, ${p => p.theme.surface});
-  transform: rotateY(180deg);
-  border-color: ${p => p.theme.primary}40;
-`;
-
-const PainTitle = styled.h3`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 12px;
-`;
-
-const PainText = styled.p`
-  font-size: 15px;
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.65;
-  margin: 0;
-`;
-
-const SolutionLabel = styled.span`
+const CardIndex = styled.div`
+  margin-bottom: 22px;
   font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: ${p => p.theme.primary};
-  margin-bottom: 12px;
-`;
-
-const HoverHint = styled.span`
-  font-size: 13px;
-  color: ${p => p.theme.primary};
-  margin-top: auto;
-  font-weight: 600;
-`;
-
-const ImpactBadge = styled.div`
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  margin-top: 12px;
-  background: ${p => {
-    switch(p.$severity) {
-      case 'high': return '#fef2f2';
-      case 'medium': return '#fffbeb';
-      case 'low': return '#f0fdf4';
-      default: return '#f1f5f9';
-    }
-  }};
-  color: ${p => {
-    switch(p.$severity) {
-      case 'high': return '#991b1b';
-      case 'medium': return '#92400e';
-      case 'low': return '#166534';
-      default: return '#334155';
-    }
-  }};
-  border: 1px solid ${p => {
-    switch(p.$severity) {
-      case 'high': return '#fecaca';
-      case 'medium': return '#fde68a';
-      case 'low': return '#86efac';
-      default: return '#cbd5e1';
-    }
-  }};
-`;
-
-const PainHighlight = styled.strong`
-  color: ${p => p.$severity === 'high' ? p.theme.error : p.theme.primary};
   font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${p => p.theme.primary};
 `;
 
-const PAINS = [
-  {
-    title: 'Manual Data Entry',
-    pain: 'Your team re-types the same information across spreadsheets, CRMs, and project tools — wasting hours and inviting errors.',
-    solution: 'Automated data flows sync information across your tools, eliminating double-entry and keeping records consistent.',
-    impact: '8-12 hrs/week',
-    severity: 'high',
-  },
-  {
-    title: 'Reporting Takes Forever',
-    pain: 'Compiling reports means pulling data from multiple tools, formatting spreadsheets, and chasing people for numbers.',
-    solution: 'Reports compile from source data, auto-format, and queue for a quick human review before sending.',
-    impact: '5-7 hrs/week',
-    severity: 'high',
-  },
-  {
-    title: 'Dropped Handoffs',
-    pain: 'Work stalls between team members because handoff steps live in someone\'s head, not in a system.',
-    solution: 'Automated handoff workflows route tasks to the right person with context, deadlines, and escalation rules.',
-    impact: '3-5 hrs/week',
-    severity: 'medium',
-  },
-  {
-    title: 'Repetitive Follow-ups',
-    pain: 'Someone on your team spends hours each week sending the same reminder emails, status updates, and check-ins.',
-    solution: 'Scheduled workflows handle routine communications, with human approval on anything external-facing.',
-    impact: '4-6 hrs/week',
-    severity: 'medium',
-  },
-];
+const CardTitle = styled.h3`
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+`;
 
-function PainPointsSection() {
-  const [ref, inView] = useInView();
+const CardBody = styled.p`
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: ${p => p.theme.textSecondary};
+`;
 
-  return (
-    <SectionWrapper>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>Sound Familiar?</SectionHeading>
-          <SectionSub>
-            Hover over each card to see the fix.
-          </SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <PainGrid>
-            {PAINS.map((p, i) => (
-              <FlipCard key={i}>
-                <FlipInner>
-                  <FlipFront>
-                    <PainTitle>{p.title}</PainTitle>
-                    <PainText>{p.pain}</PainText>
-                    <ImpactBadge $severity={p.severity}>
-                      Lost time: <PainHighlight $severity={p.severity}>{p.impact}</PainHighlight>
-                    </ImpactBadge>
-                    <HoverHint>Hover to see the fix &rarr;</HoverHint>
-                  </FlipFront>
-                  <FlipBack>
-                    <SolutionLabel>With Peak Work Studios</SolutionLabel>
-                    <PainTitle>{p.title}</PainTitle>
-                    <PainText>{p.solution}</PainText>
-                    <ImpactBadge $severity="low">
-                      Saves: <PainHighlight $severity="low">{p.impact}</PainHighlight>
-                    </ImpactBadge>
-                  </FlipBack>
-                </FlipInner>
-              </FlipCard>
-            ))}
-          </PainGrid>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
+const CapabilityGrid = styled.div`
+  display: grid;
+  gap: 18px;
 
-/* ════════════════════════════════════════════
-   SECTION 5 — HOW IT WORKS
-   ════════════════════════════════════════════ */
-
-const TimelineWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 0;
-  position: relative;
-  justify-content: space-between;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0;
-    padding-left: 32px;
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
-const TimelineStep = styled.div`
-  flex: 1;
-  text-align: center;
-  position: relative;
-  padding: 0 12px;
-
-  @media (max-width: 768px) {
-    text-align: left;
-    padding: 0 0 40px 24px;
-
-    &:last-child {
-      padding-bottom: 0;
-    }
-  }
+const CapabilityCard = styled(Panel)`
+  padding: 26px;
 `;
 
-const TimelineCircle = styled.div`
+const IconWrap = styled.div`
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: ${p => p.theme.primary};
-  color: #000;
-  font-weight: 800;
-  font-size: 18px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
-  position: relative;
-  z-index: 2;
-  animation: ${pulseGlow} 3s ease-in-out infinite;
-
-  @media (max-width: 768px) {
-    position: absolute;
-    left: -32px;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    margin: 0;
-  }
-`;
-
-const TimelineLine = styled.div`
-  position: absolute;
-  top: 24px;
-  left: calc(50% + 24px);
-  right: calc(-50% + 24px);
-  height: 2px;
-  background: ${p => p.theme.border};
-
-  @media (max-width: 768px) {
-    top: 40px;
-    bottom: 0;
-    left: -12px;
-    right: auto;
-    width: 2px;
-    height: calc(100% - 40px);
-  }
-`;
-
-const StepDuration = styled.span`
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  border-radius: 14px;
+  background: rgba(193, 147, 27, 0.14);
   color: ${p => p.theme.primary};
-  margin-bottom: 8px;
 `;
 
-const StepTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 12px;
-`;
-
-const StepDesc = styled.ul`
-  margin: 0;
+const CapabilityList = styled.ul`
+  margin: 18px 0 0;
   padding: 0;
   list-style: none;
+  display: grid;
+  gap: 10px;
 
   li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     font-size: 14px;
-    color: ${p => p.theme.textSecondary};
     line-height: 1.7;
-    &::before {
-      content: '\u2713 ';
-      color: ${p => p.theme.primary};
-      font-weight: 700;
-    }
+    color: ${p => p.theme.textSecondary};
   }
 `;
 
-const STEPS = [
-  {
-    num: 1,
-    title: 'Audit',
-    duration: '1 Week',
-    items: ['Stakeholder intake + data access', 'Process map with bottleneck scoring', '1-page roadmap with priorities + quick wins', 'Scope, success metrics, and next actions'],
-  },
-  {
-    num: 2,
-    title: 'Build',
-    duration: '3-6 Weeks',
-    items: ['Automations with approvals + fallbacks', 'Documentation and runbooks', 'Security, QA, and staged testing', 'Weekly reviews for sign-off'],
-  },
-  {
-    num: 3,
-    title: 'Launch',
-    duration: '1 Week',
-    items: ['Team training + enablement', 'Monitoring dashboards live', 'Pilot with select workflows', 'Adjustments from real feedback'],
-  },
-  {
-    num: 4,
-    title: 'Support',
-    duration: 'Ongoing',
-    items: ['Fixes, tuning, and improvements', 'New automations on request', 'Quarterly system reviews', 'Ongoing performance monitoring'],
-  },
-];
-
-function HowItWorksSection() {
-  const [ref, inView] = useInView();
-
-  return (
-    <SectionWrapper id="how-it-works">
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>How We Work</SectionHeading>
-          <SectionSub>
-            From audit to ongoing support in four clear steps.
-          </SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <TimelineWrapper>
-            {STEPS.map((step, i) => (
-              <TimelineStep key={i}>
-                {i < STEPS.length - 1 && <TimelineLine />}
-                <TimelineCircle>{step.num}</TimelineCircle>
-                <StepDuration>{step.duration}</StepDuration>
-                <StepTitle>{step.title}</StepTitle>
-                <StepDesc>
-                  {step.items.map((item, j) => (
-                    <li key={j}>{item}</li>
-                  ))}
-                </StepDesc>
-              </TimelineStep>
-            ))}
-          </TimelineWrapper>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 6 — AI CAPABILITIES
-   ════════════════════════════════════════════ */
-
-const AIGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const AICard = styled(Card)`
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-6px) scale(1.02);
-  }
-`;
-
-const AICardIconWrap = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: ${p => p.theme.borderRadiusSm};
-  background: ${p => p.theme.primary}18;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${p => p.theme.primary};
-  margin-bottom: 20px;
-`;
-
-const AICardTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 16px;
-`;
-
-const AIResult = styled.div`
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid ${p => p.theme.border};
-  font-size: 14px;
-  font-weight: 600;
-  color: ${p => p.theme.primary};
-  line-height: 1.6;
-`;
-
-const Disclaimer = styled.p`
-  text-align: center;
-  font-size: 14px;
-  color: ${p => p.theme.textSecondary};
-  max-width: 600px;
-  margin: 40px auto 0;
-  padding: 16px 24px;
-  background: ${p => p.theme.surface};
-  border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadiusSm};
-`;
-
-const AI_BOXES = [
-  {
-    icon: Bot,
-    title: 'Internal Knowledge Assistant',
-    bullets: [
-      'Answers team questions from your docs and SOPs',
-      'Surfaces relevant information without searching',
-      'Routes complex questions to the right person',
-      'Learns from your existing knowledge base',
-      'Audit trail for every response',
-    ],
-    result: 'Reduces time spent searching for information and answering repeated questions.',
-  },
-  {
-    icon: Zap,
-    title: 'Document & Report Drafting',
-    bullets: [
-      'Drafts reports, summaries, and follow-ups',
-      'Pulls data from your existing tools',
-      'Follows your templates and formatting rules',
-      'Human review before anything goes out',
-      'Tracks revisions and approvals',
-    ],
-    result: 'Turns hours of document prep into minutes of review.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Process Quality Checks',
-    bullets: [
-      'Validates work against checklists and standards',
-      'Flags inconsistencies before they reach stakeholders',
-      'Runs pre-flight checks at each workflow stage',
-      'Catches data errors in reports and deliverables',
-      'Approval gates before final delivery',
-    ],
-    result: 'Fewer errors, fewer revision loops, more consistent output.',
-  },
-];
-
-function AISection() {
-  const [ref, inView] = useInView();
-
-  return (
-    <SectionWrapper $bg="transparent">
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>AI Assistants That Actually Work</SectionHeading>
-          <SectionSub>
-            Purpose-built AI that handles the repetitive stuff so your team can focus on the work that matters.
-          </SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <AIGrid>
-            {AI_BOXES.map((box, i) => (
-              <AICard key={i}>
-                <AICardIconWrap>
-                  <box.icon size={24} />
-                </AICardIconWrap>
-                <AICardTitle>{box.title}</AICardTitle>
-                <BulletList>
-                  {box.bullets.map((b, j) => (
-                    <li key={j}>{b}</li>
-                  ))}
-                </BulletList>
-                <AIResult>{box.result}</AIResult>
-              </AICard>
-            ))}
-          </AIGrid>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.3s">
-          <Disclaimer>
-            All AI systems include human oversight and approval workflows. You stay in control.
-          </Disclaimer>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 7 — LEAD MAGNETS
-   ════════════════════════════════════════════ */
-
-const LeadGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const LeadCard = styled(Card)`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 36px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-6px) scale(1.02);
-  }
-`;
-
-const LeadIconWrap = styled.div`
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: ${p => p.theme.primary}18;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${p => p.theme.primary};
-  margin-bottom: 24px;
-`;
-
-const LeadTitle = styled.h3`
-  font-size: 22px;
-  font-weight: 700;
-  color: ${p => p.theme.text};
-  margin: 0 0 12px;
-`;
-
-const LeadDesc = styled.p`
-  font-size: 15px;
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.65;
-  margin: 0 0 8px;
-`;
-
-const LeadTime = styled.span`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${p => p.theme.primary};
-  margin-bottom: 24px;
-`;
-
-function LeadMagnetsSection() {
-  const [ref, inView] = useInView();
-
-  return (
-    <SectionWrapper>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>Start Free. See the Numbers First.</SectionHeading>
-          <SectionSub>
-            Two ways to start: a 2-minute cost estimate or a diagnostic audit.
-          </SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <LeadGrid>
-            <LeadCard>
-              <LeadIconWrap>
-                <Calculator size={28} />
-              </LeadIconWrap>
-              <LeadTitle>Hidden Cost Calculator</LeadTitle>
-              <LeadDesc>
-                A 2-minute estimate of time and money lost to manual processes,
-                repetitive tasks, and inefficient handoffs. Get a personalized
-                breakdown.
-              </LeadDesc>
-              <LeadTime>Takes about 2 minutes</LeadTime>
-              <PrimaryButton to="/calculator">
-                Calculate Your Costs
-              </PrimaryButton>
-            </LeadCard>
-            <LeadCard>
-              <LeadIconWrap>
-                <ClipboardCheck size={28} />
-              </LeadIconWrap>
-              <LeadTitle>Operations Audit</LeadTitle>
-              <LeadDesc>
-                A short diagnostic that identifies bottlenecks and next
-                actions across your workflows, reporting, and team coordination.
-              </LeadDesc>
-              <LeadTime>Takes about 3 minutes</LeadTime>
-              <PrimaryButton to="/audit">
-                Take The Audit
-              </PrimaryButton>
-            </LeadCard>
-          </LeadGrid>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 8 — ABOUT BRIEF
-   ════════════════════════════════════════════ */
-
-const AboutRow = styled.div`
-  display: flex;
-  gap: 48px;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-    gap: 32px;
-  }
-`;
-
-const AvatarOuter = styled.div`
-  width: 160px;
-  height: 160px;
-  perspective: 600px;
+const MiniCheck = styled(CheckCheck)`
+  margin-top: 3px;
   flex-shrink: 0;
+  color: ${p => p.theme.primary};
 `;
 
-const AvatarInner = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+const TablePanel = styled(Panel)`
+  padding: 20px;
+`;
 
-  ${AvatarOuter}:hover & {
-    transform: rotateY(180deg);
+const Table = styled.div`
+  display: grid;
+`;
+
+const TableHeader = styled.div`
+  display: none;
+
+  @media (min-width: 900px) {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    padding: 0 18px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${p => p.theme.textSecondary};
   }
 `;
 
-const AvatarFace = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  backface-visibility: hidden;
-  border: 3px solid ${p => p.theme.border};
+const TableRow = styled.div`
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border-top: 1px solid ${p => p.theme.border};
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  @media (min-width: 900px) {
+    grid-template-columns: 1.1fr 1fr 1fr;
+    align-items: start;
   }
 `;
 
-const AvatarBack = styled(AvatarFace)`
-  transform: rotateY(180deg);
+const RowLabel = styled.div`
+  font-size: 18px;
+  font-weight: 800;
 `;
 
-const AboutText = styled.div`
-  flex: 1;
+const RowColumn = styled.div`
+  display: grid;
+  gap: 6px;
 
-  h3 {
-    font-size: 20px;
-    font-weight: 700;
-    color: ${p => p.theme.primary};
-    margin: 0 0 8px;
+  strong {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${p => p.theme.textSecondary};
+
+    @media (min-width: 900px) {
+      display: none;
+    }
   }
 
   p {
-    font-size: 16px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8;
     color: ${p => p.theme.textSecondary};
-    line-height: 1.7;
-    margin: 0 0 24px;
   }
 `;
 
-function AboutSection() {
-  const [ref, inView] = useInView();
+const ProcessGrid = styled.div`
+  display: grid;
+  gap: 16px;
 
-  return (
-    <SectionWrapper>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>Who's Behind This</SectionHeading>
-          <div style={{ height: 40 }} />
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <AboutRow>
-            <AvatarOuter>
-              <AvatarInner>
-                <AvatarFace>
-                  <img src="/kunal-avatar.svg" alt="Kunal Deshmukh illustration" />
-                </AvatarFace>
-                <AvatarBack>
-                  <img src="/kunal-avatar.jpeg" alt="Kunal Deshmukh" />
-                </AvatarBack>
-              </AvatarInner>
-            </AvatarOuter>
-            <AboutText>
-              <h3>Kunal Deshmukh</h3>
-              <p>
-                15+ years building systems that keep teams sane. I've worked
-                inside agencies, consultancies, and professional service firms — building
-                the internal tools teams wished they had. Today I help teams of
-                10–50 people replace manual, error-prone processes with automation
-                that's maintainable, secure, and designed so your team stays in control.
-              </p>
-              <SecondaryLink to="/about">
-                Learn More About My Approach
-              </SecondaryLink>
-            </AboutText>
-          </AboutRow>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 9 — FAQ
-   ════════════════════════════════════════════ */
-
-const FAQList = styled.div`
-  max-width: 720px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
-const FAQItem = styled.div`
-  border: 1px solid ${p => p.theme.border};
-  border-radius: ${p => p.theme.borderRadiusSm};
-  overflow: hidden;
-  background: ${p => p.theme.surface};
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+const ProcessCard = styled(Panel)`
+  padding: 24px;
+  min-height: 100%;
+`;
+
+const ProcessStep = styled.div`
+  margin-bottom: 18px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: ${p => p.theme.primary};
+`;
+
+const GuardrailGrid = styled.div`
+  display: grid;
+  gap: 16px;
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const GuardrailCard = styled(Panel)`
+  padding: 24px;
+`;
+
+const ActionGrid = styled.div`
+  display: grid;
+  gap: 16px;
+
+  @media (min-width: 960px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const ActionCard = styled(Panel)`
+  padding: 24px;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+`;
+
+const ActionLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: ${p => p.theme.text};
 
   &:hover {
-    box-shadow: ${p => p.theme.cardShadow};
-    transform: translateX(4px);
+    color: ${p => p.theme.secondary};
   }
 `;
 
-const FAQQuestion = styled.button`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${p => p.theme.text};
-  text-align: left;
-  gap: 16px;
+const CTA = styled(Panel)`
+  padding: 28px;
+  background:
+    linear-gradient(135deg, rgba(193, 147, 27, 0.22), transparent 42%),
+    ${p => p.theme.secondary};
+  color: #f8fafc;
 
-  svg {
-    flex-shrink: 0;
-    color: ${p => p.theme.textSecondary};
-    transition: transform 0.3s ease;
-    transform: rotate(${p => (p.$open ? '180deg' : '0deg')});
+  @media (min-width: 900px) {
+    padding: 38px;
   }
 `;
 
-const FAQAnswer = styled.div`
-  max-height: ${p => (p.$open ? '300px' : '0')};
-  overflow: hidden;
-  transition: max-height 0.35s ease;
-`;
+const CTAGrid = styled.div`
+  display: grid;
+  gap: 24px;
 
-const FAQAnswerInner = styled.div`
-  padding: 0 24px 20px;
-  font-size: 15px;
-  color: ${p => p.theme.textSecondary};
-  line-height: 1.7;
-`;
-
-const FAQS = [
-  {
-    q: "We've tried automation before. It broke after two months.",
-    a: 'Most automation fails without error handling, monitoring, and documentation. I build systems with retries, alerts, and clear runbooks so your team knows what to do when something needs attention. Ongoing support keeps it stable.',
-  },
-  {
-    q: 'Our process is too custom for automation.',
-    a: 'We map your workflow end-to-end, then automate the repeatable 70–80% with modular components. The custom 20–30% stays flexible where it matters most.',
-  },
-  {
-    q: 'What if our tools change?',
-    a: 'The logic is decoupled from your tools. When you change PM, CRM, or BI tools, we update the connectors instead of rebuilding the workflows.',
-  },
-  {
-    q: 'How long until we see ROI?',
-    a: 'Quick wins often show up 2-4 weeks after the audit. Deeper systems typically land in the 6-12 week window, depending on scope and data access.',
-  },
-  {
-    q: 'Do we need technical people on staff?',
-    a: 'No. You get documentation, runbooks, and training so non-technical teams can run it. Optional support covers maintenance and improvements.',
-  },
-  {
-    q: 'What if AI makes mistakes?',
-    a: 'AI outputs pass through approval gates. External-facing messages are reviewed by your team, with confidence thresholds and audit trails on every step.',
-  },
-];
-
-function FAQSection() {
-  const [ref, inView] = useInView();
-  const [openIdx, setOpenIdx] = useState(null);
-
-  const toggle = useCallback(
-    (i) => setOpenIdx((prev) => (prev === i ? null : i)),
-    []
-  );
-
-  return (
-    <SectionWrapper>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>Common Questions</SectionHeading>
-          <div style={{ height: 40 }} />
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.1s">
-          <FAQList>
-            {FAQS.map((faq, i) => (
-              <FAQItem key={i}>
-                <FAQQuestion
-                  $open={openIdx === i}
-                  onClick={() => toggle(i)}
-                  aria-expanded={openIdx === i}
-                >
-                  {faq.q}
-                  <ChevronDown size={18} />
-                </FAQQuestion>
-                <FAQAnswer $open={openIdx === i}>
-                  <FAQAnswerInner>{faq.a}</FAQAnswerInner>
-                </FAQAnswer>
-              </FAQItem>
-            ))}
-          </FAQList>
-        </FadeIn>
-      </Container>
-    </SectionWrapper>
-  );
-}
-
-/* ════════════════════════════════════════════
-   SECTION 10 — FINAL CTA
-   ════════════════════════════════════════════ */
-
-const FinalCTAOuter = styled.section`
-  padding: 100px 40px;
-  background: linear-gradient(
-    170deg,
-    ${p => p.theme.surface} 0%,
-    ${p => p.theme.background} 50%,
-    ${p => p.theme.surface} 100%
-  );
-  text-align: center;
-
-  @media (max-width: 768px) {
-    padding: 60px 20px;
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 1.2fr) auto;
+    align-items: center;
   }
 `;
 
-const FinalCTAGroup = styled.div`
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 32px;
-`;
-
-const FinePrint = styled.p`
-  font-size: 14px;
-  color: ${p => p.theme.textSecondary};
+const CTATitle = styled.h2`
   margin: 0;
-  line-height: 1.7;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
 `;
 
-function FinalCTASection() {
-  const [ref, inView] = useInView();
-
-  return (
-    <FinalCTAOuter>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>Ready to Get Hours Back Every Week?</SectionHeading>
-          <SectionSub>
-            Start with a quick estimate or a diagnostic audit. Both are free, no commitment required.
-          </SectionSub>
-          <FinalCTAGroup>
-            <PrimaryButton to="/calculator">
-              Calculate Your Hidden Costs
-            </PrimaryButton>
-            <SecondaryLink to="/audit">
-              Take The Operations Audit
-            </SecondaryLink>
-          </FinalCTAGroup>
-          <FinePrint>
-            Calculator = 2-minute estimate of time and money leakage. Audit = diagnostic with bottlenecks + next actions.
-          </FinePrint>
-          <FinePrint style={{ marginTop: 8 }}>
-            Peak Work Studios &middot; Calgary, Canada
-          </FinePrint>
-        </FadeIn>
-      </Container>
-    </FinalCTAOuter>
-  );
-}
-
-/* ════════════════════════════════════════════
-   VALUE PROP SECTION FIX — use theme via prop
-   ════════════════════════════════════════════ */
-
-const ValueSectionWrapper = styled(SectionWrapper)`
-  background: ${p => p.theme.surface};
+const CTAText = styled.p`
+  margin: 16px 0 0;
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(248, 250, 252, 0.76);
 `;
 
-/* ════════════════════════════════════════════
-   MAIN COMPONENT
-   ════════════════════════════════════════════ */
+const CTAAction = styled(PrimaryAction)`
+  justify-self: start;
+  background: ${p => p.theme.primary};
 
-const HomePage = () => {
-  useEffect(() => {
-    document.title = 'Peak Work Studios | AI & Automation Consulting';
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.content = 'We replace repetitive, error-prone work with workflow automation or custom AI assistants — so your team gets hours back every week.';
-    }
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) canonical.href = 'https://peakworkstudios.com/';
-  }, []);
+  @media (min-width: 900px) {
+    justify-self: end;
+  }
+`;
 
+function HomePage() {
   return (
-    <>
-      <HeroSection />
-      <ValuePropSectionFixed />
-      <PainPointsSection />
-      <HowItWorksSection />
-      <AISection />
-      <LeadMagnetsSection />
-      <AboutSection />
-      <FAQSection />
-      <FinalCTASection />
-    </>
-  );
-};
+    <Page>
+      <Section $hero>
+        <Frame>
+          <HeroPanel>
+            <HeroGrid>
+              <div>
+                <Eyebrow>
+                  <Dot />
+                  Automation systems for service firms
+                </Eyebrow>
+                <HeroTitle>Automation for agencies that need order, not more noise.</HeroTitle>
+                <HeroLead>
+                  Peak Work Studios redesigns the messy middle of delivery operations: intake, routing, reporting,
+                  approvals, follow-ups, and the AI assistants that support them. The goal is not novelty. The goal is
+                  a calmer operation that scales without losing control.
+                </HeroLead>
+                <HeroMeta>
+                  Best fit: agencies, consultancies, and professional service teams with 10 to 50 people.
+                </HeroMeta>
+                <ActionRow>
+                  <PrimaryAction to="/contact">
+                    Book a discovery call
+                    <ArrowRight size={18} />
+                  </PrimaryAction>
+                  <SecondaryAction to="/audit">Run the operations audit</SecondaryAction>
+                </ActionRow>
+                <HeroNotes>
+                  <HeroNote>
+                    Built for teams that already know where the friction is, but need someone to turn it into a reliable system.
+                  </HeroNote>
+                  <HeroNote>
+                    Human review, fallbacks, and documentation are part of the build. They are not optional cleanup afterward.
+                  </HeroNote>
+                </HeroNotes>
+              </div>
 
-/* Fix the ValuePropSection to use the proper styled wrapper */
-function ValuePropSectionFixed() {
-  const [ref, inView] = useInView();
+              <BriefCard>
+                <BriefLabel>Operator brief</BriefLabel>
+                <BriefTitle>Where manual work usually hides</BriefTitle>
+                <BriefText>
+                  These are the patterns that repeatedly show up in service businesses before process debt starts to affect margin, pace, and client confidence.
+                </BriefText>
 
-  return (
-    <ValueSectionWrapper>
-      <Container ref={ref}>
-        <FadeIn $visible={inView}>
-          <SectionHeading>What We Build</SectionHeading>
-          <SectionSub>
-            We find the repetitive, error-prone work in your operations and replace it with
-            reliable systems your team controls.
-          </SectionSub>
-        </FadeIn>
-        <FadeIn $visible={inView} $delay="0.15s">
-          <ValueGrid>
-            {VALUE_COLS.map((col, i) => (
-              <ValueCard key={i}>
-                <ValueIconWrap>
-                  <col.icon size={24} />
-                </ValueIconWrap>
-                <ValueTitle>{col.title}</ValueTitle>
-                <BulletList>
-                  {col.bullets.map((b, j) => (
-                    <li key={j}>{b}</li>
+                <OpportunityList>
+                  {opportunityAreas.map(item => (
+                    <OpportunityItem key={item.label}>
+                      <OpportunityValue>{item.value}</OpportunityValue>
+                      <OpportunityLabel>{item.label}</OpportunityLabel>
+                      <OpportunityDetail>{item.detail}</OpportunityDetail>
+                    </OpportunityItem>
                   ))}
-                </BulletList>
-              </ValueCard>
+                </OpportunityList>
+              </BriefCard>
+            </HeroGrid>
+          </HeroPanel>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              The problem statement
+            </SectionLabel>
+            <SectionTitle>Most agency operations break in the same place.</SectionTitle>
+            <SectionIntro>
+              Not at strategy. Not at sales. They break in the handoffs, the repetitive admin, and the reporting layer that no one has time to build properly.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <PainGrid>
+            {painPoints.map((item, index) => (
+              <PainCard key={item.title}>
+                <CardIndex>Issue {String(index + 1).padStart(2, '0')}</CardIndex>
+                <CardTitle>{item.title}</CardTitle>
+                <CardBody>{item.body}</CardBody>
+              </PainCard>
             ))}
-          </ValueGrid>
-        </FadeIn>
-      </Container>
-    </ValueSectionWrapper>
+          </PainGrid>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              Solution overview
+            </SectionLabel>
+            <SectionTitle>The site now sells systems, not vague automation.</SectionTitle>
+            <SectionIntro>
+              The offer is clearer when it is broken into operational capabilities people already understand: workflow automation, purpose-built AI support, and reporting that creates real visibility.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <CapabilityGrid>
+            {capabilities.map(item => {
+              const Icon = item.icon;
+
+              return (
+                <CapabilityCard key={item.title}>
+                  <IconWrap>
+                    <Icon size={22} />
+                  </IconWrap>
+                  <CardTitle style={{ marginTop: '18px' }}>{item.title}</CardTitle>
+                  <CardBody>{item.body}</CardBody>
+                  <CapabilityList>
+                    {item.bullets.map(point => (
+                      <li key={point}>
+                        <MiniCheck size={16} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </CapabilityList>
+                </CapabilityCard>
+              );
+            })}
+          </CapabilityGrid>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              Before and after
+            </SectionLabel>
+            <SectionTitle>Replace duct-tape operations with a visible system.</SectionTitle>
+            <SectionIntro>
+              The redesign shifts the message away from generic AI hype and toward concrete operational transformation that buyers can recognize immediately.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <TablePanel>
+            <Table>
+              <TableHeader>
+                <div>Workflow</div>
+                <div>Before</div>
+                <div>After</div>
+              </TableHeader>
+
+              {transformationRows.map(row => (
+                <TableRow key={row.label}>
+                  <RowLabel>{row.label}</RowLabel>
+                  <RowColumn>
+                    <strong>Before</strong>
+                    <p>{row.before}</p>
+                  </RowColumn>
+                  <RowColumn>
+                    <strong>After</strong>
+                    <p>{row.after}</p>
+                  </RowColumn>
+                </TableRow>
+              ))}
+            </Table>
+          </TablePanel>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              Engagement flow
+            </SectionLabel>
+            <SectionTitle>A straightforward build process that keeps risk low.</SectionTitle>
+            <SectionIntro>
+              Buyers do not need another mystery process. They need to know how the work will be scoped, built, and transferred back to their team.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <ProcessGrid>
+            {processSteps.map(step => (
+              <ProcessCard key={step.step}>
+                <ProcessStep>{step.step}</ProcessStep>
+                <CardTitle>{step.title}</CardTitle>
+                <CardBody>{step.body}</CardBody>
+              </ProcessCard>
+            ))}
+          </ProcessGrid>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              Reliability layer
+            </SectionLabel>
+            <SectionTitle>Trust comes from the operating model, not the headline.</SectionTitle>
+            <SectionIntro>
+              The previous design talked about outcomes, but it did not surface enough of the control layer. This version makes the guardrails visible because that is what serious buyers are evaluating.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <GuardrailGrid>
+            {guardrails.map(item => {
+              const Icon = item.icon;
+
+              return (
+                <GuardrailCard key={item.title}>
+                  <IconWrap>
+                    <Icon size={22} />
+                  </IconWrap>
+                  <CardTitle style={{ marginTop: '18px' }}>{item.title}</CardTitle>
+                  <CardBody>{item.body}</CardBody>
+                </GuardrailCard>
+              );
+            })}
+          </GuardrailGrid>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <HeadingBlock>
+            <SectionLabel>
+              <Dot />
+              Next action
+            </SectionLabel>
+            <SectionTitle>Choose the right entry point.</SectionTitle>
+            <SectionIntro>
+              Not every visitor is ready for a call. The site now gives three credible paths forward instead of forcing the same CTA everywhere.
+            </SectionIntro>
+          </HeadingBlock>
+
+          <ActionGrid>
+            {nextActions.map(item => {
+              const Icon = item.icon;
+
+              return (
+                <ActionCard key={item.title}>
+                  <IconWrap>
+                    <Icon size={22} />
+                  </IconWrap>
+                  <CardTitle>{item.title}</CardTitle>
+                  <CardBody>{item.body}</CardBody>
+                  <ActionLink to={item.to}>
+                    {item.cta}
+                    <ArrowRight size={18} />
+                  </ActionLink>
+                </ActionCard>
+              );
+            })}
+          </ActionGrid>
+        </Frame>
+      </Section>
+
+      <Section>
+        <Frame>
+          <CTA>
+            <CTAGrid>
+              <div>
+                <SectionLabel style={{ color: 'rgba(248, 250, 252, 0.72)' }}>
+                  <Dot />
+                  Peak Work Studios
+                </SectionLabel>
+                <CTATitle>Find the first workflow worth fixing.</CTATitle>
+                <CTAText>
+                  If the team is already feeling the drag of manual coordination, the next step is usually not a bigger tech stack. It is a tighter operating system.
+                </CTAText>
+              </div>
+              <CTAAction to="/contact">
+                Talk through your workflow
+                <ArrowRight size={18} />
+              </CTAAction>
+            </CTAGrid>
+          </CTA>
+        </Frame>
+      </Section>
+    </Page>
   );
 }
 
