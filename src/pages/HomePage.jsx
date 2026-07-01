@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import {
   ArrowRight,
   Bot,
@@ -15,6 +15,10 @@ import {
   Sparkles,
   Waypoints,
 } from 'lucide-react';
+
+const PeakRangeScene = lazy(() => import('../three/PeakRangeScene'));
+const NodeNetworkScene = lazy(() => import('../three/NodeNetworkScene'));
+const FlowRibbonScene = lazy(() => import('../three/FlowRibbonScene'));
 
 const opportunityAreas = [
   {
@@ -222,6 +226,51 @@ const HeroGrid = styled.div`
   @media (min-width: 960px) {
     grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.86fr);
     align-items: start;
+  }
+`;
+
+const HeroCanvasLayer = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.4;
+  mask-image: linear-gradient(to left, black 45%, transparent 82%);
+
+  @media (max-width: 768px) {
+    opacity: 0.24;
+  }
+`;
+
+const ShowcasePanel = styled(Panel)`
+  position: relative;
+  height: 300px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-end;
+
+  @media (max-width: 640px) {
+    height: 240px;
+  }
+`;
+
+const ShowcaseCaption = styled.div`
+  position: relative;
+  z-index: 1;
+  padding: 22px 26px;
+  display: grid;
+  gap: 6px;
+
+  strong {
+    font-family: ${p => p.theme.headingFont};
+    font-size: 20px;
+    color: ${p => p.theme.text};
+  }
+
+  span {
+    max-width: 480px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: ${p => p.theme.textSecondary};
   }
 `;
 
@@ -693,11 +742,18 @@ const CTAAction = styled(PrimaryAction)`
 `;
 
 function HomePage() {
+  const theme = useTheme();
+
   return (
     <Page>
       <Section $hero>
         <Frame>
           <HeroPanel>
+            <HeroCanvasLayer>
+              <Suspense fallback={null}>
+                <PeakRangeScene primaryColor={theme.primary} secondaryColor={theme.secondary} />
+              </Suspense>
+            </HeroCanvasLayer>
             <HeroGrid>
               <div>
                 <Eyebrow>
@@ -790,6 +846,16 @@ function HomePage() {
             </SectionIntro>
           </HeadingBlock>
 
+          <ShowcasePanel>
+            <Suspense fallback={null}>
+              <NodeNetworkScene primaryColor={theme.primary} secondaryColor={theme.secondary} />
+            </Suspense>
+            <ShowcaseCaption>
+              <strong>One connected operating system</strong>
+              <span>Workflow automation, AI assistants, and reporting sit on the same backbone instead of living as disconnected tools.</span>
+            </ShowcaseCaption>
+          </ShowcasePanel>
+
           <CapabilityGrid>
             {capabilities.map(item => {
               const Icon = item.icon;
@@ -867,6 +933,16 @@ function HomePage() {
               Buyers do not need another mystery process. They need to know how the work will be scoped, built, and transferred back to their team.
             </SectionIntro>
           </HeadingBlock>
+
+          <ShowcasePanel>
+            <Suspense fallback={null}>
+              <FlowRibbonScene primaryColor={theme.primary} secondaryColor={theme.secondary} />
+            </Suspense>
+            <ShowcaseCaption>
+              <strong>A single path from audit to handoff</strong>
+              <span>Every engagement follows the same visible route: audit, design, build, and handoff, with no missing steps in between.</span>
+            </ShowcaseCaption>
+          </ShowcasePanel>
 
           <ProcessGrid>
             {processSteps.map(step => (
