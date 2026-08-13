@@ -124,10 +124,10 @@ const TermsPage = () => {
   const [contentRef, contentInView] = useInView();
 
   useEffect(() => {
-    document.title = 'Terms of Service | Peak Work Studios';
+    document.title = 'Terms of Service | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Terms of Service for Peak Work Studios. Review the terms governing your use of our website and services.';
+      metaDescription.content = 'Terms of Service for PeakWork Studios. Review the terms governing your use of our website and services.';
     }
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = 'https://peakworkstudios.com/terms';
@@ -149,12 +149,12 @@ const TermsPage = () => {
       <Section ref={contentRef}>
         <FadeIn $visible={contentInView}>
           <Paragraph>
-            These Terms of Service ("Terms") govern your use of the Peak Work Studios website at peakworkstudios.com ("Website") and any services provided by Peak Work Studios (2607770 Alberta Inc.) ("we", "us", or "our"). By accessing or using the Website, you agree to be bound by these Terms.
+            These Terms of Service ("Terms") govern your use of the PeakWork Studios website at peakworkstudios.com ("Website") and any services provided by PeakWork Studios (2607770 Alberta Inc.) ("we", "us", or "our"). By accessing or using the Website, you agree to be bound by these Terms.
           </Paragraph>
 
           <SectionTitle>1. Services Description</SectionTitle>
           <Paragraph>
-            Peak Work Studios provides AI and automation consulting services for professional service teams. Our Website includes informational content, a contact form, and interactive tools including a Hidden Cost Calculator and an Operations Audit.
+            PeakWork Studios provides AI and automation consulting services for professional service teams. Our Website includes informational content, a contact form, and interactive tools including a Hidden Cost Calculator and an Operations Audit.
           </Paragraph>
 
           <SectionTitle>2. Calculator and Audit Tools</SectionTitle>
@@ -176,7 +176,7 @@ const TermsPage = () => {
 
           <SectionTitle>4. Intellectual Property</SectionTitle>
           <Paragraph>
-            All content on this Website — including text, design, graphics, logos, calculator logic, and audit methodology — is the property of Peak Work Studios and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works from our content without prior written consent.
+            All content on this Website — including text, design, graphics, logos, calculator logic, and audit methodology — is the property of PeakWork Studios and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works from our content without prior written consent.
           </Paragraph>
 
           <SectionTitle>5. Privacy</SectionTitle>
@@ -186,7 +186,7 @@ const TermsPage = () => {
 
           <SectionTitle>6. Consulting Services</SectionTitle>
           <Paragraph>
-            Any consulting services provided by Peak Work Studios are subject to a separate agreement between you and Peak Work Studios. These Terms govern only your use of the Website and its free tools.
+            Any consulting services provided by PeakWork Studios are subject to a separate agreement between you and PeakWork Studios. These Terms govern only your use of the Website and its free tools.
           </Paragraph>
 
           <SectionTitle>7. Disclaimer of Warranties</SectionTitle>
@@ -196,7 +196,7 @@ const TermsPage = () => {
 
           <SectionTitle>8. Limitation of Liability</SectionTitle>
           <Paragraph>
-            To the fullest extent permitted by law, Peak Work Studios shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the Website, its tools, or any decisions made based on information provided on the Website.
+            To the fullest extent permitted by law, PeakWork Studios shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of the Website, its tools, or any decisions made based on information provided on the Website.
           </Paragraph>
 
           <SectionTitle>9. Changes to These Terms</SectionTitle>
@@ -215,7 +215,7 @@ const TermsPage = () => {
             <ExternalLink href="mailto:info@peakworkstudios.com">info@peakworkstudios.com</ExternalLink>.
           </Paragraph>
           <Paragraph style={{ marginTop: '8px' }}>
-            Peak Work Studios (2607770 Alberta Inc.)<br />
+            PeakWork Studios (2607770 Alberta Inc.)<br />
             Calgary, Alberta, Canada
           </Paragraph>
 

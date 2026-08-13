@@ -92,9 +92,9 @@ export default async function handler(req, res) {
 
     // Send results to the user
     await resend.emails.send({
-      from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
+      from: 'PeakWork Studios <no_reply@peakworkstudios.com>',
       to: email,
-      subject: `Your Operations Audit Results: ${totalScore}/100 — Peak Work Studios`,
+      subject: `Your Operations Audit Results: ${totalScore}/100 — PeakWork Studios`,
       headers: {
         'List-Unsubscribe': '<mailto:no_reply@peakworkstudios.com?subject=unsubscribe>',
       },
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;max-width:640px;margin:0 auto;background:#ffffff;">
           <!-- Header -->
           <div style="text-align:center;padding:32px 24px;background:linear-gradient(135deg, #0c4a6e 0%, #075985 100%);border-bottom:4px solid #38bdf8;">
-            <div style="font-size:28px;font-weight:800;color:#38bdf8;margin-bottom:6px;letter-spacing:-0.5px;">Peak Work Studios</div>
+            <div style="font-size:28px;font-weight:800;color:#38bdf8;margin-bottom:6px;letter-spacing:-0.5px;">PeakWork Studios</div>
             <div style="font-size:15px;color:#e0f2fe;font-weight:500;">Your Operations Audit Results</div>
           </div>
 
@@ -175,7 +175,7 @@ export default async function handler(req, res) {
               <a href="mailto:no_reply@peakworkstudios.com?subject=unsubscribe" style="color:#64748b;text-decoration:underline;">Unsubscribe</a> · 
               <a href="https://peakworkstudios.com" style="color:#64748b;text-decoration:none;">peakworkstudios.com</a>
             </p>
-            <p style="color:#94a3b8;font-size:11px;margin:8px 0;text-align:center;">Peak Work Studios · Calgary, Canada</p>
+            <p style="color:#94a3b8;font-size:11px;margin:8px 0;text-align:center;">PeakWork Studios · Calgary, Canada</p>
           </div>
         </div>
       `,
@@ -183,7 +183,7 @@ export default async function handler(req, res) {
 
     // Notify yourself
     await resend.emails.send({
-      from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
+      from: 'PeakWork Studios <no_reply@peakworkstudios.com>',
       to: 'kunal.deshmukh@hotmail.com',
       subject: `New Audit Submission: ${name} (${totalScore}/100)`,
       headers: {

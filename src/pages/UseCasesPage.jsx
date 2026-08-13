@@ -307,7 +307,7 @@ const RELIABILITY_CASES = [
 
 function UseCasesPage() {
   useEffect(() => {
-    document.title = 'Automation + AI Use Cases | Peak Work Studios';
+    document.title = 'Automation + AI Use Cases | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.content = 'See what we build: Workflow automation and custom AI assistants that eliminate repetitive work for professional service teams.';
@@ -320,7 +320,7 @@ function UseCasesPage() {
     <PageWrapper>
       {/* Hero */}
       <HeroSection>
-        <HeroLabel>Peak Work Studios</HeroLabel>
+        <HeroLabel>PeakWork Studios</HeroLabel>
         <HeroTitle>Automation + AI Use Cases</HeroTitle>
         <HeroSubtitle>
           We eliminate repetitive, error-prone work using workflow automation or custom AI assistants (chat + voice).

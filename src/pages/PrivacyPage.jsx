@@ -124,10 +124,10 @@ const PrivacyPage = () => {
   const [contentRef, contentInView] = useInView();
 
   useEffect(() => {
-    document.title = 'Privacy Policy | Peak Work Studios';
+    document.title = 'Privacy Policy | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Privacy Policy for Peak Work Studios. Learn how we collect, use, and protect your information.';
+      metaDescription.content = 'Privacy Policy for PeakWork Studios. Learn how we collect, use, and protect your information.';
     }
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = 'https://peakworkstudios.com/privacy';
@@ -149,7 +149,7 @@ const PrivacyPage = () => {
       <Section ref={contentRef}>
         <FadeIn $visible={contentInView}>
           <Paragraph>
-            Peak Work Studios (2607770 Alberta Inc.) ("we", "us", or "our") operates the website at peakworkstudios.com. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.
+            PeakWork Studios (2607770 Alberta Inc.) ("we", "us", or "our") operates the website at peakworkstudios.com. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.
           </Paragraph>
 
           <SectionTitle>1. Information We Collect</SectionTitle>
@@ -216,7 +216,7 @@ const PrivacyPage = () => {
             <ExternalLink href="mailto:info@peakworkstudios.com">info@peakworkstudios.com</ExternalLink>.
           </Paragraph>
           <Paragraph style={{ marginTop: '8px' }}>
-            Peak Work Studios (2607770 Alberta Inc.)<br />
+            PeakWork Studios (2607770 Alberta Inc.)<br />
             Calgary, Alberta, Canada
           </Paragraph>
 

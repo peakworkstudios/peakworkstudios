@@ -496,10 +496,10 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = 'Contact | Peak Work Studios';
+    document.title = 'Contact | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Get in touch with Peak Work Studios. Book a discovery call to discuss workflow automation for your team.';
+      metaDescription.content = 'Get in touch with PeakWork Studios. Book a discovery call to discuss workflow automation for your team.';
     }
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = 'https://peakworkstudios.com/contact';

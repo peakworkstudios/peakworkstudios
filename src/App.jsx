@@ -583,7 +583,7 @@ function App() {
               <LogoMark>
                 <Mountain size={20} />
               </LogoMark>
-              <span>Peak Work Studios</span>
+              <span>PeakWork Studios</span>
             </LogoLink>
 
             <DesktopNav>
@@ -645,7 +645,7 @@ function App() {
             <FooterGrid>
               <FooterBrand>
                 <strong>Automation without the agency mess.</strong>
-                <p>Peak Work Studios designs workflow systems, AI assistants, and reporting operations for service teams that need reliability before scale.</p>
+                <p>PeakWork Studios designs workflow systems, AI assistants, and reporting operations for service teams that need reliability before scale.</p>
                 <p>Calgary, Canada</p>
               </FooterBrand>
 
@@ -674,8 +674,8 @@ function App() {
             </FooterGrid>
 
             <FooterBottom>
-              <span>&copy; {new Date().getFullYear()} Peak Work Studios. All rights reserved.</span>
-              <span>Peak Work Studios is a registered trade name owned and operated by 2607770 Alberta Inc.</span>
+              <span>&copy; {new Date().getFullYear()} PeakWork Studios. All rights reserved.</span>
+              <span>PeakWork Studios is a registered trade name owned and operated by 2607770 Alberta Inc.</span>
               <span>Built for service firms that need human review, clear audit trails, and maintainable automation.</span>
             </FooterBottom>
           </FooterFrame>

@@ -706,7 +706,7 @@ function HomePage() {
                 </Eyebrow>
                 <HeroTitle>Automation for agencies that need order, not more noise.</HeroTitle>
                 <HeroLead>
-                  Peak Work Studios redesigns the messy middle of delivery operations: intake, routing, reporting,
+                  PeakWork Studios redesigns the messy middle of delivery operations: intake, routing, reporting,
                   approvals, follow-ups, and the AI assistants that support them. The goal is not novelty. The goal is
                   a calmer operation that scales without losing control.
                 </HeroLead>
@@ -953,7 +953,7 @@ function HomePage() {
               <div>
                 <SectionLabel style={{ color: 'rgba(248, 250, 252, 0.72)' }}>
                   <Dot />
-                  Peak Work Studios
+                  PeakWork Studios
                 </SectionLabel>
                 <CTATitle>Find the first workflow worth fixing.</CTATitle>
                 <CTAText>

@@ -361,10 +361,10 @@ const AboutPage = () => {
   const [heroRef, heroInView] = useInView();
 
   useEffect(() => {
-    document.title = 'About | Peak Work Studios';
+    document.title = 'About | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Meet the team behind Peak Work Studios. AI and automation consulting for professional service teams in Calgary, Canada.';
+      metaDescription.content = 'Meet the team behind PeakWork Studios. AI and automation consulting for professional service teams in Calgary, Canada.';
     }
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.href = 'https://peakworkstudios.com/about';
@@ -380,7 +380,7 @@ const AboutPage = () => {
       {/* Hero */}
       <HeroSection ref={heroRef}>
         <FadeIn $visible={heroInView}>
-          <HeroHeadline>Why Peak Work Studios Exists</HeroHeadline>
+          <HeroHeadline>Why PeakWork Studios Exists</HeroHeadline>
           <HeroSub>
             I got tired of watching talented teams hit a ceiling because their operations couldn't keep up.
           </HeroSub>
@@ -413,7 +413,7 @@ const AboutPage = () => {
                 The more teams I talked to — agencies, consultancies, professional service firms — the more I saw the same pattern: <strong>teams growing fast but stalling</strong> — not because of talent or demand, but because their operations couldn't scale. They were spending so much time on process overhead that the actual work suffered.
               </p>
               <p>
-                That's why I built Peak Work Studios. Not as a dev shop. Not as an AI consultancy. As a focused automation practice for teams that are ready to stop fighting their own operations and start scaling with confidence.
+                That's why I built PeakWork Studios. Not as a dev shop. Not as an AI consultancy. As a focused automation practice for teams that are ready to stop fighting their own operations and start scaling with confidence.
               </p>
             </StoryText>
           </StoryGrid>
