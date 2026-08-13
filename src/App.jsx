@@ -674,7 +674,7 @@ function App() {
             </FooterGrid>
 
             <FooterBottom>
-              <span>&copy; {new Date().getFullYear()} Peak Work Studios. All rights reserved.</span>
+              <span>&copy; {new Date().getFullYear()} Peak Work Studios (2607770 Alberta Inc.). All rights reserved.</span>
               <span>Built for service firms that need human review, clear audit trails, and maintainable automation.</span>
             </FooterBottom>
           </FooterFrame>
