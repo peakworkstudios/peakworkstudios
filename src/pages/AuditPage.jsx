@@ -1151,10 +1151,10 @@ export default function AuditPage() {
   }, [answers, currentQuestion, showResults]);
 
   useEffect(() => {
-    document.title = 'Operations Audit | Peak Work Studios';
+    document.title = 'Operations Audit | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.content = 'Take the Peak Work Studios operations audit to identify workflow bottlenecks, manual coordination debt, and the highest-leverage automation opportunities.';
+      metaDescription.content = 'Take the PeakWork Studios operations audit to identify workflow bottlenecks, manual coordination debt, and the highest-leverage automation opportunities.';
     }
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {

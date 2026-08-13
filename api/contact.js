@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: 'Peak Work Studios <no_reply@peakworkstudios.com>',
+      from: 'PeakWork Studios <no_reply@peakworkstudios.com>',
       to: 'kunal.deshmukh@hotmail.com',
       subject: `New Contact: ${name} from ${agencyName || 'Unknown Agency'}`,
       headers: {

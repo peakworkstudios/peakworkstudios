@@ -54,7 +54,7 @@ const generateResultsPDF = async ({
   doc.setFontSize(24);
   doc.setFont(undefined, 'bold');
   doc.setTextColor(56, 189, 248);
-  doc.text('Peak Work Studios', pageWidth / 2, y, { align: 'center' });
+  doc.text('PeakWork Studios', pageWidth / 2, y, { align: 'center' });
   y += 10;
 
   doc.setFontSize(12);
@@ -177,7 +177,7 @@ const generateResultsPDF = async ({
   y = pageHeight - 15;
   doc.setFontSize(9);
   doc.setTextColor(153, 153, 153);
-  doc.text('Peak Work Studios · Calgary, Canada', 15, y);
+  doc.text('PeakWork Studios · Calgary, Canada', 15, y);
   doc.text(`Generated on ${new Date().toLocaleDateString()}`, pageWidth - 15, y, { align: 'right' });
 
   // Save
@@ -1408,7 +1408,7 @@ const CalculatorPage = () => {
 
   // ─── Document title ───
   useEffect(() => {
-    document.title = 'Hidden Cost Calculator | Peak Work Studios';
+    document.title = 'Hidden Cost Calculator | PeakWork Studios';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.content = 'Calculate how much manual work is costing your team. Free interactive calculator for professional service teams.';
