@@ -675,6 +675,7 @@ function App() {
 
             <FooterBottom>
               <span>&copy; {new Date().getFullYear()} Peak Work Studios. All rights reserved.</span>
+              <span>Peak Work Studios is a registered trade name owned and operated by 2607770 Alberta Inc.</span>
               <span>Built for service firms that need human review, clear audit trails, and maintainable automation.</span>
             </FooterBottom>
           </FooterFrame>

@@ -149,7 +149,7 @@ const TermsPage = () => {
       <Section ref={contentRef}>
         <FadeIn $visible={contentInView}>
           <Paragraph>
-            These Terms of Service ("Terms") govern your use of the Peak Work Studios website at peakworkstudios.com ("Website") and any services provided by Peak Work Studios ("we", "us", or "our"). By accessing or using the Website, you agree to be bound by these Terms.
+            These Terms of Service ("Terms") govern your use of the Peak Work Studios website at peakworkstudios.com ("Website") and any services provided by Peak Work Studios (2607770 Alberta Inc.) ("we", "us", or "our"). By accessing or using the Website, you agree to be bound by these Terms.
           </Paragraph>
 
           <SectionTitle>1. Services Description</SectionTitle>
@@ -215,7 +215,7 @@ const TermsPage = () => {
             <ExternalLink href="mailto:info@peakworkstudios.com">info@peakworkstudios.com</ExternalLink>.
           </Paragraph>
           <Paragraph style={{ marginTop: '8px' }}>
-            Peak Work Studios<br />
+            Peak Work Studios (2607770 Alberta Inc.)<br />
             Calgary, Alberta, Canada
           </Paragraph>
 
