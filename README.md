@@ -81,6 +81,7 @@ Before going live, update these:
 - **Vite 5** for build tooling
 - **styled-components 6** for CSS-in-JS theming (light/dark mode)
 - **lucide-react** for icons
+- **three.js + @react-three/fiber** for the 3D scenes on the homepage (lazy-loaded, respects `prefers-reduced-motion`)
 - **Vercel** for hosting + serverless functions
 
 ## License
