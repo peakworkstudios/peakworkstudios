@@ -5,9 +5,7 @@ import { ArrowRight, Calendar, CheckCircle, Globe, Mail, MapPin } from 'lucide-r
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 92px 16px 72px;
-  background:
-    radial-gradient(circle at top right, rgba(193, 147, 27, 0.12), transparent 24%),
-    ${p => p.theme.background};
+  background: ${p => p.theme.background};
 
   @media (min-width: 769px) {
     padding: 116px 28px 96px;
@@ -34,9 +32,7 @@ const HeroGrid = styled.section`
 const Panel = styled.div`
   border: 1px solid ${p => p.theme.border};
   border-radius: ${p => p.theme.borderRadiusLg};
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.11), transparent 40%),
-    ${p => p.theme.surface};
+  background: ${p => p.theme.surface};
   box-shadow: ${p => p.theme.cardShadow};
 `;
 
@@ -265,7 +261,7 @@ const SubmitButton = styled.button`
   background: ${p => p.theme.primary};
   color: ${p => p.theme.buttonText};
   border: none;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -305,7 +301,7 @@ const CalendlyLink = styled.a`
   min-height: 48px;
   padding: 0 22px;
   border: 2px solid ${p => p.theme.primary};
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   color: ${p => p.theme.primary};
   font-size: 15px;
   font-weight: 700;

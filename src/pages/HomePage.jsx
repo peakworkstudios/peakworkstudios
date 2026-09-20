@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -6,6 +6,7 @@ import {
   Bot,
   ChartColumn,
   CheckCheck,
+  ChevronDown,
   ClipboardCheck,
   FileCheck,
   Gauge,
@@ -163,6 +164,39 @@ const nextActions = [
   },
 ];
 
+const INK = '#0d1614';
+const INK_TEXT = '#e4ebe9';
+const INK_MUTED = '#c9d4d1';
+const INK_ACCENT = '#8fd6c3';
+
+const ledgerEntries = [
+  {
+    time: '09:02',
+    what: 'Client intake routed, tasks created',
+    tag: 'Logged',
+    detail: 'Trigger, owner and every field written are recorded, so anyone can answer "what happened and why" without asking around.',
+  },
+  {
+    time: '09:40',
+    what: 'Weekly client report drafted',
+    tag: 'Awaiting review',
+    review: true,
+    detail: 'Metrics are assembled from source tools. Nothing client-facing leaves until a named person approves it.',
+  },
+  {
+    time: '10:15',
+    what: 'CRM field missing, fallback used',
+    tag: 'Fallback',
+    detail: 'When a tool fails or a record is incomplete, the flow degrades safely and flags an owner instead of silently breaking.',
+  },
+];
+
+const trustItems = [
+  { k: 'Human review', title: 'Nothing goes out blind', body: 'Approval gates sit before every external action. They are part of the architecture.' },
+  { k: 'Audit trail', title: 'Every step traceable', body: 'Actions, triggers and decisions are visible to the operator.' },
+  { k: 'Fallbacks', title: 'Fails safe, not silent', body: 'Broken data or a down tool routes to an owner rather than disappearing.' },
+];
+
 const Page = styled.div`
   color: ${p => p.theme.text};
 `;
@@ -188,29 +222,6 @@ const Panel = styled.div`
   background: ${p => (p.$dark ? p.theme.secondary : p.theme.surface)};
   color: ${p => (p.$dark ? '#f8fafc' : p.theme.text)};
   box-shadow: ${p => p.theme.cardShadow};
-`;
-
-const HeroPanel = styled(Panel)`
-  padding: 28px;
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.12), transparent 34%),
-    linear-gradient(180deg, ${p => p.theme.surface} 0%, rgba(255, 255, 255, 0.35) 100%);
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(${p => p.theme.gridLine} 1px, transparent 1px),
-      linear-gradient(90deg, ${p => p.theme.gridLine} 1px, transparent 1px);
-    background-size: 36px 36px;
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  @media (min-width: 960px) {
-    padding: 40px;
-  }
 `;
 
 const HeroGrid = styled.div`
@@ -244,30 +255,12 @@ const Dot = styled.span`
   background: ${p => p.theme.primary};
 `;
 
-const HeroTitle = styled.h1`
-  max-width: 11ch;
-  margin: 0;
-  font-family: ${p => p.theme.headingFont};
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 0.93;
-  letter-spacing: -0.04em;
-  color: ${p => p.theme.text};
-`;
-
 const HeroLead = styled.p`
   max-width: 680px;
   margin: 24px 0 0;
   font-size: clamp(1rem, 2.3vw, 1.2rem);
   line-height: 1.8;
   color: ${p => p.theme.textSecondary};
-`;
-
-const HeroMeta = styled.p`
-  max-width: 620px;
-  margin: 18px 0 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: ${p => p.theme.text};
 `;
 
 const ActionRow = styled.div`
@@ -284,7 +277,7 @@ const PrimaryAction = styled(Link)`
   gap: 10px;
   min-height: 52px;
   padding: 0 22px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   background: ${p => p.theme.primary};
   color: ${p => p.theme.buttonText};
   font-size: 15px;
@@ -297,52 +290,11 @@ const PrimaryAction = styled(Link)`
   }
 `;
 
-const SecondaryAction = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 22px;
-  border-radius: 999px;
-  border: 1px solid ${p => p.theme.border};
-  background: ${p => p.theme.surface};
-  color: ${p => p.theme.text};
-  font-size: 15px;
-  font-weight: 700;
-  transition: transform 180ms ease, background-color 180ms ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    background: ${p => p.theme.surfaceHover};
-  }
-`;
-
-const HeroNotes = styled.div`
-  display: grid;
-  gap: 10px;
-  margin-top: 26px;
-`;
-
-const HeroNote = styled.div`
-  max-width: 620px;
-  padding: 12px 14px;
-  border-left: 4px solid ${p => p.theme.primary};
-  background: ${p => (p.theme.background === '#0b1220' ? 'rgba(17, 28, 46, 0.88)' : 'rgba(255, 255, 255, 0.55)')};
-  font-size: 14px;
-  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(248, 250, 252, 0.9)' : p.theme.textSecondary)};
-`;
-
 const BriefCard = styled(Panel)`
   padding: 24px;
-  background: ${p => (p.theme.background === '#0b1220'
-    ? 'linear-gradient(180deg, rgba(17, 28, 46, 0.96) 0%, rgba(11, 18, 32, 0.98) 100%)'
-    : p.theme.secondary)};
-  color: ${p => (p.theme.background === '#0b1220' ? p.theme.text : '#f8fafc')};
-
-  @media (min-width: 960px) {
-    position: sticky;
-    top: 118px;
-  }
+  background: ${INK};
+  color: #f8fafc;
+  margin-top: 32px;
 `;
 
 const BriefLabel = styled.div`
@@ -351,7 +303,7 @@ const BriefLabel = styled.div`
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.9)' : 'rgba(248, 250, 252, 0.72)')};
+  color: ${p => (p.theme.background === '#0b1210' ? 'rgba(181, 192, 209, 0.9)' : 'rgba(248, 250, 252, 0.72)')};
 `;
 
 const BriefTitle = styled.h2`
@@ -366,7 +318,7 @@ const BriefText = styled.p`
   margin: 14px 0 0;
   font-size: 15px;
   line-height: 1.75;
-  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(219, 229, 246, 0.88)' : 'rgba(248, 250, 252, 0.76)')};
+  color: ${p => (p.theme.background === '#0b1210' ? 'rgba(219, 229, 246, 0.88)' : 'rgba(248, 250, 252, 0.76)')};
 `;
 
 const OpportunityList = styled.div`
@@ -377,7 +329,7 @@ const OpportunityList = styled.div`
 
 const OpportunityItem = styled.div`
   padding-top: 14px;
-  border-top: 1px solid ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.16)' : 'rgba(248, 250, 252, 0.14)')};
+  border-top: 1px solid ${p => (p.theme.background === '#0b1210' ? 'rgba(181, 192, 209, 0.16)' : 'rgba(248, 250, 252, 0.14)')};
 `;
 
 const OpportunityValue = styled.div`
@@ -390,14 +342,14 @@ const OpportunityLabel = styled.div`
   margin-top: 4px;
   font-size: 15px;
   font-weight: 700;
-  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(248, 250, 252, 0.96)' : 'inherit')};
+  color: ${p => (p.theme.background === '#0b1210' ? 'rgba(248, 250, 252, 0.96)' : 'inherit')};
 `;
 
 const OpportunityDetail = styled.p`
   margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.7;
-  color: ${p => (p.theme.background === '#0b1220' ? 'rgba(181, 192, 209, 0.92)' : 'rgba(248, 250, 252, 0.72)')};
+  color: ${p => (p.theme.background === '#0b1210' ? 'rgba(181, 192, 209, 0.92)' : 'rgba(248, 250, 252, 0.72)')};
 `;
 
 const HeadingBlock = styled.div`
@@ -488,8 +440,8 @@ const IconWrap = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  background: rgba(193, 147, 27, 0.14);
+  border-radius: ${p => p.theme.borderRadius};
+  background: ${p => p.theme.signalTint};
   color: ${p => p.theme.primary};
 `;
 
@@ -616,40 +568,9 @@ const GuardrailCard = styled(Panel)`
   padding: 24px;
 `;
 
-const ActionGrid = styled.div`
-  display: grid;
-  gap: 16px;
-
-  @media (min-width: 960px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const ActionCard = styled(Panel)`
-  padding: 24px;
-  display: grid;
-  align-content: start;
-  gap: 16px;
-`;
-
-const ActionLink = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  font-weight: 800;
-  color: ${p => p.theme.text};
-
-  &:hover {
-    color: ${p => p.theme.secondary};
-  }
-`;
-
 const CTA = styled(Panel)`
   padding: 28px;
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.22), transparent 42%),
-    ${p => p.theme.secondary};
+  background: #0d1614;
   color: #f8fafc;
 
   @media (min-width: 900px) {
@@ -692,7 +613,310 @@ const CTAAction = styled(PrimaryAction)`
   }
 `;
 
+const HeroPanel = styled.div`
+  position: relative;
+  padding: 8px 0 0;
+`;
+
+const HeroTitle = styled.h1`
+  max-width: 16ch;
+  margin: 0;
+  font-family: ${p => p.theme.headingFont};
+  font-size: clamp(2.5rem, 6.2vw, 4.75rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: ${p => p.theme.text};
+
+  em {
+    font-style: normal;
+    color: ${p => p.theme.primary};
+  }
+`;
+
+const HeroTextLink = styled(Link)`
+  font-size: 15px;
+  color: ${p => p.theme.textSecondary};
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: ${p => p.theme.text};
+  }
+`;
+
+const Ledger = styled.aside`
+  background: ${p => p.theme.surface};
+  border: 1px solid ${p => p.theme.text};
+  border-radius: ${p => p.theme.borderRadius};
+  box-shadow: ${p => p.theme.ledgerShadow};
+`;
+
+const LedgerHead = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid ${p => p.theme.text};
+  font-family: ${p => p.theme.monoFont};
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  span:last-child {
+    color: ${p => p.theme.primary};
+  }
+`;
+
+const LedgerEntry = styled.div`
+  border-bottom: 1px solid ${p => p.theme.border};
+
+  &:last-child {
+    border-bottom: 0;
+  }
+`;
+
+const LedgerButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: ${p => p.theme.surfaceHover};
+  }
+
+  @media (max-width: 479px) {
+    align-items: flex-start;
+  }
+`;
+
+const LedgerTime = styled.span`
+  flex: none;
+  font-family: ${p => p.theme.monoFont};
+  font-size: 13px;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const LedgerWhat = styled.span`
+  flex: 1 1 0;
+  min-width: 0;
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @media (max-width: 479px) {
+    white-space: normal;
+    overflow: visible;
+  }
+`;
+
+const LedgerTag = styled.span`
+  flex: none;
+  padding: 6px 8px;
+  border-radius: 3px;
+  font-family: ${p => p.theme.monoFont};
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: ${p => (p.$review ? p.theme.reviewTint : p.theme.signalTint)};
+  color: ${p => (p.$review ? p.theme.reviewText : p.theme.primary)};
+`;
+
+const LedgerChevron = styled(ChevronDown)`
+  flex: none;
+  transition: transform 160ms ease-out;
+  transform: rotate(${p => (p.$open ? '180deg' : '0deg')});
+`;
+
+const LedgerDetail = styled.p`
+  margin: 0;
+  padding: 0 16px 16px;
+  font-size: 15px;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const TrustStrip = styled.section`
+  border-block: 1px solid ${p => p.theme.border};
+  background: ${p => p.theme.surface};
+`;
+
+const TrustGrid = styled.div`
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+`;
+
+const TrustItem = styled.div`
+  padding: 24px 16px;
+  border-bottom: 1px solid ${p => p.theme.border};
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    font-family: ${p => p.theme.headingFont};
+    font-size: 1.125rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    color: ${p => p.theme.textSecondary};
+  }
+
+  @media (min-width: 768px) {
+    padding: 32px 24px;
+    border-bottom: 0;
+    border-right: 1px solid ${p => p.theme.border};
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+`;
+
+const TrustKicker = styled.span`
+  display: block;
+  margin-bottom: 12px;
+  font-family: ${p => p.theme.monoFont};
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${p => p.theme.primary};
+`;
+
+const NextGrid = styled.div`
+  display: grid;
+  gap: 24px;
+
+  @media (min-width: 900px) {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+`;
+
+const NextPrimary = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 32px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: ${INK};
+  color: ${INK_TEXT};
+
+  h3 {
+    margin: 0;
+    font-family: ${p => p.theme.headingFont};
+    font-size: 1.75rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+  }
+
+  p {
+    margin: 0;
+    max-width: 46ch;
+    color: ${INK_MUTED};
+  }
+`;
+
+const NextKicker = styled.span`
+  font-family: ${p => p.theme.monoFont};
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${INK_ACCENT};
+`;
+
+const NextPrimaryLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: ${p => p.theme.borderRadius};
+  background: #ffffff;
+  color: ${INK};
+  font-weight: 600;
+  transition: background-color 160ms ease-out;
+
+  &:hover {
+    background: #e0f0ec;
+  }
+`;
+
+const NextRows = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const NextRowsLabel = styled.p`
+  margin: 0;
+  font-family: ${p => p.theme.monoFont};
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: ${p => p.theme.textSecondary};
+`;
+
+const NextRow = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 88px;
+  padding: 16px 24px;
+  border: 1px solid ${p => p.theme.border};
+  border-radius: ${p => p.theme.borderRadius};
+  background: ${p => p.theme.surface};
+  color: ${p => p.theme.text};
+  transition: border-color 160ms ease-out;
+
+  &:hover {
+    border-color: ${p => p.theme.text};
+  }
+
+  strong {
+    display: block;
+    font-family: ${p => p.theme.headingFont};
+    font-size: 1.125rem;
+  }
+
+  span {
+    display: block;
+    font-size: 15px;
+    color: ${p => p.theme.textSecondary};
+  }
+
+  em {
+    flex: none;
+    font-style: normal;
+    font-weight: 600;
+    white-space: nowrap;
+    color: ${p => p.theme.primary};
+  }
+`;
+
+
 function HomePage() {
+  const [openEntry, setOpenEntry] = useState(null);
+
   return (
     <Page>
       <Section $hero>
@@ -702,55 +926,66 @@ function HomePage() {
               <div>
                 <Eyebrow>
                   <Dot />
-                  Automation systems for service firms
+                  Delivery ops for 10-50 person agencies
                 </Eyebrow>
-                <HeroTitle>Automation for agencies that need order, not more noise.</HeroTitle>
+                <HeroTitle>
+                  Stop chasing status. <em>Run delivery on a system.</em>
+                </HeroTitle>
                 <HeroLead>
-                  PeakWork Studios redesigns the messy middle of delivery operations: intake, routing, reporting,
-                  approvals, follow-ups, and the AI assistants that support them. The goal is not novelty. The goal is
-                  a calmer operation that scales without losing control.
+                  We replace Slack pings, spreadsheet reports and tool duct-tape with automation your team can audit,
+                  override and own. Every action logged. Every client-facing step reviewed by a human.
                 </HeroLead>
-                <HeroMeta>
-                  Best fit: agencies, consultancies, and professional service teams with 10 to 50 people.
-                </HeroMeta>
                 <ActionRow>
-                  <PrimaryAction to="/contact">
-                    Book a discovery call
+                  <PrimaryAction to="/audit">
+                    Run the operations audit
                     <ArrowRight size={18} />
                   </PrimaryAction>
-                  <SecondaryAction to="/audit">Run the operations audit</SecondaryAction>
+                  <HeroTextLink to="/use-cases">See use cases first</HeroTextLink>
                 </ActionRow>
-                <HeroNotes>
-                  <HeroNote>
-                    Built for teams that already know where the friction is, but need someone to turn it into a reliable system.
-                  </HeroNote>
-                  <HeroNote>
-                    Human review, fallbacks, and documentation are part of the build. They are not optional cleanup afterward.
-                  </HeroNote>
-                </HeroNotes>
               </div>
 
-              <BriefCard>
-                <BriefLabel>Operator brief</BriefLabel>
-                <BriefTitle>Where manual work usually hides</BriefTitle>
-                <BriefText>
-                  These are the patterns that repeatedly show up in service businesses before process debt starts to affect margin, pace, and client confidence.
-                </BriefText>
+              <Ledger aria-label="Example delivery ledger">
+                <LedgerHead>
+                  <span>Delivery ledger - example</span>
+                  <span>Live</span>
+                </LedgerHead>
+                {ledgerEntries.map((entry, index) => {
+                  const open = openEntry === index;
 
-                <OpportunityList>
-                  {opportunityAreas.map(item => (
-                    <OpportunityItem key={item.label}>
-                      <OpportunityValue>{item.value}</OpportunityValue>
-                      <OpportunityLabel>{item.label}</OpportunityLabel>
-                      <OpportunityDetail>{item.detail}</OpportunityDetail>
-                    </OpportunityItem>
-                  ))}
-                </OpportunityList>
-              </BriefCard>
+                  return (
+                    <LedgerEntry key={entry.what}>
+                      <LedgerButton
+                        type="button"
+                        aria-expanded={open}
+                        aria-controls={`ledger-detail-${index}`}
+                        onClick={() => setOpenEntry(open ? null : index)}
+                      >
+                        <LedgerTime>{entry.time}</LedgerTime>
+                        <LedgerWhat>{entry.what}</LedgerWhat>
+                        <LedgerTag $review={entry.review}>{entry.tag}</LedgerTag>
+                        <LedgerChevron size={16} $open={open} aria-hidden="true" />
+                      </LedgerButton>
+                      {open && <LedgerDetail id={`ledger-detail-${index}`}>{entry.detail}</LedgerDetail>}
+                    </LedgerEntry>
+                  );
+                })}
+              </Ledger>
             </HeroGrid>
           </HeroPanel>
         </Frame>
       </Section>
+
+      <TrustStrip aria-label="Guardrails">
+        <TrustGrid>
+          {trustItems.map(item => (
+            <TrustItem key={item.k}>
+              <TrustKicker>{item.k}</TrustKicker>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </TrustItem>
+          ))}
+        </TrustGrid>
+      </TrustStrip>
 
       <Section>
         <Frame>
@@ -774,6 +1009,24 @@ function HomePage() {
               </PainCard>
             ))}
           </PainGrid>
+
+              <BriefCard>
+                <BriefLabel>Operator brief</BriefLabel>
+                <BriefTitle>Where manual work usually hides</BriefTitle>
+                <BriefText>
+                  These are the patterns that repeatedly show up in service businesses before process debt starts to affect margin, pace, and client confidence.
+                </BriefText>
+
+                <OpportunityList>
+                  {opportunityAreas.map(item => (
+                    <OpportunityItem key={item.label}>
+                      <OpportunityValue>{item.value}</OpportunityValue>
+                      <OpportunityLabel>{item.label}</OpportunityLabel>
+                      <OpportunityDetail>{item.detail}</OpportunityDetail>
+                    </OpportunityItem>
+                  ))}
+                </OpportunityList>
+              </BriefCard>
         </Frame>
       </Section>
 
@@ -784,7 +1037,7 @@ function HomePage() {
               <Dot />
               Solution overview
             </SectionLabel>
-            <SectionTitle>The site now sells systems, not vague automation.</SectionTitle>
+            <SectionTitle>We build operating systems, not vague automation.</SectionTitle>
             <SectionIntro>
               The offer is clearer when it is broken into operational capabilities people already understand: workflow automation, purpose-built AI support, and reporting that creates real visibility.
             </SectionIntro>
@@ -825,7 +1078,7 @@ function HomePage() {
             </SectionLabel>
             <SectionTitle>Replace duct-tape operations with a visible system.</SectionTitle>
             <SectionIntro>
-              The redesign shifts the message away from generic AI hype and toward concrete operational transformation that buyers can recognize immediately.
+              Concrete operational change, not generic AI hype: these are the workflows agency teams recognise immediately.
             </SectionIntro>
           </HeadingBlock>
 
@@ -889,7 +1142,7 @@ function HomePage() {
             </SectionLabel>
             <SectionTitle>Trust comes from the operating model, not the headline.</SectionTitle>
             <SectionIntro>
-              The previous design talked about outcomes, but it did not surface enough of the control layer. This version makes the guardrails visible because that is what serious buyers are evaluating.
+              Serious buyers evaluate the control layer, so the guardrails are stated plainly: human review, traceability, documentation and safe failure.
             </SectionIntro>
           </HeadingBlock>
 
@@ -918,31 +1171,35 @@ function HomePage() {
               <Dot />
               Next action
             </SectionLabel>
-            <SectionTitle>Choose the right entry point.</SectionTitle>
+            <SectionTitle>One clear next step. Two ways to look first.</SectionTitle>
             <SectionIntro>
-              Not every visitor is ready for a call. The site now gives three credible paths forward instead of forcing the same CTA everywhere.
+              Start with the audit. If you are not ready to answer questions, look at use cases or put a number on the cost of delay first.
             </SectionIntro>
           </HeadingBlock>
 
-          <ActionGrid>
-            {nextActions.map(item => {
-              const Icon = item.icon;
-
-              return (
-                <ActionCard key={item.title}>
-                  <IconWrap>
-                    <Icon size={22} />
-                  </IconWrap>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardBody>{item.body}</CardBody>
-                  <ActionLink to={item.to}>
-                    {item.cta}
-                    <ArrowRight size={18} />
-                  </ActionLink>
-                </ActionCard>
-              );
-            })}
-          </ActionGrid>
+          <NextGrid>
+            <NextPrimary>
+              <NextKicker>Start here</NextKicker>
+              <h3>{nextActions[0].title}</h3>
+              <p>{nextActions[0].body}</p>
+              <NextPrimaryLink to={nextActions[0].to}>
+                {nextActions[0].cta}
+                <ArrowRight size={18} />
+              </NextPrimaryLink>
+            </NextPrimary>
+            <NextRows>
+              <NextRowsLabel>Not ready to answer questions?</NextRowsLabel>
+              {nextActions.slice(1).map(item => (
+                <NextRow key={item.title} to={item.to}>
+                  <div style={{ flex: '1 1 0', minWidth: 0 }}>
+                    <strong>{item.title}</strong>
+                    <span>{item.body}</span>
+                  </div>
+                  <em>{item.cta} -&gt;</em>
+                </NextRow>
+              ))}
+            </NextRows>
+          </NextGrid>
         </Frame>
       </Section>
 

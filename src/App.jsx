@@ -13,55 +13,65 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 
 const lightTheme = {
-  primary: '#c1931b',
-  primaryHover: '#a67d16',
-  secondary: '#10213b',
-  accent: '#d3b26a',
-  background: '#efe8da',
-  surface: '#fbf8f1',
-  surfaceHover: '#f3ecde',
-  text: '#0f172a',
-  textSecondary: '#475569',
-  border: '#d6ccb8',
-  success: '#0f766e',
-  warning: '#b45309',
-  error: '#b91c1c',
-  cardShadow: '0 18px 50px rgba(15, 23, 42, 0.08)',
-  cardHoverShadow: '0 24px 60px rgba(15, 23, 42, 0.12)',
-  headerBg: 'rgba(251, 248, 241, 0.78)',
-  gridLine: 'rgba(15, 23, 42, 0.08)',
-  fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  headingFont: '"Newsreader", Georgia, serif',
-  buttonText: '#1a1304',
-  borderRadius: '22px',
-  borderRadiusSm: '14px',
-  borderRadiusLg: '32px',
+  primary: '#0a6b57',
+  primaryHover: '#085646',
+  secondary: '#0d1614',
+  accent: '#8a5a00',
+  background: '#f3f5f6',
+  surface: '#ffffff',
+  surfaceHover: '#eaeeef',
+  text: '#0d1614',
+  textSecondary: '#44514e',
+  border: '#d3dbd9',
+  success: '#0a6b57',
+  warning: '#8a5a00',
+  error: '#a3261b',
+  signalTint: '#e0f0ec',
+  reviewText: '#8a5a00',
+  reviewTint: '#fbefd0',
+  cardShadow: 'none',
+  cardHoverShadow: 'none',
+  ledgerShadow: '8px 8px 0 #0d1614',
+  headerBg: 'rgba(255, 255, 255, 0.92)',
+  gridLine: 'rgba(13, 22, 20, 0.08)',
+  fontFamily: '"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  headingFont: '"Bricolage Grotesque", "Helvetica Neue", sans-serif',
+  monoFont: '"IBM Plex Mono", ui-monospace, monospace',
+  buttonText: '#ffffff',
+  borderRadius: '6px',
+  borderRadiusSm: '4px',
+  borderRadiusLg: '6px',
 };
 
 const darkTheme = {
-  primary: '#d0ad52',
-  primaryHover: '#e0bf6d',
-  secondary: '#dbe5f6',
-  accent: '#c7a24a',
-  background: '#0b1220',
-  surface: '#111c2e',
-  surfaceHover: '#16243b',
-  text: '#f8fafc',
-  textSecondary: '#b5c0d1',
-  border: '#24344e',
-  success: '#34d399',
-  warning: '#f59e0b',
-  error: '#f87171',
-  cardShadow: '0 18px 50px rgba(2, 6, 23, 0.32)',
-  cardHoverShadow: '0 24px 60px rgba(2, 6, 23, 0.42)',
-  headerBg: 'rgba(17, 28, 46, 0.8)',
-  gridLine: 'rgba(219, 229, 246, 0.08)',
-  fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  headingFont: '"Newsreader", Georgia, serif',
-  buttonText: '#140f02',
-  borderRadius: '22px',
-  borderRadiusSm: '14px',
-  borderRadiusLg: '32px',
+  primary: '#3fbf9f',
+  primaryHover: '#5fd0b3',
+  secondary: '#e4ebe9',
+  accent: '#f0b95a',
+  background: '#0b1210',
+  surface: '#111b18',
+  surfaceHover: '#17251f',
+  text: '#eef3f1',
+  textSecondary: '#a9b8b4',
+  border: '#26332f',
+  success: '#3fbf9f',
+  warning: '#f0b95a',
+  error: '#f28b82',
+  signalTint: 'rgba(63, 191, 159, 0.14)',
+  reviewText: '#f0b95a',
+  reviewTint: 'rgba(240, 185, 90, 0.14)',
+  cardShadow: 'none',
+  cardHoverShadow: 'none',
+  ledgerShadow: '8px 8px 0 #3fbf9f',
+  headerBg: 'rgba(17, 27, 24, 0.92)',
+  gridLine: 'rgba(238, 243, 241, 0.08)',
+  fontFamily: '"Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  headingFont: '"Bricolage Grotesque", "Helvetica Neue", sans-serif',
+  monoFont: '"IBM Plex Mono", ui-monospace, monospace',
+  buttonText: '#04140f',
+  borderRadius: '6px',
+  borderRadiusSm: '4px',
+  borderRadiusLg: '6px',
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -72,9 +82,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     color: ${p => p.theme.text};
-    background:
-      radial-gradient(circle at top left, rgba(193, 147, 27, 0.16), transparent 26%),
-      linear-gradient(180deg, ${p => p.theme.background} 0%, ${p => p.theme.surface} 100%);
+    background: ${p => p.theme.background};
     font-family: ${p => p.theme.fontFamily};
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -103,11 +111,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background: rgba(193, 147, 27, 0.24);
+    background: rgba(10, 107, 87, 0.24);
   }
 
   :focus-visible {
-    outline: 3px solid rgba(193, 147, 27, 0.42);
+    outline: 3px solid rgba(10, 107, 87, 0.5);
     outline-offset: 3px;
   }
 
@@ -139,38 +147,27 @@ const Shell = styled.div`
 
 const HeaderWrap = styled.header`
   position: fixed;
-  top: 16px;
-  left: 16px;
-  right: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-
-  @media (max-width: 768px) {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
+  background: ${p => p.theme.surface};
+  border-bottom: 1px solid ${p => p.theme.border};
 `;
 
 const HeaderBar = styled.div`
   max-width: 1220px;
   margin: 0 auto;
-  min-height: 74px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 14px 18px 14px 22px;
-  border: 1px solid ${p => p.theme.border};
-  border-radius: 999px;
-  background: ${p => p.theme.headerBg};
-  box-shadow: ${p => p.theme.cardShadow};
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  padding: 8px 24px;
 
   @media (max-width: 768px) {
-    min-height: 66px;
-    border-radius: 24px;
-    padding: 12px 14px 12px 18px;
+    min-height: 60px;
+    padding: 8px 16px;
   }
 `;
 
@@ -203,9 +200,8 @@ const LogoMark = styled.span`
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: ${p => p.theme.secondary};
-  color: ${p => p.theme.primary};
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  background: #0d1614;
+  color: #8fd6c3;
 `;
 
 const DesktopNav = styled.nav`
@@ -219,17 +215,25 @@ const DesktopNav = styled.nav`
 `;
 
 const NavItem = styled(NavLink)`
-  padding: 10px 14px;
-  border-radius: 999px;
+  padding: 10px 12px;
+  border-radius: ${p => p.theme.borderRadiusSm};
   font-size: 14px;
   font-weight: 600;
   color: ${p => p.theme.textSecondary};
-  transition: background-color 180ms ease, color 180ms ease;
+  transition: background-color 160ms ease-out, color 160ms ease-out;
 
-  &.active,
   &:hover {
     color: ${p => p.theme.text};
     background: ${p => p.theme.surfaceHover};
+  }
+
+  &.active {
+    color: ${p => p.theme.text};
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: ${p => p.theme.primary};
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
   }
 `;
 
@@ -263,19 +267,20 @@ const HeaderCTA = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
+  min-height: 44px;
   padding: 0 20px;
-  border-radius: 999px;
-  background: ${p => p.theme.primary};
-  color: ${p => p.theme.buttonText};
+  border-radius: ${p => p.theme.borderRadius};
+  border: 1px solid ${p => p.theme.text};
+  background: transparent;
+  color: ${p => p.theme.text};
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 180ms ease, background-color 180ms ease;
+  transition: background-color 160ms ease-out, color 160ms ease-out;
 
   &:hover {
-    transform: translateY(-1px);
-    background: ${p => p.theme.primaryHover};
+    background: ${p => p.theme.text};
+    color: ${p => p.theme.background};
   }
 
   @media (max-width: 640px) {
@@ -291,38 +296,67 @@ const MobileMenuButton = styled(IconButton)`
   }
 `;
 
+const menuIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+`;
+
 const MobileMenu = styled.div`
-  max-width: 1220px;
-  margin: 12px auto 0;
   display: ${p => (p.$open ? 'grid' : 'none')};
-  gap: 6px;
-  padding: 12px;
-  border: 1px solid ${p => p.theme.border};
-  border-radius: 24px;
+  gap: 4px;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 8px 16px 16px;
+  border-top: 1px solid ${p => p.theme.border};
   background: ${p => p.theme.surface};
-  box-shadow: ${p => p.theme.cardShadow};
+  animation: ${menuIn} 200ms ease-out;
 `;
 
 const MobileNavItem = styled(NavLink)`
-  padding: 14px 16px;
-  border-radius: 16px;
-  font-size: 15px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 12px;
+  border-radius: ${p => p.theme.borderRadiusSm};
+  font-size: 16px;
   font-weight: 600;
   color: ${p => p.theme.textSecondary};
 
-  &.active,
   &:hover {
     background: ${p => p.theme.surfaceHover};
     color: ${p => p.theme.text};
   }
+
+  &.active {
+    color: ${p => p.theme.text};
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: ${p => p.theme.primary};
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+`;
+
+const MobileAudit = styled(MobileNavItem)`
+  justify-content: center;
+  margin-top: 8px;
+  border: 1px solid ${p => p.theme.text};
+  color: ${p => p.theme.text};
+  font-weight: 700;
 `;
 
 const Main = styled.main`
   min-height: 100vh;
-  padding-top: 108px;
+  padding-top: 88px;
 
   @media (max-width: 768px) {
-    padding-top: 96px;
+    padding-top: 80px;
   }
 `;
 
@@ -495,7 +529,7 @@ const CookiePanel = styled.div`
   justify-content: space-between;
   gap: 16px;
   padding: 16px 18px;
-  border-radius: 24px;
+  border-radius: ${p => p.theme.borderRadius};
   border: 1px solid ${p => p.theme.border};
   background: ${p => p.theme.surface};
   box-shadow: ${p => p.theme.cardShadow};
@@ -526,7 +560,7 @@ const CookieActions = styled.div`
 const CookieButton = styled.button`
   min-height: 42px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   border: 1px solid ${p => (p.$primary ? p.theme.primary : p.theme.border)};
   background: ${p => (p.$primary ? p.theme.primary : 'transparent')};
   color: ${p => (p.$primary ? p.theme.buttonText : p.theme.text)};
@@ -565,6 +599,15 @@ function App() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const onKey = event => {
+      if (event.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const onScroll = () => setShowBackToTop(window.scrollY > 520);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -590,7 +633,6 @@ function App() {
               <NavItem to="/" end>Home</NavItem>
               <NavItem to="/use-cases">Use Cases</NavItem>
               <NavItem to="/calculator">Calculator</NavItem>
-              <NavItem to="/audit">Audit</NavItem>
               <NavItem to="/about">About</NavItem>
               <NavItem to="/contact">Contact</NavItem>
             </DesktopNav>
@@ -599,20 +641,20 @@ function App() {
               <IconButton onClick={toggleTheme} aria-label="Toggle color theme">
                 {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
               </IconButton>
-              <HeaderCTA to="/contact">Book a Discovery Call</HeaderCTA>
-              <MobileMenuButton onClick={() => setMobileMenuOpen(current => !current)} aria-label="Toggle navigation menu">
+              <HeaderCTA to="/audit">Run the audit</HeaderCTA>
+              <MobileMenuButton onClick={() => setMobileMenuOpen(current => !current)} aria-label="Toggle navigation menu" aria-expanded={mobileMenuOpen} aria-controls="mobile-menu">
                 {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
               </MobileMenuButton>
             </HeaderRight>
           </HeaderBar>
 
-          <MobileMenu $open={mobileMenuOpen}>
+          <MobileMenu id="mobile-menu" $open={mobileMenuOpen}>
             <MobileNavItem to="/" end>Home</MobileNavItem>
             <MobileNavItem to="/use-cases">Use Cases</MobileNavItem>
             <MobileNavItem to="/calculator">Calculator</MobileNavItem>
-            <MobileNavItem to="/audit">Audit</MobileNavItem>
             <MobileNavItem to="/about">About</MobileNavItem>
             <MobileNavItem to="/contact">Contact</MobileNavItem>
+            <MobileAudit to="/audit">Run the audit</MobileAudit>
           </MobileMenu>
         </HeaderWrap>
 

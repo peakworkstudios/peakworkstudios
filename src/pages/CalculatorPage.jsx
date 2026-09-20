@@ -207,9 +207,7 @@ const pulseGlow = keyframes`
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 92px 16px 80px;
-  background:
-    radial-gradient(circle at top right, rgba(193, 147, 27, 0.12), transparent 24%),
-    ${p => p.theme.background};
+  background: ${p => p.theme.background};
   font-family: ${p => p.theme.fontFamily};
 
   @media (min-width: 769px) {
@@ -262,9 +260,7 @@ const HeroSection = styled.section`
   animation: ${fadeInUp} 0.6s ease-out;
   border: 1px solid ${p => p.theme.border};
   border-radius: ${p => p.theme.borderRadiusLg};
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.12), transparent 36%),
-    ${p => p.theme.surface};
+  background: ${p => p.theme.surface};
   box-shadow: ${p => p.theme.cardShadow};
 
   @media (max-width: 768px) {
@@ -276,9 +272,7 @@ const HeroAside = styled.div`
   padding: 26px;
   border: 1px solid ${p => p.theme.border};
   border-radius: ${p => p.theme.borderRadiusLg};
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.08), transparent 38%),
-    ${p => p.theme.surface};
+  background: ${p => p.theme.surface};
   box-shadow: ${p => p.theme.cardShadow};
   display: grid;
   gap: 16px;
@@ -553,7 +547,7 @@ const CheckboxItem = styled.label`
 
   &:hover {
     border-color: ${p => p.theme.primary}60;
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+    box-shadow: none;
   }
 `;
 
