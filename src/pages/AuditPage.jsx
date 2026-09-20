@@ -187,9 +187,7 @@ const slideCard = keyframes`
 const PageWrapper = styled.div`
   min-height: 100vh;
   padding: 92px 16px 88px;
-  background:
-    radial-gradient(circle at top right, rgba(193, 147, 27, 0.16), transparent 24%),
-    linear-gradient(180deg, rgba(251, 248, 241, 0.64), rgba(239, 232, 218, 0.94));
+  background: ${p => p.theme.background};
 
   @media (min-width: 769px) {
     padding: 116px 28px 120px;
@@ -235,9 +233,7 @@ const HeroGrid = styled.section`
 const HeroPanel = styled.div`
   border: 1px solid ${p => p.theme.border};
   border-radius: ${p => p.theme.borderRadiusLg};
-  background:
-    linear-gradient(135deg, rgba(193, 147, 27, 0.11), transparent 40%),
-    ${p => p.theme.surface};
+  background: ${p => p.theme.surface};
   box-shadow: ${p => p.theme.cardShadow};
 `;
 
@@ -336,7 +332,7 @@ const ProgressValue = styled.div`
 
 const ProgressTrack = styled.div`
   height: 10px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   background: ${p => p.theme.border};
   overflow: hidden;
   margin-bottom: 12px;
@@ -346,7 +342,7 @@ const ProgressFill = styled.div`
   height: 100%;
   width: ${p => p.$percent}%;
   border-radius: inherit;
-  background: linear-gradient(90deg, ${p => p.theme.primary}, ${p => p.theme.accent});
+  background: ${p => p.theme.primary};
   transition: width 220ms ease;
 `;
 
@@ -402,8 +398,8 @@ const CategoryChip = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 7px 12px;
-  border-radius: 999px;
-  background: rgba(193, 147, 27, 0.14);
+  border-radius: ${p => p.theme.borderRadius};
+  background: rgba(10, 107, 87, 0.14);
   color: ${p => p.theme.secondary};
   font-size: 0.8rem;
   font-weight: 700;
@@ -434,7 +430,7 @@ const OptionButton = styled.button`
   padding: 16px 18px;
   border-radius: ${p => p.theme.borderRadius};
   border: 1px solid ${p => (p.$selected ? p.theme.primary : p.theme.border)};
-  background: ${p => (p.$selected ? 'rgba(193, 147, 27, 0.13)' : p.theme.background)};
+  background: ${p => (p.$selected ? 'rgba(10, 107, 87, 0.13)' : p.theme.background)};
   color: ${p => p.theme.text};
   text-align: left;
   cursor: pointer;
@@ -444,7 +440,7 @@ const OptionButton = styled.button`
   &:hover {
     transform: translateY(-1px);
     border-color: ${p => p.theme.primary};
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+    box-shadow: none;
   }
 
   &:active {
@@ -496,7 +492,7 @@ const NavButton = styled.button`
   gap: 10px;
   min-height: 50px;
   padding: 0 20px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   border: 1px solid ${p => p.theme.border};
   background: ${p => (p.$primary ? p.theme.primary : 'transparent')};
   color: ${p => (p.$primary ? p.theme.buttonText : p.theme.text)};
@@ -508,7 +504,7 @@ const NavButton = styled.button`
   &:hover:not(:disabled) {
     transform: translateY(-1px);
     border-color: ${p => p.theme.primary};
-    background: ${p => (p.$primary ? p.theme.primaryHover : 'rgba(193, 147, 27, 0.08)')};
+    background: ${p => (p.$primary ? p.theme.primaryHover : 'rgba(10, 107, 87, 0.08)')};
   }
 
   &:disabled {
@@ -588,7 +584,7 @@ const ScoreTag = styled.div`
   justify-content: center;
   min-height: 38px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   background: ${p => p.$color};
   color: #fff;
   font-size: 0.88rem;
@@ -732,7 +728,7 @@ const BreakdownScore = styled.div`
 
 const BreakdownTrack = styled.div`
   height: 10px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   background: ${p => p.theme.border};
   overflow: hidden;
 `;
@@ -976,7 +972,7 @@ const SubmitButton = styled.button`
   gap: 10px;
   min-height: 54px;
   padding: 0 22px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   border: none;
   background: ${p => p.theme.primary};
   color: ${p => p.theme.buttonText};
@@ -1047,7 +1043,7 @@ const RetakeButton = styled.button`
   gap: 10px;
   min-height: 48px;
   padding: 0 18px;
-  border-radius: 999px;
+  border-radius: ${p => p.theme.borderRadius};
   border: 1px solid ${p => p.theme.border};
   background: transparent;
   color: ${p => p.theme.textSecondary};
